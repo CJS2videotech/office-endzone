@@ -1,0 +1,23 @@
+{
+  "name": "Office Endzone - NFL Matchups & Office Watercooler Gridiron",
+  "short_name": "Office Endzone",
+  "description": "Real-time ESPN NFL live game feeds, official team logos, office staff avatar cards, weekly & regular season brackets, picks, and standings.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#060b14",
+  "theme_color": "#0b1322",
+  "icons": [
+    {
+      "src": "assets/OE Group button.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/OE Group button.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

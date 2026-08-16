@@ -1,0 +1,299 @@
+[
+  {
+    "id": "char_cj",
+    "name": "CJ",
+    "role": "Franchise QB & Offense Architect",
+    "dept": "Executive Strategy",
+    "image": "assets/avatars/CJ football.jpg",
+    "bannerGif": "assets/CJ football banner.gif",
+    "favoriteTeam": "CHI",
+    "teamName": "Chicago Bears",
+    "teamLogo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+    "stats": {
+      "seasonPoints": 0,
+      "totalYards": 0,
+      "sacks": 0,
+      "fieldGoals": 0,
+      "bracketWinPct": "0%"
+    },
+    "reactions": {
+      "TOUCHDOWN_HOME": [
+        "Boom! 75-yard touchdown drive for the Chicago Bears!",
+        "Put that touchdown right on the Q4 executive presentation! Bear Down!",
+        "That's how we run the offense! Monsters of the Midway in the endzone!",
+        "Laser dot to the back corner of the endzone! 6 points!"
+      ],
+      "TOUCHDOWN_AWAY": [
+        "Defense let them slip through the flat... regroup in the huddle!",
+        "No panic, our Chicago offense is ready to answer on the next drive.",
+        "That defensive scheme needs an immediate Jira sprint update."
+      ],
+      "TURNOVER": [
+        "Incredible ball strip! Offense taking over at the 35!",
+        "Interception!! That's what I call a high-yield ROI takeaway!",
+        "Turnover forced! Let's dial up the deep pass!"
+      ],
+      "FIELD_GOAL": [
+        "Right down the middle from 48 yards! Solid 3 points on the board.",
+        "Three points locked in for Chicago. Momentum is on our side!",
+        "Split the uprights! Points in the bank!"
+      ],
+      "SACK": [
+        "Crushed in the pocket! -8 yards loss on 3rd down!",
+        "Massive blitz pickup missed! Down goes the quarterback!",
+        "Defensive line brought the house on that play!"
+      ],
+      "IDLE": [
+        "Reviewing the 2026 preseason playbook and red-zone routes...",
+        "Checking today's Chicago Bears 2026 game plan and spread lines...",
+        "Bear Down! Ready to orchestrate another game-winning drive for 2026!"
+      ]
+    }
+  },
+  {
+    "id": "char_mario",
+    "name": "Mario",
+    "role": "Defensive Coordinator & Blitz Master",
+    "dept": "Engineering & Security",
+    "image": "assets/avatars/Mario football.jpg",
+    "bannerGif": "assets/Mario football banner.gif",
+    "favoriteTeam": "CLE",
+    "teamName": "Cleveland Browns",
+    "teamLogo": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png",
+    "stats": {
+      "seasonPoints": 0,
+      "totalYards": 0,
+      "sacks": 0,
+      "fieldGoals": 0,
+      "bracketWinPct": "0%"
+    },
+    "reactions": {
+      "TOUCHDOWN_HOME": [
+        "DAWG POUND TOUCHDOWN! Browns offense capitalizing on field position!",
+        "Touchdown Cleveland! The Dawg Pound is barking!",
+        "Unstoppable drive! Hard work in practice paying off big time!"
+      ],
+      "TOUCHDOWN_AWAY": [
+        "UNACCEPTABLE! Blew coverage on the post route!",
+        "That gap was wide open! Linebackers, wake up!",
+        "We are running extra sprints at tomorrow's practice!"
+      ],
+      "TURNOVER": [
+        "BALL IS OUT! FUMBLE RECOVERY! DAWG POUND DEFENSE RULES!",
+        "Pick six coming soon! We live for these defensive stops!",
+        "Catastrophic error by their offense! All ours!"
+      ],
+      "FIELD_GOAL": [
+        "Holding them to 3 is a win for the defense! Good red zone stand!",
+        "We'll take the 3, but I want 6 next time!",
+        "Special teams got the job done with clean protection."
+      ],
+      "SACK": [
+        "SACK ATTACK!! Flattened him behind the line of scrimmage!",
+        "Brought the zero-blitz and destroyed the pocket! That's Cleveland defense!",
+        "Down goes the QB! Massive loss in the Dawg Pound!"
+      ],
+      "IDLE": [
+        "Studying 2026 defensive tape and gap coverage schemes for Cleveland...",
+        "Barking with the Dawg Pound! Dialing up 2026 blitz packages...",
+        "No yards allowed inside our 20-yard line. Period."
+      ]
+    }
+  },
+  {
+    "id": "char_nicole",
+    "name": "Nicole",
+    "role": "Analytics & Special Teams Director",
+    "dept": "Data & Operations",
+    "image": "assets/avatars/Nicole football.jpg",
+    "bannerGif": "assets/Nicole football banner.gif",
+    "favoriteTeam": "LV",
+    "teamName": "Las Vegas Raiders",
+    "teamLogo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png",
+    "stats": {
+      "seasonPoints": 0,
+      "totalYards": 0,
+      "sacks": 0,
+      "fieldGoals": 0,
+      "bracketWinPct": "0%"
+    },
+    "reactions": {
+      "TOUCHDOWN_HOME": [
+        "RAIDER NATION TOUCHDOWN! Statistically magnificent +6.0 Net EPA!",
+        "Touchdown Raiders! Win probability in Allegiant Stadium just surged!",
+        "What a beauty! Perfect analytical execution in the end zone!"
+      ],
+      "TOUCHDOWN_AWAY": [
+        "Win probability dipped... recalculating Vegas momentum models.",
+        "Data suggests we switch to press coverage on 2nd down.",
+        "Time for an analytics-backed rally in the 2nd half!"
+      ],
+      "TURNOVER": [
+        "RAIDER TAKEAWAY! Expected points skyrocket in the desert!",
+        "Ball intercepted! Our defense read the quarterback's eyes!",
+        "Just Win Baby! High-leverage turnover secured!"
+      ],
+      "FIELD_GOAL": [
+        "52-yarder right down the pipe! Optimal field goal leverage!",
+        "3 clutch points! Kicking percentage at 100% on the new season!",
+        "Special teams metrics looking pristine on that kick!"
+      ],
+      "SACK": [
+        "SACK! Raider pass rush generated heavy pressure!",
+        "Disrupted the timing of the passing progression! Big sack!",
+        "Loss of yards creates a 3rd down mountain to climb!"
+      ],
+      "IDLE": [
+        "Calculating 2026 Vegas odds and expected points added (EPA)...",
+        "Just win baby! Tracking 2026 yardage benchmarks across the division...",
+        "Updating the 2026 office fantasy metrics leaderboard!"
+      ]
+    }
+  },
+  {
+    "id": "char_andrea",
+    "name": "Andrea",
+    "role": "Talent Scout & Operations Lead",
+    "dept": "Talent Acquisition",
+    "image": "assets/avatars/Andrea football.jpg",
+    "bannerGif": "assets/Andrea football banner.gif",
+    "favoriteTeam": "GB",
+    "teamName": "Green Bay Packers",
+    "teamLogo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png",
+    "stats": {
+      "seasonPoints": 0,
+      "totalYards": 0,
+      "sacks": 0,
+      "fieldGoals": 0,
+      "bracketWinPct": "0%"
+    },
+    "reactions": {
+      "TOUCHDOWN_HOME": [
+        "GO PACK GO! LAMBEAU LEAP TOUCHDOWN!",
+        "Touchdown Green Bay! Did you see the speed on that route?!",
+        "Celebrating with cheese curds and donuts in the breakroom! TD!"
+      ],
+      "TOUCHDOWN_AWAY": [
+        "Oof, we need to tighten up our perimeter tackling.",
+        "Deep breath everyone, we scouted this team and know how to counter.",
+        "Time for our Green Bay sideline leaders to pump up the energy!"
+      ],
+      "TURNOVER": [
+        "FUMBLE RECOVERED BY GREEN BAY! That's pure Lambeau hustle!",
+        "Incredible athletic catch by our cornerback! Turnover Packers!",
+        "That's how we fight for every single yard at Lambeau!"
+      ],
+      "FIELD_GOAL": [
+        "Clean snap, clean hold, beautiful 3 points in the Green Bay cold!",
+        "Kicker is earning his game ball today! 3 points added!",
+        "Steady scoring wins championships."
+      ],
+      "SACK": [
+        "BOOM! Lambeau turf collision! Sacked for a loss!",
+        "Our Green Bay defensive front is relentlessly physical today!",
+        "QB had nowhere to step up in the pocket!"
+      ],
+      "IDLE": [
+        "Go Pack Go! Scouting 2026 roster depth for Green Bay...",
+        "Organizing the Lambeau tailgate party and 2026 bracket prizes...",
+        "Reviewing roster depth and 2026 preseason challenge picks!"
+      ]
+    }
+  },
+  {
+    "id": "char_saul",
+    "name": "Saul",
+    "role": "Chief Rules Commissioner & Field Marshal",
+    "dept": "Legal & Compliance",
+    "image": "assets/avatars/Saul football.jpg",
+    "bannerGif": "assets/Saul football banner.gif",
+    "favoriteTeam": "SF",
+    "teamName": "San Francisco 49ers",
+    "teamLogo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+    "stats": {
+      "seasonPoints": 0,
+      "totalYards": 0,
+      "sacks": 0,
+      "fieldGoals": 0,
+      "bracketWinPct": "0%"
+    },
+    "reactions": {
+      "TOUCHDOWN_HOME": [
+        "49ERS TOUCHDOWN! Officially reviewed and CONFIRMED in Santa Clara!",
+        "No flags on the play! Clean, legally binding 6 points for San Francisco!",
+        "TOUCHDOWN 49ERS! The West Coast offense executed strictly by the book!"
+      ],
+      "TOUCHDOWN_AWAY": [
+        "I'm checking the rulebook for illegal shift on that play...",
+        "Defense got caught in a technical violation. We'll appeal on the next drive.",
+        "Need better compliance in the secondary coverage."
+      ],
+      "TURNOVER": [
+        "Possession transfer to 49ers verified under NFL Rule 8! Our ball!",
+        "Clean strip and recovery by the Gold & Red defense!",
+        "Interception confirmed by the replay booth!"
+      ],
+      "FIELD_GOAL": [
+        "Upright crossing officially certified! 3 points for San Francisco!",
+        "Distance, trajectory, and wind vector confirmed. Good kick!",
+        "Three legitimate points entered into the official docket."
+      ],
+      "SACK": [
+        "Legal tackle behind the line! 49ers defense enforces penalty on their offense!",
+        "Quarterback brought down within the rules of engagement!",
+        "Violent yet compliant hit! 4th down coming up!"
+      ],
+      "IDLE": [
+        "Faithful to the Bay! Auditing 2026 49ers film and challenge bylaws...",
+        "Reviewing 2026 weekly bracket point spreads and tiebreakers...",
+        "Maintaining absolute legal integrity on the 2026 office gridiron."
+      ]
+    }
+  },
+  {
+    "id": "char_cardinals",
+    "name": "Arizona Cardinals Flag",
+    "role": "Desert Flag Bearer & Mascot",
+    "dept": "Arizona Desert Division",
+    "image": "assets/Arizona_Cardinals_flag.gif",
+    "bannerGif": "assets/Arizona_Cardinals_flag.gif",
+    "favoriteTeam": "ARI",
+    "teamName": "Arizona Cardinals",
+    "teamLogo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png",
+    "stats": {
+      "seasonPoints": 0,
+      "totalYards": 0,
+      "sacks": 0,
+      "fieldGoals": 0,
+      "bracketWinPct": "0%"
+    },
+    "reactions": {
+      "TOUCHDOWN_HOME": [
+        "RISE UP RED SEA! ARIZONA CARDINALS TOUCHDOWN in the desert!",
+        "Waving the Arizona flag high! 6 points on the board at State Farm Stadium!",
+        "TOUCHDOWN ARIZONA! Red Sea erupts with pride!"
+      ],
+      "TOUCHDOWN_AWAY": [
+        "Desert heat got to our secondary on that snap... time to answer back!",
+        "Cardinals offense taking the field! Let's get these 6 points back!"
+      ],
+      "TURNOVER": [
+        "INTERCEPTION IN THE DESERT! Red Sea takeaway confirmed!",
+        "FUMBLE RECOVERY! The Arizona flag flies proudly as defense forces the turnover!"
+      ],
+      "FIELD_GOAL": [
+        "Split the desert uprights from 50 yards out! 3 points for Arizona!",
+        "Field goal is GOOD! Cardinals extend the lead!"
+      ],
+      "SACK": [
+        "DESERT SWARM SACK! Red Sea pass rush takes down the QB!",
+        "SACK! Loss of yards! State Farm Stadium is on its feet!"
+      ],
+      "IDLE": [
+        "Waving the Arizona flag across the Desert Division HQ for 2026...",
+        "Rise Up Red Sea! Prepping 2026 game day hype for the Arizona Cardinals!",
+        "State Farm Stadium roof open, ready for 2026 kickoff!"
+      ]
+    }
+  }
+]

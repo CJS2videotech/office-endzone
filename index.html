@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Office Endzone - NFL Matchups & Office Watercooler Gridiron</title>
+  <meta name="description" content="Office Endzone: Real-time ESPN NFL live game feeds in Arizona Time (MST), official team logos, office staff avatar cards, weekly & regular season brackets, picks, and standings.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Graduate&family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- Mobile & PWA Home Screen Icon (OE Group button) -->
+  <link rel="icon" type="image/jpeg" href="assets/OE Group button.jpg">
+  <link rel="apple-touch-icon" href="assets/OE Group button.jpg">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/OE Group button.jpg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Office Endzone">
+  <meta name="theme-color" content="#0b1322">
+  <link rel="manifest" href="manifest.json">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Stadium Field Overhead Floodlights Effect -->
+  <div class="stadium-floodlights" aria-hidden="true"></div>
+
+  <div class="dugout-container">
+
+    <!-- Top App Header (Office Dugout Style) -->
+    <header class="dugout-header">
+      <div class="dugout-title-wrap">
+        <h1 class="dugout-title">
+          <span class="title-top">OFFICE</span>
+          <span class="title-bottom">ENDZONE</span>
+        </h1>
+      </div>
+      
+      <div class="header-right-actions">
+        <button class="header-pill-btn btn-yesterday-scores" id="btn-yesterday-modal-toggle">
+          <span class="pill-icon">📅</span>
+          <span class="pill-text">YESTERDAY'S<br>BOX SCORES</span>
+        </button>
+
+        <button class="header-pill-btn btn-signin" id="btn-signin">
+          SIGN<br>IN
+        </button>
+
+        <div class="live-feed-indicator">
+          <div class="live-status-row">
+            <span class="live-dot-pulse"></span>
+            <span class="live-text-label">LIVE DATA FEED</span>
+          </div>
+          <div class="live-clock" id="current-mst-clock">--:-- -- MST</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Ticker Section with Today / Yesterday Toggle -->
+    <section class="ticker-wrapper" aria-label="Game Tickers">
+      <div class="ticker-tabs">
+        <button class="ticker-tab-btn active" id="tab-today-ticker">TODAY'S TICKER</button>
+        <button class="ticker-tab-btn" id="tab-yesterday-ticker">YESTERDAY'S TICKER</button>
+      </div>
+
+      <!-- Matchup Ticker Grid -->
+      <div class="ticker-grid-container" id="ticker-grid">
+        <!-- Injected dynamically with games -->
+        <div class="ticker-loading-placeholder">Loading live NFL scores (MST)...</div>
+      </div>
+    </section>
+
+    <!-- Main Content: TEAM ROSTER Grid -->
+    <main class="main-content" id="roster-section">
+      <div class="section-badge-header">
+        <span class="section-bullet">●</span>
+        <h2 class="section-title">TEAM ROSTER</h2>
+      </div>
+
+      <div class="roster-grid" id="roster-grid">
+        <!-- Populated dynamically with rounded bobblehead avatar cards -->
+      </div>
+    </main>
+
+    <!-- Quick Navigation / Secondary Links -->
+    <nav class="quick-nav-bar" aria-label="Section Navigation">
+      <button class="quick-nav-btn active" id="btn-nav-roster">👥 Roster Hub</button>
+      <button class="quick-nav-btn" id="btn-nav-bracket">🌲 Office Brackets</button>
+      <button class="quick-nav-btn" id="btn-nav-challenges">🏆 Challenges</button>
+      <button class="quick-nav-btn" id="btn-nav-standings">📊 Standings</button>
+    </nav>
+
+    <!-- Secondary Views Drawer (Brackets / Challenges / Standings) -->
+    <div class="secondary-view-drawer" id="secondary-drawer" style="display: none;">
+      <div class="drawer-header">
+        <h3 id="drawer-title">🌲 Office Brackets Hub</h3>
+        <button class="btn-drawer-close" id="btn-close-drawer" aria-label="Close View">✕</button>
+      </div>
+      <div class="drawer-body" id="drawer-body">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- =========================================================================
+       MEMBER DETAIL MODAL (Matching Dugout Screenshots 2 & 3)
+       ========================================================================= -->
+  <div class="member-modal-overlay" id="member-modal-overlay" aria-hidden="true">
+    <div class="member-modal-content" id="member-modal-content">
+      
+      <!-- Close Button -->
+      <button class="modal-close-btn" id="modal-close-btn" aria-label="Close Modal">✕</button>
+
+      <!-- Member Photo Card with Click For GIF Toggle -->
+      <div class="modal-avatar-card-wrap">
+        <div class="modal-avatar-card" id="modal-avatar-card">
+          <img src="assets/avatars/CJ football.jpg" alt="Member Avatar" class="modal-avatar-img" id="modal-avatar-img">
+          <div class="modal-photo-badge" id="modal-gif-toggle">
+            <span class="camera-icon">📷</span>
+            <span id="photo-badge-text">PHOTO (CLICK FOR GIF)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Member Identity Header -->
+      <div class="modal-member-identity">
+        <h2 class="modal-member-name" id="modal-member-name">CJ</h2>
+        <div class="modal-team-badge-row">
+          <img src="https://a.espncdn.com/i/teamlogos/nfl/500/chi.png" alt="Team Logo" class="modal-team-logo" id="modal-team-logo">
+        </div>
+        <div class="modal-team-name-text" id="modal-team-name">BEARS</div>
+      </div>
+
+      <!-- SECTION: DAILY PICKS -->
+      <section class="modal-section">
+        <div class="modal-section-header">
+          <span class="section-bullet gold">●</span>
+          <span class="modal-section-title">DAILY PICKS</span>
+        </div>
+
+        <div class="picks-stats-row">
+          <div class="picks-stat-box">
+            <div class="picks-val" id="picks-record">10-5</div>
+            <div class="picks-label">RECORD</div>
+          </div>
+          <div class="picks-stat-box">
+            <div class="picks-val" id="picks-pct">.667</div>
+            <div class="picks-label">WIN PCT</div>
+          </div>
+          <div class="picks-stat-box">
+            <div class="picks-val" id="picks-streak">W3</div>
+            <div class="picks-label">STREAK</div>
+          </div>
+        </div>
+
+        <!-- Trophy Leader Banner -->
+        <div class="trophy-banner" id="trophy-banner">
+          <span class="trophy-icon">🏆</span>
+          <span class="trophy-count" id="trophy-count">× 34</span>
+          <span class="trophy-label" id="trophy-label">DAILY YARDS & TOUCHDOWNS LEADER</span>
+        </div>
+      </section>
+
+      <!-- SECTION: TODAY'S MATCHUP -->
+      <section class="modal-section">
+        <div class="modal-section-header">
+          <span class="section-bullet green">●</span>
+          <span class="modal-section-title">TODAY'S MATCHUP</span>
+        </div>
+
+        <div class="today-matchup-card" id="today-matchup-card">
+          <div class="matchup-live-tag" id="matchup-live-tag">LIVE</div>
+          
+          <div class="matchup-scoreboard-row">
+            <div class="matchup-team away">
+              <span class="team-code" id="matchup-away-code">GB</span>
+              <span class="team-rec" id="matchup-away-rec">9-6</span>
+            </div>
+
+            <div class="matchup-score-center">
+              <div class="score-numbers">
+                <span id="matchup-away-score">0</span>
+                <span class="score-sep">-</span>
+                <span id="matchup-home-score">0</span>
+              </div>
+              <div class="matchup-clock-status" id="matchup-clock-status">TOP 1ST • 12:15 PM MST</div>
+            </div>
+
+            <div class="matchup-team home">
+              <span class="team-code highlight-team" id="matchup-home-code">CHI</span>
+              <span class="team-rec" id="matchup-home-rec">11-4</span>
+            </div>
+          </div>
+
+          <div class="matchup-venue-row">
+            <span class="venue-name" id="matchup-venue">Soldier Field</span>
+            <button class="btn-box-score" id="btn-open-box-score">
+              <span class="box-icon">📊</span> Box Score
+            </button>
+          </div>
+
+          <div class="matchup-pitchers-row" id="matchup-starters-row">
+            <span class="starter-away" id="starter-away">Jordan Love</span>
+            <span class="vs-label">VS</span>
+            <span class="starter-home" id="starter-home">Caleb Williams</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: NEXT 5 DAYS / SCHEDULE -->
+      <section class="modal-section">
+        <div class="modal-section-header">
+          <span class="section-bullet white">●</span>
+          <span class="modal-section-title">NEXT 5 DAYS</span>
+        </div>
+
+        <div class="schedule-list-card" id="schedule-list">
+          <!-- Injected dynamically -->
+        </div>
+      </section>
+
+      <!-- SECTION: DIVISION STANDINGS -->
+      <section class="modal-section">
+        <div class="modal-section-header">
+          <span class="modal-section-title" id="standings-division-title">NFC NORTH STANDINGS</span>
+        </div>
+
+        <div class="standings-table-wrap">
+          <table class="dugout-standings-table">
+            <thead>
+              <tr>
+                <th class="col-team">TEAM</th>
+                <th class="col-stat">W</th>
+                <th class="col-stat">L</th>
+                <th class="col-stat">PCT</th>
+                <th class="col-stat">GB</th>
+              </tr>
+            </thead>
+            <tbody id="division-standings-tbody">
+              <!-- Injected dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SECTION: DAILY RUNS/YARDS & HITS/TDS LEADER -->
+      <section class="modal-section">
+        <div class="modal-section-header">
+          <span class="section-bullet red">●</span>
+          <span class="modal-section-title" id="leader-table-title">DAILY YARDS & TOUCHDOWNS LEADER</span>
+        </div>
+
+        <div class="standings-table-wrap">
+          <table class="dugout-leaders-table">
+            <thead>
+              <tr>
+                <th class="col-team">TEAM</th>
+                <th class="col-stat">YARDS</th>
+                <th class="col-stat">TDS</th>
+                <th class="col-stat">STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="daily-leaders-tbody">
+              <!-- Injected dynamically with all office members -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Office Cheer & Banter Bubble inside Modal -->
+      <section class="modal-banter-card" id="modal-banter-card">
+        <div class="banter-header">
+          <span class="banter-speaker" id="banter-speaker">CJ's Watercooler Intel:</span>
+          <button class="btn-cheer-sm" id="btn-modal-cheer">📣 Cheer & Chant</button>
+        </div>
+        <div class="banter-dialog" id="modal-dialog-text">Bear Down! Dialing up our red zone strategy for today's matchup!</div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Interactive Gridiron Showdown & Battle Reveal Modal -->
+  <div class="member-modal-overlay showdown-modal-overlay" id="showdown-modal-overlay" aria-hidden="true">
+    <div class="dugout-modal-card showdown-modal-card">
+      <header class="modal-header">
+        <div class="modal-title-row">
+          <span class="modal-badge-status" id="showdown-badge-status">⚔️ GRIDIRON SHOWDOWN</span>
+          <span class="modal-game-time" id="showdown-venue-time">12:15 PM MST • Soldier Field</span>
+        </div>
+        <button class="modal-close-btn" id="showdown-modal-close" aria-label="Close Showdown">&times;</button>
+      </header>
+
+      <div class="showdown-modal-content" id="showdown-modal-content">
+        <!-- Injected dynamically by DugoutEndzoneApp.openShowdownModal() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Event Notification Pop-up Banner -->
+  <div class="event-banner" id="event-banner"></div>
+
+  <!-- Standalone Application Bundle Script -->
+  <script src="js/app.bundle.js"></script>
+</body>
+</html>

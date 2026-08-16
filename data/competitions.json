@@ -1,0 +1,220 @@
+{
+  "activeWeek": "2026 NFL Preseason • Week 2 Kickoff",
+  "challenges": [
+    {
+      "id": "chal_yards_1",
+      "title": "400-Yard Aerial Assault",
+      "metric": "YARDS",
+      "icon": "🚀",
+      "category": "Offense",
+      "description": "Predict a matchup where total passing & rushing yards exceed 400 yards.",
+      "target": 400,
+      "unit": "YDS",
+      "reward": "150 Office Pts + Cannon Arm Badge",
+      "leader": "2026 Preseason Opening Kickoff",
+      "status": "ACTIVE",
+      "participants": [
+        { "name": "CJ (CHI)", "progress": 0, "completed": false },
+        { "name": "Nicole (LV)", "progress": 0, "completed": false },
+        { "name": "Saul (SF)", "progress": 0, "completed": false },
+        { "name": "Cardinals Flag (ARI)", "progress": 0, "completed": false },
+        { "name": "Mario (CLE)", "progress": 0, "completed": false },
+        { "name": "Andrea (GB)", "progress": 0, "completed": false }
+      ]
+    },
+    {
+      "id": "chal_points_1",
+      "title": "High-Octane Shootout",
+      "metric": "POINTS",
+      "icon": "🔥",
+      "category": "Scoring",
+      "description": "Pick the highest-scoring game of the week (Combined 50+ total points).",
+      "target": 50,
+      "unit": "PTS",
+      "reward": "200 Office Pts + Endzone Master Trophy",
+      "leader": "2026 Preseason Opening Kickoff",
+      "status": "ACTIVE",
+      "participants": [
+        { "name": "Nicole (LV)", "progress": 0, "completed": false },
+        { "name": "CJ (CHI)", "progress": 0, "completed": false },
+        { "name": "Saul (SF)", "progress": 0, "completed": false },
+        { "name": "Cardinals Flag (ARI)", "progress": 0, "completed": false },
+        { "name": "Andrea (GB)", "progress": 0, "completed": false },
+        { "name": "Mario (CLE)", "progress": 0, "completed": false }
+      ]
+    },
+    {
+      "id": "chal_sacks_1",
+      "title": "Sack City Blitz Patrol",
+      "metric": "SACKS",
+      "icon": "💥",
+      "category": "Defense",
+      "description": "Predict which defense racks up 4+ QB sacks in a single game.",
+      "target": 4,
+      "unit": "SACKS",
+      "reward": "175 Office Pts + Brick Wall Medal",
+      "leader": "2026 Preseason Opening Kickoff",
+      "status": "ACTIVE",
+      "participants": [
+        { "name": "Mario (CLE)", "progress": 0, "completed": false },
+        { "name": "Saul (SF)", "progress": 0, "completed": false },
+        { "name": "Cardinals Flag (ARI)", "progress": 0, "completed": false },
+        { "name": "Nicole (LV)", "progress": 0, "completed": false },
+        { "name": "Andrea (GB)", "progress": 0, "completed": false },
+        { "name": "CJ (CHI)", "progress": 0, "completed": false }
+      ]
+    },
+    {
+      "id": "chal_fg_1",
+      "title": "Clutch Kicker 50+ Showdown",
+      "metric": "FIELD_GOALS",
+      "icon": "🎯",
+      "category": "Special Teams",
+      "description": "Predict 3+ successful field goals including at least one 45+ yarder.",
+      "target": 3,
+      "unit": "FG",
+      "reward": "125 Office Pts + Golden Boot Ribbon",
+      "leader": "2026 Preseason Opening Kickoff",
+      "status": "ACTIVE",
+      "participants": [
+        { "name": "Saul (SF)", "progress": 0, "completed": false },
+        { "name": "Cardinals Flag (ARI)", "progress": 0, "completed": false },
+        { "name": "Nicole (LV)", "progress": 0, "completed": false },
+        { "name": "CJ (CHI)", "progress": 0, "completed": false },
+        { "name": "Andrea (GB)", "progress": 0, "completed": false },
+        { "name": "Mario (CLE)", "progress": 0, "completed": false }
+      ]
+    }
+  ],
+  "bracket": {
+    "title": "2026 Office Endzone Championship Tournament",
+    "round": "2026 Preseason Kickoff",
+    "matchups": [
+      {
+        "id": "match_1",
+        "round": "2026 Preseason Week 2",
+        "staff1": { "name": "CJ", "team": "CHI", "pick": "CHI Bears", "spread": "-3.0", "avatar": "assets/avatars/CJ football.jpg", "score": 0 },
+        "staff2": { "name": "Mario", "team": "CLE", "pick": "CLE Browns", "spread": "+3.0", "avatar": "assets/avatars/Mario football.jpg", "score": 0 },
+        "status": "PREVIEW",
+        "leader": "Pending Kickoff",
+        "matchupLabel": "CHI Bears vs CLE Browns"
+      },
+      {
+        "id": "match_2",
+        "round": "2026 Preseason Week 2",
+        "staff1": { "name": "Nicole", "team": "LV", "pick": "LV Raiders", "spread": "-2.5", "avatar": "assets/avatars/Nicole football.jpg", "score": 0 },
+        "staff2": { "name": "Andrea", "team": "GB", "pick": "GB Packers", "spread": "+2.5", "avatar": "assets/avatars/Andrea football.jpg", "score": 0 },
+        "status": "PREVIEW",
+        "leader": "Pending Kickoff",
+        "matchupLabel": "LV Raiders vs GB Packers"
+      },
+      {
+        "id": "match_3",
+        "round": "2026 Preseason Week 2",
+        "staff1": { "name": "Saul", "team": "SF", "pick": "SF 49ers", "spread": "-3.5", "avatar": "assets/avatars/Saul football.jpg", "score": 0 },
+        "staff2": { "name": "Arizona Cardinals Flag", "team": "ARI", "pick": "ARI Cardinals", "spread": "+3.5", "avatar": "assets/Arizona_Cardinals_flag.gif", "score": 0 },
+        "status": "PREVIEW",
+        "leader": "Pending Kickoff",
+        "matchupLabel": "SF 49ers vs ARI Cardinals (NFC West Showdown)"
+      }
+    ]
+  },
+  "leaderboard": [
+    {
+      "rank": 1,
+      "name": "CJ",
+      "team": "Chicago Bears",
+      "teamAbbr": "CHI",
+      "role": "Franchise QB",
+      "dept": "Executive Strategy",
+      "avatar": "assets/avatars/CJ football.jpg",
+      "teamLogo": "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png",
+      "totalPoints": 0,
+      "yards": 0,
+      "sacks": 0,
+      "fieldGoals": 0,
+      "winPct": "0%",
+      "trophies": ["🏈 2026 Contender", "🐻 Bear Down Ready"]
+    },
+    {
+      "rank": 2,
+      "name": "Saul",
+      "team": "San Francisco 49ers",
+      "teamAbbr": "SF",
+      "role": "Rules Commissioner",
+      "dept": "Legal & Compliance",
+      "avatar": "assets/avatars/Saul football.jpg",
+      "teamLogo": "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png",
+      "totalPoints": 0,
+      "yards": 0,
+      "sacks": 0,
+      "fieldGoals": 0,
+      "winPct": "0%",
+      "trophies": ["🏈 2026 Contender", "⛏️ Faithful 49ers"]
+    },
+    {
+      "rank": 3,
+      "name": "Nicole",
+      "team": "Las Vegas Raiders",
+      "teamAbbr": "LV",
+      "role": "Analytics Director",
+      "dept": "Data & Operations",
+      "avatar": "assets/avatars/Nicole football.jpg",
+      "teamLogo": "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png",
+      "totalPoints": 0,
+      "yards": 0,
+      "sacks": 0,
+      "fieldGoals": 0,
+      "winPct": "0%",
+      "trophies": ["🏈 2026 Contender", "☠️ Raider Nation Ready"]
+    },
+    {
+      "rank": 4,
+      "name": "Arizona Cardinals Flag",
+      "team": "Arizona Cardinals",
+      "teamAbbr": "ARI",
+      "role": "Desert Flag Bearer",
+      "dept": "Arizona Desert HQ",
+      "avatar": "assets/Arizona_Cardinals_flag.gif",
+      "teamLogo": "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png",
+      "totalPoints": 0,
+      "yards": 0,
+      "sacks": 0,
+      "fieldGoals": 0,
+      "winPct": "0%",
+      "trophies": ["🏈 2026 Contender", "🚩 Desert Flag Bearer"]
+    },
+    {
+      "rank": 5,
+      "name": "Mario",
+      "team": "Cleveland Browns",
+      "teamAbbr": "CLE",
+      "role": "Defensive Coordinator",
+      "dept": "Engineering & Security",
+      "avatar": "assets/avatars/Mario football.jpg",
+      "teamLogo": "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png",
+      "totalPoints": 0,
+      "yards": 0,
+      "sacks": 0,
+      "fieldGoals": 0,
+      "winPct": "0%",
+      "trophies": ["🏈 2026 Contender", "🐶 Dawg Pound Ready"]
+    },
+    {
+      "rank": 6,
+      "name": "Andrea",
+      "team": "Green Bay Packers",
+      "teamAbbr": "GB",
+      "role": "Talent Scout",
+      "dept": "Talent Acquisition",
+      "avatar": "assets/avatars/Andrea football.jpg",
+      "teamLogo": "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png",
+      "totalPoints": 0,
+      "yards": 0,
+      "sacks": 0,
+      "fieldGoals": 0,
+      "winPct": "0%",
+      "trophies": ["🏈 2026 Contender", "🧀 Lambeau Scout Ready"]
+    }
+  ]
+}
