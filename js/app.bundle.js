@@ -53,7 +53,8 @@
     { id: "LAC", city: "Los Angeles", name: "Chargers", abbreviation: "LAC", color: "#0080C6", secondaryColor: "#FFC20E", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png", stadium: "SoFi Stadium", division: "AFC West", qb: "Justin Herbert" },
     { id: "DEN", city: "Denver", name: "Broncos", abbreviation: "DEN", color: "#FB4F14", secondaryColor: "#002244", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/den.png", stadium: "Empower Field", division: "AFC West", qb: "Bo Nix" },
     { id: "LAR", city: "Los Angeles", name: "Rams", abbreviation: "LAR", color: "#003594", secondaryColor: "#FFA300", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png", stadium: "SoFi Stadium", division: "NFC West", qb: "Matthew Stafford" },
-    { id: "SEA", city: "Seattle", name: "Seahawks", abbreviation: "SEA", color: "#002244", secondaryColor: "#69BE28", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png", stadium: "Lumen Field", division: "NFC West", qb: "Geno Smith" }
+    { id: "SEA", city: "Seattle", name: "Seahawks", abbreviation: "SEA", color: "#002244", secondaryColor: "#69BE28", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png", stadium: "Lumen Field", division: "NFC West", qb: "Geno Smith" },
+    { id: "PHI", city: "Philadelphia", name: "Eagles", abbreviation: "PHI", color: "#004C54", secondaryColor: "#A5ACAF", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png", stadium: "Lincoln Financial Field", division: "NFC East", qb: "Jalen Hurts" }
   ];
 
   const ROSTER = [
@@ -278,6 +279,43 @@
       ],
       banter: "Desert pride soaring high in Glendale! Rise Up Red Sea for the 2026 kickoff!",
       liveStats: { yards: 0, tds: 0, status: "2026 Kickoff Ready" }
+    },
+    {
+      id: "char_mariah",
+      name: "Mariah",
+      teamId: "PHI",
+      teamName: "EAGLES",
+      frameClass: "frame-mariah",
+      nameClass: "name-mariah",
+      image: "assets/avatars/Mariah football.jpg",
+      bannerGif: "assets/Mariah football banner.mp4",
+      picks: { record: "0-0", pct: ".000", streak: "—" },
+      trophy: { count: 0, label: "2026 PRESEASON CONTENDER" },
+      matchup: {
+        away: { code: "PHI", name: "Eagles", rec: "0-0", score: 0 },
+        home: { code: "NYG", name: "Giants", rec: "0-0", score: 0 },
+        status: "PRESEASON WK 2 • 10:00 AM MST",
+        isLive: false,
+        venue: "Lincoln Financial Field",
+        awayStarter: "Jalen Hurts",
+        homeStarter: "Daniel Jones"
+      },
+      schedule: [
+        { date: "8/16", away: "PHI", home: "NYG", time: "10:00 AM MST", isHome: false },
+        { date: "8/17", away: "DAL", home: "PHI", time: "5:15 PM MST", isHome: true },
+        { date: "8/19", away: "PHI", home: "WAS", time: "10:00 AM MST", isHome: false },
+        { date: "8/21", away: "CLE", home: "PHI", time: "5:00 PM MST", isHome: true },
+        { date: "8/23", away: "PHI", home: "BAL", time: "1:00 PM MST", isHome: false }
+      ],
+      division: "NFC EAST STANDINGS",
+      standings: [
+        { team: "Eagles", w: 0, l: 0, pct: ".000", gb: "—", highlight: true },
+        { team: "Cowboys", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
+        { team: "Commanders", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
+        { team: "Giants", w: 0, l: 0, pct: ".000", gb: "—", highlight: false }
+      ],
+      banter: "Fly Eagles Fly! Midnight green is ready to dominate the 2026 season. Tush push all the way to victory!",
+      liveStats: { yards: 0, tds: 0, status: "2026 Kickoff Ready" }
     }
   ];
 
@@ -308,11 +346,12 @@
   // 18-WEEK INTERACTIVE TOURNAMENT BRACKET SYSTEM & SHOWDOWN LORE DATA
   const CONTENDERS_LIST = [
     { name: "Andrea", team: "GB", teamName: "Packers", avatar: "assets/avatars/Andrea football.jpg", bannerGif: "assets/Andrea football banner.gif", seed: "#1", color: "#203731", rating: 91, yards: 0, rzPct: "0%", turnovers: "0" },
-    { name: "CJ", team: "CHI", teamName: "Bears", avatar: "assets/avatars/CJ football.jpg", bannerGif: "assets/CJ football banner.gif", seed: "#2", color: "#0b162a", rating: 95, yards: 0, rzPct: "0%", turnovers: "0" },
-    { name: "Mario", team: "CLE", teamName: "Browns", avatar: "assets/avatars/Mario football.jpg", bannerGif: "assets/Mario football banner.gif", seed: "#3", color: "#311d00", rating: 88, yards: 0, rzPct: "0%", turnovers: "0" },
-    { name: "Nicole", team: "LV", teamName: "Raiders", avatar: "assets/avatars/Nicole football.jpg", bannerGif: "assets/Nicole football banner.gif", seed: "#4", color: "#a5acaf", rating: 93, yards: 0, rzPct: "0%", turnovers: "0" },
-    { name: "Saul", team: "SF", teamName: "49ers", avatar: "assets/avatars/Saul football.jpg", bannerGif: "assets/Saul football banner.gif", seed: "#5", color: "#aa0000", rating: 92, yards: 0, rzPct: "0%", turnovers: "0" },
-    { name: "Cardinals Flag", team: "ARI", teamName: "Cardinals", avatar: "assets/Arizona_Cardinals_flag.gif", bannerGif: "assets/Arizona_Cardinals_flag.gif", seed: "#6", color: "#97233f", rating: 89, yards: 0, rzPct: "0%", turnovers: "0" }
+    { name: "Mariah", team: "PHI", teamName: "Eagles", avatar: "assets/avatars/Mariah football.jpg", bannerGif: "assets/Mariah football banner.mp4", seed: "#2", color: "#004c54", rating: 94, yards: 0, rzPct: "0%", turnovers: "0" },
+    { name: "CJ", team: "CHI", teamName: "Bears", avatar: "assets/avatars/CJ football.jpg", bannerGif: "assets/CJ football banner.gif", seed: "#3", color: "#0b162a", rating: 95, yards: 0, rzPct: "0%", turnovers: "0" },
+    { name: "Mario", team: "CLE", teamName: "Browns", avatar: "assets/avatars/Mario football.jpg", bannerGif: "assets/Mario football banner.gif", seed: "#4", color: "#311d00", rating: 88, yards: 0, rzPct: "0%", turnovers: "0" },
+    { name: "Nicole", team: "LV", teamName: "Raiders", avatar: "assets/avatars/Nicole football.jpg", bannerGif: "assets/Nicole football banner.gif", seed: "#5", color: "#a5acaf", rating: 93, yards: 0, rzPct: "0%", turnovers: "0" },
+    { name: "Saul", team: "SF", teamName: "49ers", avatar: "assets/avatars/Saul football.jpg", bannerGif: "assets/Saul football banner.gif", seed: "#6", color: "#aa0000", rating: 92, yards: 0, rzPct: "0%", turnovers: "0" },
+    { name: "Cardinals Flag", team: "ARI", teamName: "Cardinals", avatar: "assets/Arizona_Cardinals_flag.gif", bannerGif: "assets/Arizona_Cardinals_flag.gif", seed: "#7", color: "#97233f", rating: 89, yards: 0, rzPct: "0%", turnovers: "0" }
   ];
 
   const LORE_DATABASE = [
@@ -375,25 +414,36 @@
       lore: "Contrast of extreme climates! Andrea welcomes Arizona to the legendary sub-zero Lambeau tundra where the cheesehead faithful turn the stadium into a green-and-gold wall of sound.",
       smack1: "Welcome to the Frozen Tundra! Bring your snow parkas because Green Bay rules the winter weather!",
       smack2: "Desert speed thaws frozen defenses! We're burning your secondary with explosive vertical go-routes, Andrea!"
+    },
+    {
+      title: "The Midnight Green Battle of the Birds",
+      venue: "Lincoln Financial Field • Philadelphia, PA",
+      kickoff: "Sunday • 1:25 PM MST",
+      surface: "Desso GrassMaster • Crisp 48°F",
+      spread: "PHI -3.5 • O/U 46.5",
+      lore: "Midnight green mania erupts in South Philly! Mariah leads the thunderous Eagles crowd with Jalen Hurts' dynamic dual-threat playmaking and Saquon Barkley's explosive bursts, going toe-to-toe with the fiercest contenders in the office.",
+      smack1: "Fly Eagles Fly! On the road to victory! We've got the most unstoppable offense in football!",
+      smack2: "Philadelphia might have the hype, but we came to play 60 minutes of real smashmouth football!"
     }
   ];
 
   function buildWeeklyTournamentData() {
     return {
-      activeWeek: 2,
+      activeWeek: 1,
       weeks: Array.from({ length: 18 }, (_, idx) => {
         const wNum = idx + 1;
-        const isPast = wNum < 2;
-        const isActive = wNum === 2;
-        const status = isPast ? 'FINAL' : (isActive ? 'LIVE' : 'UPCOMING');
+        const isPast = false; // Fresh 2026 Kickoff
+        const isActive = wNum === 1;
+        const status = isActive ? 'LIVE' : 'UPCOMING';
 
-        // Pairings rotated for all 18 weeks
-        const p1 = CONTENDERS_LIST[idx % 6];
-        const p2 = CONTENDERS_LIST[(idx + 1) % 6];
-        const p3 = CONTENDERS_LIST[(idx + 2) % 6];
-        const p4 = CONTENDERS_LIST[(idx + 3) % 6];
-        const p5 = CONTENDERS_LIST[(idx + 4) % 6];
-        const p6 = CONTENDERS_LIST[(idx + 5) % 6];
+        // Pairings rotated for all 18 weeks across 7 staff contenders
+        const p1 = CONTENDERS_LIST[idx % 7]; // #1 Seed of the week (Earns Round 1 Bye!)
+        const p2 = CONTENDERS_LIST[(idx + 1) % 7];
+        const p3 = CONTENDERS_LIST[(idx + 2) % 7];
+        const p4 = CONTENDERS_LIST[(idx + 3) % 7];
+        const p5 = CONTENDERS_LIST[(idx + 4) % 7];
+        const p6 = CONTENDERS_LIST[(idx + 5) % 7];
+        const p7 = CONTENDERS_LIST[(idx + 6) % 7];
 
         const lore1 = LORE_DATABASE[idx % LORE_DATABASE.length];
         const lore2 = LORE_DATABASE[(idx + 1) % LORE_DATABASE.length];
@@ -403,23 +453,23 @@
         const loreFinal = LORE_DATABASE[(idx + 5) % LORE_DATABASE.length];
 
         const baseScore = 20 + ((idx * 3) % 15);
-        const s1_score = isPast ? baseScore + 7 : (isActive ? baseScore + 4 : 0);
-        const s2_score = isPast ? baseScore : (isActive ? baseScore + 1 : 0);
-        const s3_score = isPast ? baseScore + 9 : (isActive ? baseScore + 6 : 0);
-        const s4_score = isPast ? baseScore + 3 : (isActive ? baseScore + 2 : 0);
-        const s5_score = isPast ? baseScore + 11 : (isActive ? baseScore + 7 : 0);
-        const s6_score = isPast ? baseScore + 5 : (isActive ? baseScore + 3 : 0);
+        const s1_score = isActive ? baseScore + 4 : 0;
+        const s2_score = isActive ? baseScore + 1 : 0;
+        const s3_score = isActive ? baseScore + 6 : 0;
+        const s4_score = isActive ? baseScore + 2 : 0;
+        const s5_score = isActive ? baseScore + 7 : 0;
+        const s6_score = isActive ? baseScore + 3 : 0;
 
-        const semi1_s1 = isPast ? baseScore + 10 : (isActive ? baseScore + 8 : 0);
-        const semi1_s2 = isPast ? baseScore + 6 : (isActive ? baseScore + 5 : 0);
-        const semi2_s1 = isPast ? baseScore + 12 : (isActive ? baseScore + 9 : 0);
-        const semi2_s2 = isPast ? baseScore + 8 : (isActive ? baseScore + 4 : 0);
+        const semi1_s1 = isActive ? baseScore + 8 : 0;
+        const semi1_s2 = isActive ? baseScore + 5 : 0;
+        const semi2_s1 = isActive ? baseScore + 9 : 0;
+        const semi2_s2 = isActive ? baseScore + 4 : 0;
 
-        const fin_s1 = isPast ? baseScore + 14 : (isActive ? baseScore + 10 : 0);
-        const fin_s2 = isPast ? baseScore + 11 : (isActive ? baseScore + 7 : 0);
+        const fin_s1 = isActive ? baseScore + 10 : 0;
+        const fin_s2 = isActive ? baseScore + 7 : 0;
 
         const matches = [
-          // Round 1 (Quarterfinals / Division Clashes)
+          // Round 1 (Opening Game Slate - All 7 Office Members Active!)
           {
             id: `w${wNum}_q1`,
             round: 1,
@@ -474,61 +524,79 @@
             smack2: lore3.smack2,
             status: status
           },
-          // Round 2 (Semifinals)
+          {
+            id: `w${wNum}_q4`,
+            round: 1,
+            roundName: "Stage 1 • Division Clash",
+            title: `Matchup 4: ${p7.name}'s Featured Showdown`,
+            rivalryName: `${p7.name} vs Conference Showdown`,
+            day: "Sun Late",
+            venue: "State Farm Stadium • Glendale, AZ",
+            kickoff: "Sunday • 1:05 PM MST",
+            surface: "Natural Grass Tray",
+            spread: "ARI -2.5 • O/U 43.5",
+            staff1: { ...p7, score: s1_score, pick: `${p7.team} ${p7.teamName}` },
+            staff2: { name: "Seahawks/Rams", team: "SEA", teamName: "Rivals", avatar: "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png", seed: "OPP", color: "#002244", rating: 87, yards: 0, rzPct: "0%", turnovers: "0", score: s2_score, pick: "SEA Seahawks" },
+            lore: "Arizona's Red Sea defense battles in the division trenches for critical Week 1 conference standing.",
+            smack1: "The desert heat will melt your defensive gameplan! Protect the nest!",
+            smack2: "We're coming into Glendale to set the tone for the entire season!",
+            status: status
+          },
+          // Round 2 (Semifinals • Unlocks after Stage 1 finishes on Sunday afternoon)
           {
             id: `w${wNum}_s1`,
             round: 2,
             roundName: "Stage 2 • Semifinal Battle",
-            title: `Semifinal 1: ${loreSemi1.title}`,
-            rivalryName: loreSemi1.title,
+            title: isActive ? "Semifinal 1: Game 1 Winner vs Game 2 Winner" : `Semifinal 1: ${loreSemi1.title}`,
+            rivalryName: isActive ? "Stage 2 Semifinal 1 (Unlocks Sun 4:00 PM)" : loreSemi1.title,
             day: "Sun Late",
             venue: loreSemi1.venue,
-            kickoff: loreSemi1.kickoff,
+            kickoff: "Sunday Late • 4:25 PM MST",
             surface: loreSemi1.surface,
-            spread: loreSemi1.spread,
-            staff1: { ...p1, score: semi1_s1, pick: `${p1.team} ${p1.teamName}` },
-            staff2: { ...p3, score: semi1_s2, pick: `${p3.team} ${p3.teamName}` },
+            spread: isActive ? "TBD • Unlocks after Sun Games" : loreSemi1.spread,
+            staff1: isActive ? { name: `TBD (${p1.name}/${p2.name})`, team: "TBD", teamName: "Game 1 Winner", avatar: p1.avatar, seed: "ADV", score: 0, pick: "Advances after Game 1" } : { ...p1, score: semi1_s1, pick: `${p1.team} ${p1.teamName}` },
+            staff2: isActive ? { name: `TBD (${p3.name}/${p4.name})`, team: "TBD", teamName: "Game 2 Winner", avatar: p3.avatar, seed: "ADV", score: 0, pick: "Advances after Game 2" } : { ...p3, score: semi1_s2, pick: `${p3.team} ${p3.teamName}` },
             lore: loreSemi1.lore,
             smack1: loreSemi1.smack1,
             smack2: loreSemi1.smack2,
-            status: status
+            status: isActive ? "PENDING" : status
           },
           {
             id: `w${wNum}_s2`,
             round: 2,
             roundName: "Stage 2 • Semifinal Battle",
-            title: `Semifinal 2: ${loreSemi2.title}`,
-            rivalryName: loreSemi2.title,
-            day: "Mon Night",
+            title: isActive ? "Semifinal 2: Game 3 Winner vs Game 4 Winner" : `Semifinal 2: ${loreSemi2.title}`,
+            rivalryName: isActive ? "Stage 2 Semifinal 2 (Unlocks Sun 4:00 PM)" : loreSemi2.title,
+            day: "Sun Late",
             venue: loreSemi2.venue,
-            kickoff: loreSemi2.kickoff,
+            kickoff: "Sunday Late • 4:25 PM MST",
             surface: loreSemi2.surface,
-            spread: loreSemi2.spread,
-            staff1: { ...p5, score: semi2_s1, pick: `${p5.team} ${p5.teamName}` },
-            staff2: { ...p2, score: semi2_s2, pick: `${p2.team} ${p2.teamName}` },
+            spread: isActive ? "TBD • Unlocks after Sun Games" : loreSemi2.spread,
+            staff1: isActive ? { name: `TBD (${p5.name}/${p6.name})`, team: "TBD", teamName: "Game 3 Winner", avatar: p5.avatar, seed: "ADV", score: 0, pick: "Advances after Game 3" } : { ...p5, score: semi2_s1, pick: `${p5.team} ${p5.teamName}` },
+            staff2: isActive ? { name: `TBD (${p7.name}/Advancer)`, team: "TBD", teamName: "Game 4 Winner", avatar: p7.avatar, seed: "ADV", score: 0, pick: "Advances after Game 4" } : { ...p7, score: semi2_s2, pick: `${p7.team} ${p7.teamName}` },
             lore: loreSemi2.lore,
             smack1: loreSemi2.smack1,
             smack2: loreSemi2.smack2,
-            status: status
+            status: isActive ? "PENDING" : status
           },
-          // Round 3 (Weekly Championship Finale)
+          // Round 3 (Weekly Championship Finale • Sunday/Monday Night Primetime)
           {
             id: `w${wNum}_f1`,
             round: 3,
             roundName: "Stage 3 • Weekly Crown Finale",
-            title: `Weekly Grand Finale: ${loreFinal.title}`,
-            rivalryName: `👑 ${p1.name} vs ${p5.name} • Weekly Championship`,
-            day: "Mon Night (Primetime)",
+            title: isActive ? "Weekly Championship: Primetime Finale" : `Weekly Grand Finale: ${loreFinal.title}`,
+            rivalryName: isActive ? "👑 Weekly Championship (SNF / MNF Primetime)" : `👑 ${p1.name} vs ${p5.name} • Weekly Championship`,
+            day: "Sun/Mon Night (Primetime)",
             venue: loreFinal.venue,
-            kickoff: loreFinal.kickoff,
+            kickoff: "Sunday/Monday Night • 5:20 PM MST",
             surface: loreFinal.surface,
-            spread: loreFinal.spread,
-            staff1: { ...p1, score: fin_s1, pick: `${p1.team} ${p1.teamName}` },
-            staff2: { ...p5, score: fin_s2, pick: `${p5.team} ${p5.teamName}` },
+            spread: isActive ? "TBD • Decided in Primetime" : loreFinal.spread,
+            staff1: isActive ? { name: "TBD (Semifinal 1 Winner)", team: "TBD", teamName: "Finalist A", avatar: p1.avatar, seed: "TOP", score: 0, pick: "Advances to Championship" } : { ...p1, score: fin_s1, pick: `${p1.team} ${p1.teamName}` },
+            staff2: isActive ? { name: "TBD (Semifinal 2 Winner)", team: "TBD", teamName: "Finalist B", avatar: p5.avatar, seed: "TOP", score: 0, pick: "Advances to Championship" } : { ...p5, score: fin_s2, pick: `${p5.team} ${p5.teamName}` },
             lore: loreFinal.lore,
             smack1: loreFinal.smack1,
             smack2: loreFinal.smack2,
-            status: status
+            status: isActive ? "PENDING" : status
           }
         ];
 
@@ -555,10 +623,21 @@
       this.selectedMember = null;
       this.isGifActive = false;
       this.activeBracketTab = 'WEEKLY'; // WEEKLY | SEASON
-      this.selectedWeekIndex = 1; // Week 2
+      this.selectedWeekIndex = 0; // Week 1 (Active Starting Gate)
       this.selectedContenderFilter = 'ALL';
       this.selectedDayFilter = 'ALL';
       this.userPicks = JSON.parse(localStorage.getItem('office_endzone_picks') || '{}');
+
+      // Team abbreviation to Office Staff Member ID Map
+      this.teamToMemberMap = {
+        'GB': 'char_andrea',
+        'CHI': 'char_cj',
+        'CLE': 'char_mario',
+        'LV': 'char_nicole',
+        'SF': 'char_saul',
+        'ARI': 'char_cardinals',
+        'PHI': 'char_mariah'
+      };
 
       // DOM Elements
       this.dom = {
@@ -574,6 +653,7 @@
         modalCloseBtn: document.getElementById('modal-close-btn'),
         modalAvatarCard: document.getElementById('modal-avatar-card'),
         modalAvatarImg: document.getElementById('modal-avatar-img'),
+        modalAvatarVideo: document.getElementById('modal-avatar-video'),
         modalGifToggle: document.getElementById('modal-gif-toggle'),
         photoBadgeText: document.getElementById('photo-badge-text'),
         modalMemberName: document.getElementById('modal-member-name'),
@@ -655,6 +735,13 @@
       this.dom.tickerGrid.innerHTML = games.map(game => {
         const awayTeam = this.teams.find(t => t.abbreviation === game.away) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.away.toLowerCase()}.png` };
         const homeTeam = this.teams.find(t => t.abbreviation === game.home) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.home.toLowerCase()}.png` };
+        
+        const awayMemberId = this.teamToMemberMap[game.away];
+        const homeMemberId = this.teamToMemberMap[game.home];
+        const awayMember = awayMemberId ? this.roster.find(m => m.id === awayMemberId) : null;
+        const homeMember = homeMemberId ? this.roster.find(m => m.id === homeMemberId) : null;
+        const hasOfficeMember = awayMember || homeMember;
+
         const awayNum = parseInt(game.awayScore) || 0;
         const homeNum = parseInt(game.homeScore) || 0;
 
@@ -663,23 +750,36 @@
         else if (game.isLive || game.status.includes('QTR')) statusClass = 'live';
 
         return `
-          <div class="ticker-card" data-away="${game.away}" data-home="${game.home}">
+          <div class="ticker-card ${hasOfficeMember ? 'office-game-card' : ''}" 
+               data-away="${game.away}" 
+               data-home="${game.home}"
+               data-away-member="${awayMemberId || ''}"
+               data-home-member="${homeMemberId || ''}"
+               role="button"
+               tabindex="0"
+               title="${hasOfficeMember ? 'Click to open staff member card' : 'NFL Matchup'}">
+            
             <div class="ticker-game-meta">
               <span class="ticker-status-tag ${statusClass}">${game.status}</span>
+              ${hasOfficeMember ? `<span class="ticker-office-tag">🏈 OFFICE GAME</span>` : ''}
             </div>
 
-            <div class="ticker-team-row">
+            <!-- Away Team Row -->
+            <div class="ticker-team-row ${awayMember ? 'has-member' : ''}" data-member-id="${awayMemberId || ''}">
               <div class="ticker-team-info">
                 <img src="${awayTeam.logo}" class="ticker-team-logo" alt="${game.away}" onerror="this.src='https://ui-avatars.com/api/?name=${game.away}&background=0b0f19&color=fff'">
                 <span class="ticker-team-name">${game.away}</span>
+                ${awayMember ? `<span class="ticker-member-pill" title="Office: ${awayMember.name}"><img src="${awayMember.image}" class="ticker-avatar-mini" alt="${awayMember.name}">${awayMember.name}</span>` : ''}
               </div>
               <span class="ticker-team-score ${awayNum > homeNum ? 'winning' : ''}">${game.awayScore}</span>
             </div>
 
-            <div class="ticker-team-row">
+            <!-- Home Team Row -->
+            <div class="ticker-team-row ${homeMember ? 'has-member' : ''}" data-member-id="${homeMemberId || ''}">
               <div class="ticker-team-info">
                 <img src="${homeTeam.logo}" class="ticker-team-logo" alt="${game.home}" onerror="this.src='https://ui-avatars.com/api/?name=${game.home}&background=0b0f19&color=fff'">
                 <span class="ticker-team-name">${game.home}</span>
+                ${homeMember ? `<span class="ticker-member-pill" title="Office: ${homeMember.name}"><img src="${homeMember.image}" class="ticker-avatar-mini" alt="${homeMember.name}">${homeMember.name}</span>` : ''}
               </div>
               <span class="ticker-team-score ${homeNum > awayNum ? 'winning' : ''}">${game.homeScore}</span>
             </div>
@@ -707,15 +807,13 @@
     openMemberModal(memberId) {
       const member = this.roster.find(m => m.id === memberId) || this.roster[0];
       this.selectedMember = member;
-      this.isGifActive = false;
+      this.isGifActive = true; // Auto-play animated banner immediately upon opening card
 
       const team = this.teams.find(t => t.id === member.teamId) || this.teams[0];
 
-      // Update avatar card
-      this.dom.modalAvatarImg.src = member.image;
-      this.dom.modalAvatarImg.alt = member.name;
+      // Update avatar card with autoplaying banner
       this.dom.modalAvatarCard.className = `modal-avatar-card ${member.frameClass}`;
-      this.dom.photoBadgeText.textContent = "PHOTO (CLICK FOR GIF)";
+      this.renderModalMedia(member, true);
 
       // Identity
       this.dom.modalMemberName.textContent = member.name;
@@ -790,7 +888,48 @@
       this.dom.modalOverlay.setAttribute('aria-hidden', 'false');
     }
 
+    renderModalMedia(member, isBannerActive) {
+      const bannerSrc = member.bannerGif || "assets/Arizona_Cardinals_flag.gif";
+      const isVideo = bannerSrc.toLowerCase().endsWith('.mp4') || bannerSrc.toLowerCase().endsWith('.webm');
+
+      if (isBannerActive) {
+        if (isVideo) {
+          if (this.dom.modalAvatarImg) this.dom.modalAvatarImg.style.display = 'none';
+          if (this.dom.modalAvatarVideo) {
+            this.dom.modalAvatarVideo.style.display = 'block';
+            this.dom.modalAvatarVideo.src = bannerSrc;
+            this.dom.modalAvatarVideo.play().catch(() => {});
+          }
+        } else {
+          if (this.dom.modalAvatarVideo) {
+            this.dom.modalAvatarVideo.style.display = 'none';
+            this.dom.modalAvatarVideo.pause();
+          }
+          if (this.dom.modalAvatarImg) {
+            this.dom.modalAvatarImg.style.display = 'block';
+            this.dom.modalAvatarImg.src = bannerSrc;
+            this.dom.modalAvatarImg.alt = `${member.name} Animated Banner`;
+          }
+        }
+        if (this.dom.photoBadgeText) this.dom.photoBadgeText.textContent = "BANNER ACTIVE (CLICK FOR PHOTO)";
+      } else {
+        if (this.dom.modalAvatarVideo) {
+          this.dom.modalAvatarVideo.style.display = 'none';
+          this.dom.modalAvatarVideo.pause();
+        }
+        if (this.dom.modalAvatarImg) {
+          this.dom.modalAvatarImg.style.display = 'block';
+          this.dom.modalAvatarImg.src = member.image;
+          this.dom.modalAvatarImg.alt = member.name;
+        }
+        if (this.dom.photoBadgeText) this.dom.photoBadgeText.textContent = "PHOTO (CLICK FOR BANNER)";
+      }
+    }
+
     closeModal() {
+      if (this.dom.modalAvatarVideo) {
+        this.dom.modalAvatarVideo.pause();
+      }
       this.dom.modalOverlay.classList.remove('open');
       this.dom.modalOverlay.setAttribute('aria-hidden', 'true');
     }
@@ -798,15 +937,7 @@
     toggleGifMode() {
       if (!this.selectedMember) return;
       this.isGifActive = !this.isGifActive;
-      if (this.isGifActive) {
-        this.dom.modalAvatarImg.src = this.selectedMember.bannerGif || "assets/Arizona_Cardinals_flag.gif";
-        this.dom.photoBadgeText.textContent = "GIF ACTIVE (CLICK FOR PHOTO)";
-        this.showBanner('ANIMATED BANNER ACTIVATED! 🎬', `Showing ${this.selectedMember.name}'s animated football banner!`);
-      } else {
-        this.dom.modalAvatarImg.src = this.selectedMember.image;
-        this.dom.photoBadgeText.textContent = "PHOTO (CLICK FOR GIF)";
-        this.showBanner('PHOTO ACTIVE 📷', `Showing ${this.selectedMember.name}'s portrait photo`);
-      }
+      this.renderModalMedia(this.selectedMember, this.isGifActive);
     }
 
     showBanner(title, subtitle) {
@@ -816,9 +947,10 @@
         <div class="banner-sub">${subtitle}</div>
       `;
       this.dom.eventBanner.classList.add('show');
-      setTimeout(() => {
+      if (this.bannerTimeout) clearTimeout(this.bannerTimeout);
+      this.bannerTimeout = setTimeout(() => {
         this.dom.eventBanner.classList.remove('show');
-      }, 4000);
+      }, 2200);
     }
 
     spawnConfetti() {
@@ -836,6 +968,34 @@
     }
 
     bindEvents() {
+      // Ticker card & team row interactive clicks
+      this.dom.tickerGrid?.addEventListener('click', (e) => {
+        const teamRow = e.target.closest('.ticker-team-row');
+        if (teamRow && teamRow.dataset.memberId) {
+          e.stopPropagation();
+          this.openMemberModal(teamRow.dataset.memberId);
+          return;
+        }
+
+        const card = e.target.closest('.ticker-card');
+        if (!card) return;
+
+        const awayMemberId = card.dataset.awayMember;
+        const homeMemberId = card.dataset.homeMember;
+        const away = card.dataset.away;
+        const home = card.dataset.home;
+
+        if (awayMemberId && !homeMemberId) {
+          this.openMemberModal(awayMemberId);
+        } else if (homeMemberId && !awayMemberId) {
+          this.openMemberModal(homeMemberId);
+        } else if (awayMemberId && homeMemberId) {
+          this.openMemberModal(homeMemberId);
+        } else {
+          this.showBanner(`NFL MATCHUP: ${away} @ ${home}`, `NFL Gridiron Matchup • Check live scores & odds`);
+        }
+      });
+
       // Ticker tab toggles
       this.dom.tabTodayTicker?.addEventListener('click', () => {
         this.currentTickerMode = 'TODAY';
@@ -938,6 +1098,12 @@
         }
       });
 
+      // Event banner click to dismiss immediately
+      this.dom.eventBanner?.addEventListener('click', () => {
+        if (this.bannerTimeout) clearTimeout(this.bannerTimeout);
+        this.dom.eventBanner.classList.remove('show');
+      });
+
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           if (this.dom.showdownModalOverlay?.classList.contains('open')) {
@@ -1034,7 +1200,6 @@
             const staff = btn.dataset.staff;
             this.userPicks[matchId] = staff;
             localStorage.setItem('office_endzone_picks', JSON.stringify(this.userPicks));
-            this.showBanner('OFFICE PICK RECORDED! 🎯', `You picked ${staff} for ${matchId}`);
             this.renderBracketsHub();
           });
         });
@@ -1045,6 +1210,10 @@
       const r1Matches = curWeek.matchups.filter(m => m.round === 1);
       const r2Matches = curWeek.matchups.filter(m => m.round === 2);
       const r3Matches = curWeek.matchups.filter(m => m.round === 3);
+
+      const allWeekMatches = curWeek.matchups;
+      const pickedThisWeek = allWeekMatches.filter(m => this.userPicks[m.id]);
+      const totalUserPicksCount = Object.keys(this.userPicks).length;
 
       const renderNode = (m, isChampionship = false) => {
         const userPick = this.userPicks[m.id];
@@ -1058,6 +1227,62 @@
 
         const isHighlighted = (this.selectedContenderFilter !== 'ALL' && isFilteredContender) || 
                               (this.selectedDayFilter !== 'ALL' && isFilteredDay);
+
+        const isUpcoming = m.status === 'UPCOMING';
+        const isPending = m.status === 'PENDING';
+
+        if (isPending) {
+          return `
+            <div class="bracket-matchup-node ${isChampionship ? 'championship-node' : ''} ${isHighlighted ? 'highlighted' : ''}" data-match-id="${m.id}" role="button" tabindex="0" style="border-style:dashed; border-color:rgba(250,204,21,0.35);">
+              <div class="match-node-top">
+                <span class="match-rivalry-name" style="color:#facc15;">${m.rivalryName}</span>
+                <span class="matchup-status-pill preview" style="background:rgba(250,204,21,0.15); color:#facc15; border:1px solid rgba(250,204,21,0.3);">🔒 AWAITING STAGE 1</span>
+              </div>
+
+              <div style="font-size:0.62rem; color:#94a3b8; display:flex; justify-content:space-between;">
+                <span>📍 ${m.venue.split('•')[0]}</span>
+                <span>⏰ ${m.kickoff.split('•')[1] || m.kickoff}</span>
+              </div>
+
+              <div class="match-node-contenders" style="opacity:0.85;">
+                <!-- Contender Slot 1 -->
+                <div class="bracket-contestant-row" style="background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.12);">
+                  <div class="contestant-identity">
+                    <div style="width:24px; height:24px; border-radius:50%; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:800; color:#94a3b8;">?</div>
+                    <div class="contestant-name-box">
+                      <span class="contestant-staff-name" style="color:#cbd5e1;">${m.staff1.name}</span>
+                      <span class="contestant-team-pick" style="color:#64748b;">${m.staff1.pick || 'Awaiting Stage 1 Scores'}</span>
+                    </div>
+                  </div>
+                  <div class="contestant-score-action">
+                    <span class="contestant-score-num" style="color:#64748b; font-size:0.68rem;">TBD</span>
+                  </div>
+                </div>
+
+                <div class="bracket-vs-divider">VS</div>
+
+                <!-- Contender Slot 2 -->
+                <div class="bracket-contestant-row" style="background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.12);">
+                  <div class="contestant-identity">
+                    <div style="width:24px; height:24px; border-radius:50%; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:800; color:#94a3b8;">?</div>
+                    <div class="contestant-name-box">
+                      <span class="contestant-staff-name" style="color:#cbd5e1;">${m.staff2.name}</span>
+                      <span class="contestant-team-pick" style="color:#64748b;">${m.staff2.pick || 'Awaiting Stage 1 Scores'}</span>
+                    </div>
+                  </div>
+                  <div class="contestant-score-action">
+                    <span class="contestant-score-num" style="color:#64748b; font-size:0.68rem;">TBD</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Unlocking Note -->
+              <div style="font-size:0.62rem; color:#facc15; text-align:center; padding:4px 0 2px; font-weight:700; background:rgba(250,204,21,0.06); border-radius:4px; margin-top:4px;">
+                ⚡ ${isChampionship ? 'Unlocks for Sunday/Monday Night Primetime to crown the weekly champion!' : 'Unlocks after Stage 1 games conclude on Sunday!'}
+              </div>
+            </div>
+          `;
+        }
 
         return `
           <div class="bracket-matchup-node ${isChampionship ? 'championship-node' : ''} ${isHighlighted ? 'highlighted' : ''}" data-match-id="${m.id}" role="button" tabindex="0">
@@ -1073,16 +1298,16 @@
 
             <div class="match-node-contenders">
               <!-- Staff 1 -->
-              <div class="bracket-contestant-row ${staff1Won && m.status !== 'UPCOMING' ? 'winning' : ''} ${userPick === m.staff1.name ? 'user-picked' : ''}">
+              <div class="bracket-contestant-row ${staff1Won && !isUpcoming ? 'winning' : ''} ${userPick === m.staff1.name ? 'user-picked' : ''}">
                 <div class="contestant-identity">
                   <img src="${m.staff1.avatar}" class="contestant-avatar-sm" alt="${m.staff1.name}" onerror="this.src='https://ui-avatars.com/api/?name=${m.staff1.name}&background=0b1322&color=fff'">
                   <div class="contestant-name-box">
-                    <span class="contestant-staff-name">${m.staff1.seed} ${m.staff1.name} (${m.staff1.team})</span>
+                    <span class="contestant-staff-name">${m.staff1.seed ? m.staff1.seed + ' ' : ''}${m.staff1.name} (${m.staff1.team})</span>
                     <span class="contestant-team-pick">${m.staff1.pick}</span>
                   </div>
                 </div>
                 <div class="contestant-score-action">
-                  <span class="contestant-score-num">${m.staff1.score ? m.staff1.score + ' PTS' : m.spread.split('•')[0]}</span>
+                  <span class="contestant-score-num">${m.staff1.score ? m.staff1.score + ' PTS' : (isUpcoming ? 'PROJ: ' + m.spread.split('•')[0] : '0 PTS')}</span>
                   <button class="btn-bracket-pick ${userPick === m.staff1.name ? 'active' : ''}" data-match-id="${m.id}" data-staff="${m.staff1.name}">
                     ${userPick === m.staff1.name ? '✓ Picked' : 'Pick'}
                   </button>
@@ -1092,16 +1317,16 @@
               <div class="bracket-vs-divider">VS</div>
 
               <!-- Staff 2 -->
-              <div class="bracket-contestant-row ${staff2Won && m.status !== 'UPCOMING' ? 'winning' : ''} ${userPick === m.staff2.name ? 'user-picked' : ''}">
+              <div class="bracket-contestant-row ${staff2Won && !isUpcoming ? 'winning' : ''} ${userPick === m.staff2.name ? 'user-picked' : ''}">
                 <div class="contestant-identity">
                   <img src="${m.staff2.avatar}" class="contestant-avatar-sm" alt="${m.staff2.name}" onerror="this.src='https://ui-avatars.com/api/?name=${m.staff2.name}&background=0b1322&color=fff'">
                   <div class="contestant-name-box">
-                    <span class="contestant-staff-name">${m.staff2.seed} ${m.staff2.name} (${m.staff2.team})</span>
+                    <span class="contestant-staff-name">${m.staff2.seed ? m.staff2.seed + ' ' : ''}${m.staff2.name} (${m.staff2.team})</span>
                     <span class="contestant-team-pick">${m.staff2.pick}</span>
                   </div>
                 </div>
                 <div class="contestant-score-action">
-                  <span class="contestant-score-num">${m.staff2.score ? m.staff2.score + ' PTS' : m.spread.split('•')[1] || ''}</span>
+                  <span class="contestant-score-num">${m.staff2.score ? m.staff2.score + ' PTS' : (isUpcoming ? 'PROJ: ' + (m.spread.split('•')[1] || '20 PTS') : '0 PTS')}</span>
                   <button class="btn-bracket-pick ${userPick === m.staff2.name ? 'active' : ''}" data-match-id="${m.id}" data-staff="${m.staff2.name}">
                     ${userPick === m.staff2.name ? '✓ Picked' : 'Pick'}
                   </button>
@@ -1130,8 +1355,40 @@
           </div>
         </div>
 
+        <!-- How Office Brackets Work Helper Card -->
+        <div class="bracket-rules-card">
+          <div class="bracket-rules-title">
+            <span>📖 HOW THE WEEKLY OFFICE BRACKET WORKS</span>
+            <span style="color:#facc15;">WEEKLY TOURNAMENT PROGRESSION</span>
+          </div>
+          <div class="bracket-rules-steps">
+            <div class="bracket-rule-step">
+              <strong>Stage 1 • Weekly Member Game Slate</strong>
+              <span>All 7 office members' NFL games are live on Thursday & Sunday. Tap "Pick" to back the winning member!</span>
+            </div>
+            <div class="bracket-rule-step">
+              <strong>Stage 2 • Semifinals (Sunday Late Slate)</strong>
+              <span>As Stage 1 games conclude, the advancing top-scoring office members unlock their Semifinal matchups!</span>
+            </div>
+            <div class="bracket-rule-step">
+              <strong>Stage 3 • Weekly Crown Finale (SNF / MNF)</strong>
+              <span>Culminates on Sunday/Monday Night Primetime when the final office team finishes to decide the weekly champion!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Pick & Scoring Tracker Bar -->
+        <div class="user-picks-tracker-bar">
+          <div class="user-picks-tracker-text">
+            🎯 YOUR SAVED PICKS: ${pickedThisWeek.length}/4 THIS WEEK • ${totalUserPicksCount} SEASON PICKS LOCKED
+          </div>
+          <div class="user-picks-tracker-badge">
+            ✓ PICKS SAVE AUTOMATICALLY
+          </div>
+        </div>
+
         <!-- Contender Filter Bar -->
-        <div style="display:flex; flex-direction:column; gap:4px; margin-top:6px;">
+        <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
           <div style="font-size:0.68rem; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px;">
             Filter by Contender:
           </div>
@@ -1183,11 +1440,11 @@
 
         <!-- 3-Round Interactive Tournament Bracket Tree -->
         <div class="tournament-bracket-tree">
-          <!-- Column 1: Stage 1 / Quarterfinals -->
+          <!-- Column 1: Stage 1 / Opening Round -->
           <div class="bracket-round-column">
             <div class="bracket-round-header">
-              <span class="round-header-title">Stage 1 • Division Battles</span>
-              <span class="round-header-badge">3 MATCHES</span>
+              <span class="round-header-title">Stage 1 • Opening Slate</span>
+              <span class="round-header-badge">4 MATCHES (ALL 7 MEMBERS)</span>
             </div>
             ${r1Matches.map(m => renderNode(m)).join('')}
           </div>
@@ -1196,7 +1453,7 @@
           <div class="bracket-round-column">
             <div class="bracket-round-header">
               <span class="round-header-title">Stage 2 • Semifinals</span>
-              <span class="round-header-badge">2 MATCHES</span>
+              <span class="round-header-badge">2 MATCHES (SUN LATE)</span>
             </div>
             ${r2Matches.map(m => renderNode(m)).join('')}
           </div>
@@ -1205,7 +1462,7 @@
           <div class="bracket-round-column">
             <div class="bracket-round-header gold">
               <span class="round-header-title" style="color:#facc15;">👑 Weekly Grand Finale</span>
-              <span class="round-header-badge" style="background:rgba(250,204,21,0.2); color:#facc15;">TROPHY MATCH</span>
+              <span class="round-header-badge" style="background:rgba(250,204,21,0.2); color:#facc15;">PRIMETIME FINALE</span>
             </div>
             ${r3Matches.map(m => renderNode(m, true)).join('')}
           </div>
@@ -1407,7 +1664,6 @@
       document.getElementById('btn-pick-contender-1')?.addEventListener('click', () => {
         this.userPicks[m.id] = s1.name;
         localStorage.setItem('office_endzone_picks', JSON.stringify(this.userPicks));
-        this.showBanner('OFFICE PICK LOCKED! 🎯', `You picked ${s1.name} (${s1.team}) to conquer ${s2.name}!`);
         this.openShowdownModal(m.id);
         this.renderBracketsHub();
       });
@@ -1415,7 +1671,6 @@
       document.getElementById('btn-pick-contender-2')?.addEventListener('click', () => {
         this.userPicks[m.id] = s2.name;
         localStorage.setItem('office_endzone_picks', JSON.stringify(this.userPicks));
-        this.showBanner('OFFICE PICK LOCKED! 🎯', `You picked ${s2.name} (${s2.team}) to conquer ${s1.name}!`);
         this.openShowdownModal(m.id);
         this.renderBracketsHub();
       });
