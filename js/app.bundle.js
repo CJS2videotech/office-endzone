@@ -79,11 +79,11 @@
         homeStarter: "Caleb Williams"
       },
       schedule: [
-        { date: "8/16", away: "GB", home: "CHI", time: "12:15 PM MST", isHome: false },
-        { date: "8/17", away: "DET", home: "GB", time: "5:05 PM MST", isHome: true },
-        { date: "8/18", away: "DET", home: "GB", time: "5:05 PM MST", isHome: true },
-        { date: "8/19", away: "MIN", home: "GB", time: "11:20 AM MST", isHome: true },
-        { date: "8/21", away: "GB", home: "LAR", time: "7:10 PM MST", isHome: false }
+        { date: "Wk 1 • Sep 6", away: "GB", home: "CHI", time: "1:25 PM MST", isHome: false },
+        { date: "Wk 2 • Sep 13", away: "DET", home: "GB", time: "10:00 AM MST", isHome: true },
+        { date: "Wk 3 • Sep 20", away: "GB", home: "LAR", time: "1:25 PM MST", isHome: false },
+        { date: "Wk 4 • Sep 27", away: "MIN", home: "GB", time: "10:00 AM MST", isHome: true },
+        { date: "Wk 5 • Oct 4", away: "GB", home: "SF", time: "5:20 PM MST", isHome: false }
       ],
       division: "NFC NORTH STANDINGS",
       standings: [
@@ -116,11 +116,11 @@
         homeStarter: "Caleb Williams"
       },
       schedule: [
-        { date: "8/16", away: "GB", home: "CHI", time: "12:15 PM MST", isHome: true },
-        { date: "8/17", away: "CHI", home: "KC", time: "5:15 PM MST", isHome: false },
-        { date: "8/18", away: "MIN", home: "CHI", time: "10:00 AM MST", isHome: true },
-        { date: "8/20", away: "CHI", home: "DET", time: "5:00 PM MST", isHome: false },
-        { date: "8/22", away: "SF", home: "CHI", time: "6:15 PM MST", isHome: true }
+        { date: "Wk 1 • Sep 6", away: "GB", home: "CHI", time: "1:25 PM MST", isHome: true },
+        { date: "Wk 2 • Sep 13", away: "CHI", home: "KC", time: "5:15 PM MST", isHome: false },
+        { date: "Wk 3 • Sep 20", away: "MIN", home: "CHI", time: "10:00 AM MST", isHome: true },
+        { date: "Wk 4 • Sep 27", away: "CHI", home: "DET", time: "10:00 AM MST", isHome: false },
+        { date: "Wk 5 • Oct 4", away: "SF", home: "CHI", time: "1:05 PM MST", isHome: true }
       ],
       division: "NFC NORTH STANDINGS",
       standings: [
@@ -153,11 +153,11 @@
         homeStarter: "Deshaun Watson"
       },
       schedule: [
-        { date: "8/16", away: "PIT", home: "CLE", time: "1:05 PM MST", isHome: true },
-        { date: "8/17", away: "CLE", home: "BAL", time: "10:00 AM MST", isHome: false },
-        { date: "8/19", away: "CIN", home: "CLE", time: "5:15 PM MST", isHome: true },
-        { date: "8/21", away: "CLE", home: "PHI", time: "5:00 PM MST", isHome: false },
-        { date: "8/23", away: "NYG", home: "CLE", time: "1:00 PM MST", isHome: true }
+        { date: "Wk 1 • Sep 6", away: "PIT", home: "CLE", time: "10:00 AM MST", isHome: true },
+        { date: "Wk 2 • Sep 13", away: "CLE", home: "BAL", time: "10:00 AM MST", isHome: false },
+        { date: "Wk 3 • Sep 20", away: "CIN", home: "CLE", time: "5:15 PM MST", isHome: true },
+        { date: "Wk 4 • Sep 27", away: "CLE", home: "PHI", time: "10:00 AM MST", isHome: false },
+        { date: "Wk 5 • Oct 4", away: "NYG", home: "CLE", time: "10:00 AM MST", isHome: true }
       ],
       division: "AFC NORTH STANDINGS",
       standings: [
@@ -190,11 +190,11 @@
         homeStarter: "Gardner Minshew"
       },
       schedule: [
-        { date: "8/16", away: "KC", home: "LV", time: "5:20 PM MST", isHome: true },
-        { date: "8/18", away: "LV", home: "LAC", time: "1:05 PM MST", isHome: false },
-        { date: "8/20", away: "DEN", home: "LV", time: "5:00 PM MST", isHome: true },
-        { date: "8/22", away: "LV", home: "MIA", time: "10:00 AM MST", isHome: false },
-        { date: "8/24", away: "ATL", home: "LV", time: "1:25 PM MST", isHome: true }
+        { date: "Wk 1 • Sep 6", away: "KC", home: "LV", time: "1:25 PM MST", isHome: true },
+        { date: "Wk 2 • Sep 13", away: "LV", home: "LAC", time: "1:05 PM MST", isHome: false },
+        { date: "Wk 3 • Sep 20", away: "DEN", home: "LV", time: "5:15 PM MST", isHome: true },
+        { date: "Wk 4 • Sep 27", away: "LV", home: "MIA", time: "10:00 AM MST", isHome: false },
+        { date: "Wk 5 • Oct 4", away: "ATL", home: "LV", time: "1:25 PM MST", isHome: true }
       ],
       division: "AFC WEST STANDINGS",
       standings: [
@@ -227,11 +227,11 @@
         homeStarter: "Matthew Stafford"
       },
       schedule: [
-        { date: "8/16", away: "SF", home: "LAR", time: "1:25 PM MST", isHome: false },
-        { date: "8/17", away: "ARI", home: "SF", time: "5:00 PM MST", isHome: true },
-        { date: "8/19", away: "SF", home: "SEA", time: "5:15 PM MST", isHome: false },
-        { date: "8/21", away: "DAL", home: "SF", time: "5:20 PM MST", isHome: true },
-        { date: "8/23", away: "SF", home: "NO", time: "10:00 AM MST", isHome: false }
+        { date: "Wk 1 • Sep 6", away: "SF", home: "LAR", time: "1:25 PM MST", isHome: false },
+        { date: "Wk 2 • Sep 13", away: "ARI", home: "SF", time: "1:05 PM MST", isHome: true },
+        { date: "Wk 3 • Sep 20", away: "SF", home: "SEA", time: "5:15 PM MST", isHome: false },
+        { date: "Wk 4 • Sep 27", away: "DAL", home: "SF", time: "5:20 PM MST", isHome: true },
+        { date: "Wk 5 • Oct 4", away: "SF", home: "CHI", time: "1:05 PM MST", isHome: false }
       ],
       division: "NFC WEST STANDINGS",
       standings: [
@@ -264,11 +264,11 @@
         homeStarter: "Kyler Murray"
       },
       schedule: [
-        { date: "8/16", away: "SEA", home: "ARI", time: "1:05 PM MST", isHome: true },
-        { date: "8/17", away: "ARI", home: "SF", time: "5:00 PM MST", isHome: false },
-        { date: "8/19", away: "LAR", home: "ARI", time: "1:25 PM MST", isHome: true },
-        { date: "8/21", away: "ARI", home: "DEN", time: "1:05 PM MST", isHome: false },
-        { date: "8/23", away: "LAC", home: "ARI", time: "5:00 PM MST", isHome: true }
+        { date: "Wk 1 • Sep 6", away: "SEA", home: "ARI", time: "1:05 PM MST", isHome: true },
+        { date: "Wk 2 • Sep 13", away: "ARI", home: "SF", time: "1:05 PM MST", isHome: false },
+        { date: "Wk 3 • Sep 20", away: "LAR", home: "ARI", time: "1:25 PM MST", isHome: true },
+        { date: "Wk 4 • Sep 27", away: "ARI", home: "DEN", time: "1:05 PM MST", isHome: false },
+        { date: "Wk 5 • Oct 4", away: "LAC", home: "ARI", time: "1:05 PM MST", isHome: true }
       ],
       division: "NFC WEST STANDINGS",
       standings: [
@@ -301,11 +301,11 @@
         homeStarter: "Daniel Jones"
       },
       schedule: [
-        { date: "8/16", away: "PHI", home: "NYG", time: "10:00 AM MST", isHome: false },
-        { date: "8/17", away: "DAL", home: "PHI", time: "5:15 PM MST", isHome: true },
-        { date: "8/19", away: "PHI", home: "WAS", time: "10:00 AM MST", isHome: false },
-        { date: "8/21", away: "CLE", home: "PHI", time: "5:00 PM MST", isHome: true },
-        { date: "8/23", away: "PHI", home: "BAL", time: "1:00 PM MST", isHome: false }
+        { date: "Wk 1 • Sep 6", away: "PHI", home: "NYG", time: "10:00 AM MST", isHome: false },
+        { date: "Wk 2 • Sep 13", away: "DAL", home: "PHI", time: "5:15 PM MST", isHome: true },
+        { date: "Wk 3 • Sep 20", away: "PHI", home: "WAS", time: "10:00 AM MST", isHome: false },
+        { date: "Wk 4 • Sep 27", away: "CLE", home: "PHI", time: "10:00 AM MST", isHome: true },
+        { date: "Wk 5 • Oct 4", away: "PHI", home: "BAL", time: "1:25 PM MST", isHome: false }
       ],
       division: "NFC EAST STANDINGS",
       standings: [
@@ -427,6 +427,47 @@
     }
   ];
 
+  const DIVISION_LAST_PLACE_TEAMS = {
+    "NFC North": [
+      { team: "MIN", name: "Vikings", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/min.png", color: "#4F2683", qb: "Sam Darnold", venue: "U.S. Bank Stadium • Minneapolis, MN", city: "Minnesota" },
+      { team: "DET", name: "Lions", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/det.png", color: "#0076B6", qb: "Jared Goff", venue: "Ford Field • Detroit, MI", city: "Detroit" }
+    ],
+    "NFC East": [
+      { team: "NYG", name: "Giants", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png", color: "#0B2265", qb: "Daniel Jones", venue: "MetLife Stadium • East Rutherford, NJ", city: "New York" },
+      { team: "WAS", name: "Commanders", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/was.png", color: "#5A1414", qb: "Jayden Daniels", venue: "Northwest Stadium • Landover, MD", city: "Washington" }
+    ],
+    "NFC West": [
+      { team: "SEA", name: "Seahawks", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png", color: "#002244", qb: "Geno Smith", venue: "Lumen Field • Seattle, WA", city: "Seattle" },
+      { team: "LAR", name: "Rams", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png", color: "#003594", qb: "Matthew Stafford", venue: "SoFi Stadium • Inglewood, CA", city: "Los Angeles" }
+    ],
+    "NFC South": [
+      { team: "CAR", name: "Panthers", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/car.png", color: "#0085CA", qb: "Bryce Young", venue: "Bank of America Stadium • Charlotte, NC", city: "Carolina" }
+    ],
+    "AFC North": [
+      { team: "CIN", name: "Bengals", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png", color: "#FB4F14", qb: "Joe Burrow", venue: "Paycor Stadium • Cincinnati, OH", city: "Cincinnati" },
+      { team: "CLE", name: "Browns", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png", color: "#311D00", qb: "Deshaun Watson", venue: "Huntington Bank Field • Cleveland, OH", city: "Cleveland" }
+    ],
+    "AFC West": [
+      { team: "DEN", name: "Broncos", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/den.png", color: "#FB4F14", qb: "Bo Nix", venue: "Empower Field • Denver, CO", city: "Denver" },
+      { team: "LV", name: "Raiders", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png", color: "#000000", qb: "Gardner Minshew", venue: "Allegiant Stadium • Las Vegas, NV", city: "Las Vegas" }
+    ],
+    "AFC East": [
+      { team: "NE", name: "Patriots", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png", color: "#002244", qb: "Drake Maye", venue: "Gillette Stadium • Foxborough, MA", city: "New England" }
+    ],
+    "AFC South": [
+      { team: "TEN", name: "Titans", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png", color: "#0C2340", qb: "Will Levis", venue: "Nissan Stadium • Nashville, TN", city: "Tennessee" }
+    ]
+  };
+
+  function getDivisionLastPlaceOpponent(member, weekIdx) {
+    const teamObj = TEAMS.find(t => t.id === member.team) || { division: "NFC North" };
+    const div = teamObj.division || "NFC North";
+    const candidates = DIVISION_LAST_PLACE_TEAMS[div] || DIVISION_LAST_PLACE_TEAMS["NFC North"];
+    const filtered = candidates.filter(c => c.team !== member.team);
+    const chosen = filtered.length > 0 ? filtered[weekIdx % filtered.length] : candidates[0];
+    return { chosen, division: div };
+  }
+
   function buildWeeklyTournamentData() {
     return {
       activeWeek: 1,
@@ -436,14 +477,17 @@
         const isActive = wNum === 1;
         const status = isActive ? 'LIVE' : 'UPCOMING';
 
-        // Pairings rotated for all 18 weeks across 7 staff contenders
-        const p1 = CONTENDERS_LIST[idx % 7]; // #1 Seed of the week (Earns Round 1 Bye!)
+        // Pairings rotated for all 18 weeks across all 7 staff contenders
+        const p1 = CONTENDERS_LIST[idx % 7];
         const p2 = CONTENDERS_LIST[(idx + 1) % 7];
         const p3 = CONTENDERS_LIST[(idx + 2) % 7];
         const p4 = CONTENDERS_LIST[(idx + 3) % 7];
         const p5 = CONTENDERS_LIST[(idx + 4) % 7];
         const p6 = CONTENDERS_LIST[(idx + 5) % 7];
-        const p7 = CONTENDERS_LIST[(idx + 6) % 7];
+        const p7 = CONTENDERS_LIST[(idx + 6) % 7]; // The Odd Player of the week!
+
+        // Matchmaking Logic: Odd player plays a random team that is last in their division!
+        const { chosen: divCellarTeam, division: p7Division } = getDivisionLastPlaceOpponent(p7, idx);
 
         const lore1 = LORE_DATABASE[idx % LORE_DATABASE.length];
         const lore2 = LORE_DATABASE[(idx + 1) % LORE_DATABASE.length];
@@ -459,6 +503,8 @@
         const s4_score = isActive ? baseScore + 2 : 0;
         const s5_score = isActive ? baseScore + 7 : 0;
         const s6_score = isActive ? baseScore + 3 : 0;
+        const s7_score = isActive ? baseScore + 5 : 0;
+        const opp_score = isActive ? baseScore : 0;
 
         const semi1_s1 = isActive ? baseScore + 8 : 0;
         const semi1_s2 = isActive ? baseScore + 5 : 0;
@@ -528,18 +574,32 @@
             id: `w${wNum}_q4`,
             round: 1,
             roundName: "Stage 1 • Division Clash",
-            title: `Matchup 4: ${p7.name}'s Featured Showdown`,
-            rivalryName: `${p7.name} vs Conference Showdown`,
+            title: `Matchup 4: ${p7.name} (${p7.team}) vs ${divCellarTeam.name} (${p7Division})`,
+            rivalryName: `${p7.name} vs ${divCellarTeam.name} (${p7Division} Cellar Matchup)`,
             day: "Sun Late",
-            venue: "State Farm Stadium • Glendale, AZ",
+            venue: divCellarTeam.venue,
             kickoff: "Sunday • 1:05 PM MST",
-            surface: "Natural Grass Tray",
-            spread: "ARI -2.5 • O/U 43.5",
-            staff1: { ...p7, score: s1_score, pick: `${p7.team} ${p7.teamName}` },
-            staff2: { name: "Seahawks/Rams", team: "SEA", teamName: "Rivals", avatar: "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png", seed: "OPP", color: "#002244", rating: 87, yards: 0, rzPct: "0%", turnovers: "0", score: s2_score, pick: "SEA Seahawks" },
-            lore: "Arizona's Red Sea defense battles in the division trenches for critical Week 1 conference standing.",
-            smack1: "The desert heat will melt your defensive gameplan! Protect the nest!",
-            smack2: "We're coming into Glendale to set the tone for the entire season!",
+            surface: "Natural Grass / Turf",
+            spread: `${p7.team} -4.5 • O/U 42.5`,
+            staff1: { ...p7, score: s7_score, pick: `${p7.team} ${p7.teamName}` },
+            staff2: { 
+              name: `${divCellarTeam.name}`, 
+              team: divCellarTeam.team, 
+              teamName: divCellarTeam.name, 
+              avatar: divCellarTeam.logo, 
+              bannerGif: divCellarTeam.logo,
+              seed: "DIV-LAST", 
+              color: divCellarTeam.color, 
+              rating: 83, 
+              yards: 295, 
+              rzPct: "48%", 
+              turnovers: "-4", 
+              score: opp_score, 
+              pick: `${divCellarTeam.team} ${divCellarTeam.name}` 
+            },
+            lore: `${p7.name}'s ${p7.teamName} face the last-place ${divCellarTeam.name} in a pivotal ${p7Division} clash. A must-win division trap game with critical regular season conference seeding on the line!`,
+            smack1: `We're taking care of business in the division! No trap game can slow down ${p7.teamName} momentum!`,
+            smack2: `Don't look past the ${divCellarTeam.name}! We're ready to play spoiler and ruin your week!`,
             status: status
           },
           // Round 2 (Semifinals • Unlocks after Stage 1 finishes on Sunday afternoon)
@@ -614,6 +674,290 @@
 
   const WEEKLY_BRACKET_DATA = buildWeeklyTournamentData();
 
+  // 18-WEEK SEASON TOURNAMENT DATA (WEEKS 16 - 18)
+  // Round 1 (Quarterfinals - Week 16): 4 Matchups (7 Office Contenders + #32 NFL Last-Place Team for the 7th player)
+  // Round 2 (Semifinals - Week 17): 2 Matchups (TBD - Awaiting Week 16)
+  // Round 3 (Grand Finale - Week 18): 1 Matchup (TBD - Awaiting Week 17 to Crown Office Champion)
+  const SEASON_TOURNAMENT_DATA = {
+    title: "2026 Office Endzone 18-Week Season Championship",
+    description: "The official postseason climax! Weeks 1–15 determine regular season standings & playoff seeds (#1 to #7). Week 16 starts Round 1 (Quarterfinals) featuring all 7 office contenders + the #32 Last-Place NFL Team (Oddball Wild Card Challenge) playing the #7 seed. Round 2 Semifinals (Week 17) and the Grand Championship Finale (Week 18) are TBD and unlock as each round concludes.",
+    rounds: [
+      {
+        roundNum: 1,
+        weekNum: 16,
+        name: "Week 16 • Quarterfinals",
+        matchups: [
+          {
+            id: "st_q1",
+            round: 1,
+            week: "Week 16",
+            roundName: "Week 16 • Quarterfinal 1",
+            title: "Quarterfinal 1 • #1 Andrea vs #6 Saul",
+            rivalryName: "NFC North vs NFC West Playoff Clash",
+            day: "Sun Early",
+            venue: "Lambeau Field • Green Bay, WI",
+            kickoff: "Week 16 • Sun 10:00 AM MST",
+            surface: "Desso GrassMaster • 28°F Freezing",
+            spread: "GB -3.5 • O/U 44.5",
+            staff1: {
+              name: "Andrea",
+              team: "GB",
+              teamName: "Packers",
+              avatar: "assets/avatars/Andrea football.jpg",
+              bannerGif: "assets/Andrea football banner.gif",
+              seed: "#1",
+              color: "#203731",
+              rating: 91,
+              yards: 360,
+              rzPct: "72%",
+              turnovers: "+5",
+              score: 0,
+              pick: "GB Packers"
+            },
+            staff2: {
+              name: "Saul",
+              team: "SF",
+              teamName: "49ers",
+              avatar: "assets/avatars/Saul football.jpg",
+              bannerGif: "assets/Saul football banner.gif",
+              seed: "#6",
+              color: "#aa0000",
+              rating: 92,
+              yards: 350,
+              rzPct: "68%",
+              turnovers: "+3",
+              score: 0,
+              pick: "SF 49ers"
+            },
+            lore: "Top-seeded Andrea welcomes Saul to the Frozen Tundra of Lambeau Field in an electrifying Quarterfinal showdown. The winner advances directly to the Week 17 Semifinals!",
+            smack1: "Number one seed for a reason! Lambeau is ready to freeze out the Niners and punch our ticket to Week 17!",
+            smack2: "The 49ers West Coast playbook is built for December playoff upsets. We're advancing to the Semifinals!",
+            status: "UPCOMING"
+          },
+          {
+            id: "st_q2",
+            round: 1,
+            week: "Week 16",
+            roundName: "Week 16 • Quarterfinal 2",
+            title: "Quarterfinal 2 • #2 Mariah vs #5 Nicole",
+            rivalryName: "Midnight Green vs Silver & Black Playoff Battle",
+            day: "Sun Late",
+            venue: "Lincoln Financial Field • Philadelphia, PA",
+            kickoff: "Week 16 • Sun 1:25 PM MST",
+            surface: "Desso GrassMaster • 42°F Cold",
+            spread: "PHI -4.0 • O/U 48.0",
+            staff1: {
+              name: "Mariah",
+              team: "PHI",
+              teamName: "Eagles",
+              avatar: "assets/avatars/Mariah football.jpg",
+              bannerGif: "assets/Mariah football banner.mp4",
+              seed: "#2",
+              color: "#004c54",
+              rating: 94,
+              yards: 385,
+              rzPct: "75%",
+              turnovers: "+6",
+              score: 0,
+              pick: "PHI Eagles"
+            },
+            staff2: {
+              name: "Nicole",
+              team: "LV",
+              teamName: "Raiders",
+              avatar: "assets/avatars/Nicole football.jpg",
+              bannerGif: "assets/Nicole football banner.gif",
+              seed: "#5",
+              color: "#a5acaf",
+              rating: 93,
+              yards: 340,
+              rzPct: "65%",
+              turnovers: "+2",
+              score: 0,
+              pick: "LV Raiders"
+            },
+            lore: "Mariah's #2 seeded Philadelphia Eagles clash with Nicole's #5 seeded Las Vegas Raiders. Explosive ground game meets aggressive vertical passing for a spot in the Week 17 final four!",
+            smack1: "Fly Eagles Fly! Lincoln Financial Field is going to be deafening on Sunday! No one stops our playoff march!",
+            smack2: "Raider Nation thrives in high-stakes road playoff matchups. Statistically primed for the Quarterfinal upset!",
+            status: "UPCOMING"
+          },
+          {
+            id: "st_q3",
+            round: 1,
+            week: "Week 16",
+            roundName: "Week 16 • Quarterfinal 3",
+            title: "Quarterfinal 3 • #3 CJ vs #4 Mario",
+            rivalryName: "The Great Lakes Postseason Showdown",
+            day: "Sun Early",
+            venue: "Soldier Field • Chicago, IL",
+            kickoff: "Week 16 • Sun 12:15 PM MST",
+            surface: "Natural Grass • 36°F Windy",
+            spread: "CHI -2.5 • O/U 41.5",
+            staff1: {
+              name: "CJ",
+              team: "CHI",
+              teamName: "Bears",
+              avatar: "assets/avatars/CJ football.jpg",
+              bannerGif: "assets/CJ football banner.gif",
+              seed: "#3",
+              color: "#0b162a",
+              rating: 95,
+              yards: 390,
+              rzPct: "70%",
+              turnovers: "+4",
+              score: 0,
+              pick: "CHI Bears"
+            },
+            staff2: {
+              name: "Mario",
+              team: "CLE",
+              teamName: "Browns",
+              avatar: "assets/avatars/Mario football.jpg",
+              bannerGif: "assets/Mario football banner.gif",
+              seed: "#4",
+              color: "#311d00",
+              rating: 88,
+              yards: 310,
+              rzPct: "62%",
+              turnovers: "+1",
+              score: 0,
+              pick: "CLE Browns"
+            },
+            lore: "A fierce 3-vs-4 rivalry battle along Lake Michigan. CJ's dynamic Chicago aerial attack faces Mario's hard-hitting Cleveland Dawg Pound blitz defense.",
+            smack1: "Bear Down! We've been preparing for this postseason run all 15 weeks! Nothing can stop Chicago!",
+            smack2: "The Dawg Pound defense will shut down the passing lanes and take this win in the trenches! Browns rolling!",
+            status: "UPCOMING"
+          },
+          {
+            id: "st_q4",
+            round: 1,
+            week: "Week 16",
+            roundName: "Week 16 • Quarterfinal 4",
+            title: "Quarterfinal 4 • #7 Cardinals Flag vs NFL #32 Panthers (Oddball Challenge)",
+            rivalryName: "🎯 Oddball Challenge: #7 Seed vs NFL #32 Last-Place Squad",
+            day: "Sun Late",
+            venue: "State Farm Stadium • Glendale, AZ",
+            kickoff: "Week 16 • Sun 2:05 PM MST",
+            surface: "Retractable Grass • 72°F Roof Open",
+            spread: "ARI -6.5 • O/U 38.5",
+            isOddball: true,
+            staff1: {
+              name: "Cardinals Flag",
+              team: "ARI",
+              teamName: "Cardinals",
+              avatar: "assets/Arizona_Cardinals_flag.gif",
+              bannerGif: "assets/Arizona_Cardinals_flag.gif",
+              seed: "#7",
+              color: "#97233f",
+              rating: 89,
+              yards: 325,
+              rzPct: "60%",
+              turnovers: "0",
+              score: 0,
+              pick: "ARI Cardinals"
+            },
+            staff2: {
+              name: "Carolina Panthers",
+              team: "CAR",
+              teamName: "Panthers (NFL #32)",
+              avatar: "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+              bannerGif: "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+              seed: "NFL #32",
+              color: "#0085ca",
+              rating: 79,
+              yards: 280,
+              rzPct: "45%",
+              turnovers: "-8",
+              score: 0,
+              pick: "CAR Panthers (NFL #32)"
+            },
+            lore: "In the 7-player tournament format, the 7th-seeded contender faces the ultimate test: battling the team in 32nd/last place across the entire NFL (Carolina Panthers)! The Cardinals Flag must win this game to punch their ticket to the Week 17 Semifinals!",
+            smack1: "Rise Up Red Sea! The Arizona flag will wave victoriously over the NFL basement squad and advance to the Semifinals!",
+            smack2: "The NFL #32 Panthers have nothing to lose and everything to prove as postseason spoilers looking to shock the office bracket!",
+            status: "UPCOMING"
+          }
+        ]
+      },
+      {
+        roundNum: 2,
+        weekNum: 17,
+        name: "Week 17 • Semifinals",
+        matchups: [
+          {
+            id: "st_s1",
+            round: 2,
+            week: "Week 17",
+            roundName: "Week 17 • Semifinal 1",
+            title: "Semifinal 1 • Winner QF 1 vs Winner QF 4",
+            rivalryName: "Week 17 Semifinal 1 (Awaiting Week 16)",
+            day: "Sun Late",
+            venue: "Higher Seed Home Field",
+            kickoff: "Week 17 • Sunday Late Slate",
+            surface: "Playoff Turf/Grass",
+            spread: "TBD • Unlocks after Week 16",
+            qfSource1: "st_q1",
+            qfSource2: "st_q4",
+            qfSource1Desc: "Winner QF 1 (#1 Andrea vs #6 Saul)",
+            qfSource2Desc: "Winner QF 4 (#7 Cardinals Flag vs NFL #32)",
+            lore: "The winner of Quarterfinal 1 takes on the winner of the Oddball Quarterfinal 4 challenge for a ticket to the Week 18 Grand Championship Game!",
+            smack1: "One win away from the Week 18 Grand Championship!",
+            smack2: "We fought through the Quarterfinals and aren't stopping now!",
+            status: "PENDING"
+          },
+          {
+            id: "st_s2",
+            round: 2,
+            week: "Week 17",
+            roundName: "Week 17 • Semifinal 2",
+            title: "Semifinal 2 • Winner QF 2 vs Winner QF 3",
+            rivalryName: "Week 17 Semifinal 2 (Awaiting Week 16)",
+            day: "Sun Late",
+            venue: "Higher Seed Home Field",
+            kickoff: "Week 17 • Sunday Late Slate",
+            surface: "Playoff Turf/Grass",
+            spread: "TBD • Unlocks after Week 16",
+            qfSource1: "st_q2",
+            qfSource2: "st_q3",
+            qfSource1Desc: "Winner QF 2 (#2 Mariah vs #5 Nicole)",
+            qfSource2Desc: "Winner QF 3 (#3 CJ vs #4 Mario)",
+            lore: "The winner of Quarterfinal 2 battles the winner of Quarterfinal 3 in an explosive Semifinal collision for the final ticket to the Week 18 Grand Championship Game!",
+            smack1: "Our offense is firing on all cylinders heading into the Semifinals!",
+            smack2: "Defense wins championships and we're punching our ticket to Week 18!",
+            status: "PENDING"
+          }
+        ]
+      },
+      {
+        roundNum: 3,
+        weekNum: 18,
+        name: "Week 18 • Grand Finale",
+        matchups: [
+          {
+            id: "st_final",
+            round: 3,
+            week: "Week 18",
+            roundName: "Week 18 • Grand Championship Game",
+            title: "👑 2026 Office Endzone Grand Championship",
+            rivalryName: "Week 18 Regular Season Grand Finale",
+            day: "Sun Primetime",
+            venue: "Grand Championship Stadium",
+            kickoff: "Week 18 Finale • Sun 6:20 PM MST (SNF)",
+            surface: "Championship Turf",
+            spread: "TBD • Decided in Week 18 Finale",
+            semiSource1: "st_s1",
+            semiSource2: "st_s2",
+            semiSource1Desc: "Winner Semifinal 1",
+            semiSource2Desc: "Winner Semifinal 2",
+            lore: "The crowning moment of the 18-Week NFL regular season! The two surviving office titans battle in the final game of Week 18 for the 2026 Office Endzone Championship Trophy, eternal office bragging rights, and the golden football prize!",
+            smack1: "The 2026 Office Championship trophy is coming home with me!",
+            smack2: "60 minutes of football to decide the true ruler of the office gridiron!",
+            status: "PENDING"
+          }
+        ]
+      }
+    ]
+  };
+
   // 2. MAIN APPLICATION CLASS
   class DugoutEndzoneApp {
     constructor() {
@@ -627,6 +971,7 @@
       this.selectedContenderFilter = 'ALL';
       this.selectedDayFilter = 'ALL';
       this.userPicks = JSON.parse(localStorage.getItem('office_endzone_picks') || '{}');
+      this.seasonPicks = JSON.parse(localStorage.getItem('office_endzone_season_picks') || '{}');
 
       // Team abbreviation to Office Staff Member ID Map
       this.teamToMemberMap = {
@@ -680,15 +1025,19 @@
         standingsDivisionTitle: document.getElementById('standings-division-title'),
         divisionStandingsTbody: document.getElementById('division-standings-tbody'),
         dailyLeadersTbody: document.getElementById('daily-leaders-tbody'),
-        banterSpeaker: document.getElementById('banter-speaker'),
-        modalDialogText: document.getElementById('modal-dialog-text'),
-        btnModalCheer: document.getElementById('btn-modal-cheer'),
         btnOpenBoxScore: document.getElementById('btn-open-box-score'),
 
         // Showdown Reveal Modal elements
         showdownModalOverlay: document.getElementById('showdown-modal-overlay'),
         showdownModalContent: document.getElementById('showdown-modal-content'),
         showdownModalClose: document.getElementById('showdown-modal-close'),
+
+        // Box Score Modal elements
+        boxScoreModalOverlay: document.getElementById('box-score-modal-overlay'),
+        boxScoreModalContent: document.getElementById('box-score-modal-content'),
+        boxScoreModalClose: document.getElementById('box-score-modal-close'),
+        boxScoreBadgeStatus: document.getElementById('box-score-badge-status'),
+        boxScoreVenueTime: document.getElementById('box-score-venue-time'),
 
         // Top actions
         btnYesterdayModal: document.getElementById('btn-yesterday-modal-toggle'),
@@ -702,10 +1051,7 @@
         secondaryDrawer: document.getElementById('secondary-drawer'),
         drawerTitle: document.getElementById('drawer-title'),
         drawerBody: document.getElementById('drawer-body'),
-        btnCloseDrawer: document.getElementById('btn-close-drawer'),
-
-        // Banner
-        eventBanner: document.getElementById('event-banner')
+        btnCloseDrawer: document.getElementById('btn-close-drawer')
       };
     }
 
@@ -757,7 +1103,7 @@
                data-home-member="${homeMemberId || ''}"
                role="button"
                tabindex="0"
-               title="${hasOfficeMember ? 'Click to open staff member card' : 'NFL Matchup'}">
+               title="${hasOfficeMember ? 'Click to open staff member card' : 'NFL Matchup • Click to view Box Score'}">
             
             <div class="ticker-game-meta">
               <span class="ticker-status-tag ${statusClass}">${game.status}</span>
@@ -807,11 +1153,11 @@
     openMemberModal(memberId) {
       const member = this.roster.find(m => m.id === memberId) || this.roster[0];
       this.selectedMember = member;
-      this.isGifActive = true; // Auto-play animated banner immediately upon opening card
+      this.isGifActive = true;
 
       const team = this.teams.find(t => t.id === member.teamId) || this.teams[0];
 
-      // Update avatar card with autoplaying banner
+      // Update avatar card with banner
       this.dom.modalAvatarCard.className = `modal-avatar-card ${member.frameClass}`;
       this.renderModalMedia(member, true);
 
@@ -822,14 +1168,14 @@
       this.dom.modalTeamName.textContent = member.teamName;
       this.dom.modalTeamName.style.color = team.color;
 
-      // Picks
+      // Picks & Trophy
       this.dom.picksRecord.textContent = member.picks.record;
       this.dom.picksPct.textContent = member.picks.pct;
       this.dom.picksStreak.textContent = member.picks.streak;
       this.dom.trophyCount.textContent = `× ${member.trophy.count}`;
-      this.dom.trophyLabel.textContent = member.trophy.label;
+      this.dom.trophyLabel.textContent = "WEEKLY YARDS & TOUCHDOWNS LEADER";
 
-      // Today's Matchup
+      // This Week's Matchup
       const m = member.matchup;
       this.dom.matchupAwayCode.textContent = m.away.code;
       this.dom.matchupAwayRec.textContent = m.away.rec;
@@ -843,7 +1189,7 @@
       this.dom.starterHome.textContent = m.homeStarter;
       this.dom.matchupLiveTag.style.display = m.isLive ? 'block' : 'none';
 
-      // Schedule Next 5 Days
+      // Schedule Next 5 Games
       this.dom.scheduleList.innerHTML = member.schedule.map(s => {
         const isSelectedTeamHome = s.isHome;
         const awayCode = isSelectedTeamHome ? s.away : `<strong style="color:${team.color}">${s.away}</strong>`;
@@ -869,7 +1215,7 @@
         </tr>
       `).join('');
 
-      // Daily Yards & TDs Leader Table
+      // Weekly Yards & TDs Leader Table
       this.dom.dailyLeadersTbody.innerHTML = this.roster.map(r => `
         <tr class="${r.id === member.id ? 'highlight-team-row' : ''}">
           <td class="col-team" style="font-weight:700;">${r.name} (${r.teamId})</td>
@@ -878,10 +1224,6 @@
           <td class="col-stat">${r.liveStats.status}</td>
         </tr>
       `).join('');
-
-      // Banter
-      this.dom.banterSpeaker.textContent = `${member.name}'s Watercooler Intel:`;
-      this.dom.modalDialogText.textContent = member.banter;
 
       // Show Modal
       this.dom.modalOverlay.classList.add('open');
@@ -940,19 +1282,6 @@
       this.renderModalMedia(this.selectedMember, this.isGifActive);
     }
 
-    showBanner(title, subtitle) {
-      if (!this.dom.eventBanner) return;
-      this.dom.eventBanner.innerHTML = `
-        <div class="banner-title">${title}</div>
-        <div class="banner-sub">${subtitle}</div>
-      `;
-      this.dom.eventBanner.classList.add('show');
-      if (this.bannerTimeout) clearTimeout(this.bannerTimeout);
-      this.bannerTimeout = setTimeout(() => {
-        this.dom.eventBanner.classList.remove('show');
-      }, 2200);
-    }
-
     spawnConfetti() {
       const colors = ['#facc15', '#ef4444', '#38bdf8', '#10b981', '#fb923c', '#e11d48'];
       for (let i = 0; i < 40; i++) {
@@ -992,11 +1321,12 @@
         } else if (awayMemberId && homeMemberId) {
           this.openMemberModal(homeMemberId);
         } else {
-          this.showBanner(`NFL MATCHUP: ${away} @ ${home}`, `NFL Gridiron Matchup • Check live scores & odds`);
+          // Open box score for this marquee game!
+          this.openBoxScoreModal({ away: { code: away }, home: { code: home } });
         }
       });
 
-      // Ticker tab toggles
+      // Ticker tab toggles (Week vs Last Week)
       this.dom.tabTodayTicker?.addEventListener('click', () => {
         this.currentTickerMode = 'TODAY';
         this.dom.tabTodayTicker.classList.add('active');
@@ -1025,39 +1355,30 @@
         if (e.target === this.dom.modalOverlay) this.closeModal();
       });
 
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') this.closeModal();
-      });
-
-      // GIF / Banner Toggle (Clicking on avatar card or badge)
+      // GIF / Banner Toggle
       this.dom.modalAvatarCard?.addEventListener('click', () => this.toggleGifMode());
       this.dom.modalGifToggle?.addEventListener('click', (e) => {
         e.stopPropagation();
         this.toggleGifMode();
       });
 
-      // Modal cheer button
-      this.dom.btnModalCheer?.addEventListener('click', () => {
-        this.spawnConfetti();
-        this.showBanner('TOUCHDOWN CELEBRATION! 🏈', `${this.selectedMember?.name || 'The office'} fired up the stadium siren! Bear Down & Go Pack Go!`);
-      });
-
-      // Box score click
+      // Box score button inside member detail modal
       this.dom.btnOpenBoxScore?.addEventListener('click', () => {
-        this.showBanner('LIVE NFL BOX SCORE 📊', `Opening ESPN Live Tracker for ${this.selectedMember?.matchup.venue || 'Stadium'}`);
+        if (this.selectedMember && this.selectedMember.matchup) {
+          this.openBoxScoreModal(this.selectedMember.matchup);
+        } else {
+          this.openBoxScoreModal(null, 'CURRENT');
+        }
       });
 
-      // Top buttons
+      // Header "LAST WEEK'S BOX SCORES" button
       this.dom.btnYesterdayModal?.addEventListener('click', () => {
-        this.currentTickerMode = 'YESTERDAY';
-        this.dom.tabYesterdayTicker.classList.add('active');
-        this.dom.tabTodayTicker.classList.remove('active');
-        this.renderTicker();
-        this.showBanner("YESTERDAY'S SCORES LOADED 📅", "Displaying final NFL scores and box outcomes.");
+        this.openBoxScoreModal(null, 'LAST_WEEK');
       });
 
       this.dom.btnSignIn?.addEventListener('click', () => {
-        this.showBanner('OFFICE ROSTER CONNECTED 🏈', 'Signed in as Active Gridiron Predictor.');
+        // Sign-in confirmation
+        alert('Welcome to Office Endzone! You are signed in as an Active Gridiron Predictor.');
       });
 
       // Quick Nav Buttons
@@ -1098,18 +1419,25 @@
         }
       });
 
-      // Event banner click to dismiss immediately
-      this.dom.eventBanner?.addEventListener('click', () => {
-        if (this.bannerTimeout) clearTimeout(this.bannerTimeout);
-        this.dom.eventBanner.classList.remove('show');
+      // Box Score Modal close events
+      this.dom.boxScoreModalClose?.addEventListener('click', () => {
+        this.closeBoxScoreModal();
+      });
+
+      this.dom.boxScoreModalOverlay?.addEventListener('click', (e) => {
+        if (e.target === this.dom.boxScoreModalOverlay) {
+          this.closeBoxScoreModal();
+        }
       });
 
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-          if (this.dom.showdownModalOverlay?.classList.contains('open')) {
+          if (this.dom.boxScoreModalOverlay?.classList.contains('open')) {
+            this.closeBoxScoreModal();
+          } else if (this.dom.showdownModalOverlay?.classList.contains('open')) {
             this.closeShowdownModal();
           } else if (this.dom.modalOverlay?.classList.contains('open')) {
-            this.closeMemberModal();
+            this.closeModal();
           }
         }
       });
@@ -1130,7 +1458,7 @@
 
     renderBracketsHub() {
       const isWeekly = this.activeBracketTab === 'WEEKLY';
-      const curWeek = WEEKLY_BRACKET_DATA.weeks[this.selectedWeekIndex] || WEEKLY_BRACKET_DATA.weeks[1];
+      const curWeek = WEEKLY_BRACKET_DATA.weeks[this.selectedWeekIndex] || WEEKLY_BRACKET_DATA.weeks[0];
 
       this.dom.drawerBody.innerHTML = `
         <div class="brackets-container">
@@ -1157,7 +1485,6 @@
 
       // Bind weekly controls
       if (isWeekly) {
-        // Week selection pills
         document.querySelectorAll('.week-pill-btn').forEach(pill => {
           pill.addEventListener('click', () => {
             this.selectedWeekIndex = parseInt(pill.dataset.weekIndex, 10);
@@ -1165,7 +1492,6 @@
           });
         });
 
-        // Contender Filter pills
         document.querySelectorAll('.contender-filter-pill').forEach(pill => {
           pill.addEventListener('click', () => {
             this.selectedContenderFilter = pill.dataset.contender;
@@ -1173,7 +1499,6 @@
           });
         });
 
-        // Day Slate Filter pills
         document.querySelectorAll('.day-pill-btn').forEach(pill => {
           pill.addEventListener('click', () => {
             this.selectedDayFilter = pill.dataset.day;
@@ -1181,10 +1506,9 @@
           });
         });
 
-        // Reveal Showdown Modal buttons & card clicks
         document.querySelectorAll('.btn-reveal-showdown, .bracket-matchup-node').forEach(elem => {
           elem.addEventListener('click', (e) => {
-            if (e.target.closest('.btn-bracket-pick')) return; // ignore pick button clicks
+            if (e.target.closest('.btn-bracket-pick')) return;
             const matchId = elem.dataset.matchId;
             if (matchId) {
               this.openShowdownModal(matchId);
@@ -1192,7 +1516,6 @@
           });
         });
 
-        // Bracket Pick buttons
         document.querySelectorAll('.btn-bracket-pick').forEach(btn => {
           btn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -1200,6 +1523,47 @@
             const staff = btn.dataset.staff;
             this.userPicks[matchId] = staff;
             localStorage.setItem('office_endzone_picks', JSON.stringify(this.userPicks));
+            this.renderBracketsHub();
+          });
+        });
+      } else {
+        // Bind Season Tournament controls
+        document.querySelectorAll('.btn-season-reveal-showdown, .season-bracket-card').forEach(elem => {
+          elem.addEventListener('click', (e) => {
+            if (e.target.closest('.btn-season-pick') || e.target.closest('.btn-reset-season-picks')) return;
+            const matchId = elem.dataset.matchId;
+            if (matchId) {
+              this.openShowdownModal(matchId);
+            }
+          });
+        });
+
+        document.querySelectorAll('.btn-season-pick').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const matchId = btn.dataset.matchId;
+            const staff = btn.dataset.staff;
+            
+            // If user changes a Quarterfinal pick, invalidate subsequent rounds if needed
+            if (matchId.startsWith('st_q')) {
+              // Check if previous pick in semi or final needs cleanup
+              delete this.seasonPicks['st_final'];
+            }
+            if (matchId.startsWith('st_s')) {
+              delete this.seasonPicks['st_final'];
+            }
+
+            this.seasonPicks[matchId] = staff;
+            localStorage.setItem('office_endzone_season_picks', JSON.stringify(this.seasonPicks));
+            this.renderBracketsHub();
+          });
+        });
+
+        document.querySelectorAll('.btn-reset-season-picks').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.seasonPicks = {};
+            localStorage.removeItem('office_endzone_season_picks');
             this.renderBracketsHub();
           });
         });
@@ -1245,10 +1609,8 @@
               </div>
 
               <div class="match-node-contenders" style="opacity:0.85;">
-                <!-- Contender Slot 1 -->
                 <div class="bracket-contestant-row" style="background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.12);">
                   <div class="contestant-identity">
-                    <div style="width:24px; height:24px; border-radius:50%; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:800; color:#94a3b8;">?</div>
                     <div class="contestant-name-box">
                       <span class="contestant-staff-name" style="color:#cbd5e1;">${m.staff1.name}</span>
                       <span class="contestant-team-pick" style="color:#64748b;">${m.staff1.pick || 'Awaiting Stage 1 Scores'}</span>
@@ -1261,10 +1623,8 @@
 
                 <div class="bracket-vs-divider">VS</div>
 
-                <!-- Contender Slot 2 -->
                 <div class="bracket-contestant-row" style="background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.12);">
                   <div class="contestant-identity">
-                    <div style="width:24px; height:24px; border-radius:50%; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:800; color:#94a3b8;">?</div>
                     <div class="contestant-name-box">
                       <span class="contestant-staff-name" style="color:#cbd5e1;">${m.staff2.name}</span>
                       <span class="contestant-team-pick" style="color:#64748b;">${m.staff2.pick || 'Awaiting Stage 1 Scores'}</span>
@@ -1276,7 +1636,6 @@
                 </div>
               </div>
 
-              <!-- Unlocking Note -->
               <div style="font-size:0.62rem; color:#facc15; text-align:center; padding:4px 0 2px; font-weight:700; background:rgba(250,204,21,0.06); border-radius:4px; margin-top:4px;">
                 ⚡ ${isChampionship ? 'Unlocks for Sunday/Monday Night Primetime to crown the weekly champion!' : 'Unlocks after Stage 1 games conclude on Sunday!'}
               </div>
@@ -1297,10 +1656,8 @@
             </div>
 
             <div class="match-node-contenders">
-              <!-- Staff 1 -->
               <div class="bracket-contestant-row ${staff1Won && !isUpcoming ? 'winning' : ''} ${userPick === m.staff1.name ? 'user-picked' : ''}">
                 <div class="contestant-identity">
-                  <img src="${m.staff1.avatar}" class="contestant-avatar-sm" alt="${m.staff1.name}" onerror="this.src='https://ui-avatars.com/api/?name=${m.staff1.name}&background=0b1322&color=fff'">
                   <div class="contestant-name-box">
                     <span class="contestant-staff-name">${m.staff1.seed ? m.staff1.seed + ' ' : ''}${m.staff1.name} (${m.staff1.team})</span>
                     <span class="contestant-team-pick">${m.staff1.pick}</span>
@@ -1316,10 +1673,8 @@
 
               <div class="bracket-vs-divider">VS</div>
 
-              <!-- Staff 2 -->
               <div class="bracket-contestant-row ${staff2Won && !isUpcoming ? 'winning' : ''} ${userPick === m.staff2.name ? 'user-picked' : ''}">
                 <div class="contestant-identity">
-                  <img src="${m.staff2.avatar}" class="contestant-avatar-sm" alt="${m.staff2.name}" onerror="this.src='https://ui-avatars.com/api/?name=${m.staff2.name}&background=0b1322&color=fff'">
                   <div class="contestant-name-box">
                     <span class="contestant-staff-name">${m.staff2.seed ? m.staff2.seed + ' ' : ''}${m.staff2.name} (${m.staff2.team})</span>
                     <span class="contestant-team-pick">${m.staff2.pick}</span>
@@ -1334,7 +1689,6 @@
               </div>
             </div>
 
-            <!-- Reveal Button -->
             <button class="btn-reveal-showdown" data-match-id="${m.id}">
               <span>⚔️</span> Reveal Showdown Lore & Matchup Stats
             </button>
@@ -1364,20 +1718,20 @@
           <div class="bracket-rules-steps">
             <div class="bracket-rule-step">
               <strong>Stage 1 • Weekly Member Game Slate</strong>
-              <span>All 7 office members' NFL games are live on Thursday & Sunday. Tap "Pick" to back the winning member!</span>
+              <span>All 7 office members active on Thursday & Sunday. Tap "Pick" to back the winning member!</span>
             </div>
             <div class="bracket-rule-step">
               <strong>Stage 2 • Semifinals (Sunday Late Slate)</strong>
-              <span>As Stage 1 games conclude, the advancing top-scoring office members unlock their Semifinal matchups!</span>
+              <span>Advancing top-scoring members unlock their Semifinal matchups on Sunday afternoon!</span>
             </div>
             <div class="bracket-rule-step">
               <strong>Stage 3 • Weekly Crown Finale (SNF / MNF)</strong>
-              <span>Culminates on Sunday/Monday Night Primetime when the final office team finishes to decide the weekly champion!</span>
+              <span>Culminates on Sunday/Monday Night Primetime to decide the weekly champion!</span>
             </div>
           </div>
         </div>
 
-        <!-- User Pick & Scoring Tracker Bar -->
+        <!-- User Pick Tracker Bar -->
         <div class="user-picks-tracker-bar">
           <div class="user-picks-tracker-text">
             🎯 YOUR SAVED PICKS: ${pickedThisWeek.length}/4 THIS WEEK • ${totalUserPicksCount} SEASON PICKS LOCKED
@@ -1398,7 +1752,6 @@
             </button>
             ${CONTENDERS_LIST.map(c => `
               <button class="contender-filter-pill ${this.selectedContenderFilter === c.name ? 'active' : ''}" data-contender="${c.name}">
-                <img src="${c.avatar}" style="width:14px; height:14px; border-radius:50%; object-fit:cover;" alt="${c.name}">
                 ${c.name} (${c.team})
               </button>
             `).join('')}
@@ -1440,7 +1793,6 @@
 
         <!-- 3-Round Interactive Tournament Bracket Tree -->
         <div class="tournament-bracket-tree">
-          <!-- Column 1: Stage 1 / Opening Round -->
           <div class="bracket-round-column">
             <div class="bracket-round-header">
               <span class="round-header-title">Stage 1 • Opening Slate</span>
@@ -1449,7 +1801,6 @@
             ${r1Matches.map(m => renderNode(m)).join('')}
           </div>
 
-          <!-- Column 2: Stage 2 / Semifinals -->
           <div class="bracket-round-column">
             <div class="bracket-round-header">
               <span class="round-header-title">Stage 2 • Semifinals</span>
@@ -1458,7 +1809,6 @@
             ${r2Matches.map(m => renderNode(m)).join('')}
           </div>
 
-          <!-- Column 3: Stage 3 / Grand Finale -->
           <div class="bracket-round-column">
             <div class="bracket-round-header gold">
               <span class="round-header-title" style="color:#facc15;">👑 Weekly Grand Finale</span>
@@ -1471,31 +1821,115 @@
     }
 
     openShowdownModal(matchId) {
-      // Find matchup across all weeks
       let foundMatch = null;
-      let foundWeek = null;
+      let foundRoundLabel = null;
+      let isSeasonMatch = false;
 
       for (const w of WEEKLY_BRACKET_DATA.weeks) {
         const m = w.matchups.find(item => item.id === matchId);
         if (m) {
           foundMatch = m;
-          foundWeek = w;
+          foundRoundLabel = `${w.label.toUpperCase()} • ${m.roundName.toUpperCase()}`;
           break;
+        }
+      }
+
+      if (!foundMatch) {
+        for (const r of SEASON_TOURNAMENT_DATA.rounds) {
+          const m = r.matchups.find(item => item.id === matchId);
+          if (m) {
+            foundMatch = m;
+            foundRoundLabel = `18-WEEK SEASON TOURNAMENT • ${r.name.toUpperCase()}`;
+            isSeasonMatch = true;
+            break;
+          }
         }
       }
 
       if (!foundMatch || !this.dom.showdownModalContent || !this.dom.showdownModalOverlay) return;
 
       const m = foundMatch;
-      const userPick = this.userPicks[m.id];
-      const s1 = m.staff1;
-      const s2 = m.staff2;
+      let s1 = m.staff1;
+      let s2 = m.staff2;
+
+      // For dynamic season rounds (Semis & Final), resolve staff1 and staff2 if based on prior picks
+      if (isSeasonMatch && (!s1 || !s2)) {
+        const findContender = (nameOrPick) => {
+          if (!nameOrPick) return null;
+          if (nameOrPick === 'Carolina Panthers' || nameOrPick.includes('Panthers')) {
+            return {
+              name: "Carolina Panthers",
+              team: "CAR",
+              teamName: "Panthers (NFL #32)",
+              avatar: "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+              bannerGif: "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
+              seed: "NFL #32",
+              color: "#0085ca",
+              rating: 79,
+              yards: 280,
+              rzPct: "45%",
+              turnovers: "-8",
+              score: 0,
+              pick: "CAR Panthers (NFL #32)"
+            };
+          }
+          return CONTENDERS_LIST.find(c => 
+            c.name.toLowerCase() === nameOrPick.toLowerCase() || 
+            c.team.toLowerCase() === nameOrPick.toLowerCase() ||
+            (nameOrPick.toLowerCase().includes('cardinal') && c.team === 'ARI')
+          ) || null;
+        };
+
+        if (m.id === 'st_s1') {
+          s1 = findContender(this.seasonPicks['st_q1']);
+          s2 = findContender(this.seasonPicks['st_q4']);
+        } else if (m.id === 'st_s2') {
+          s1 = findContender(this.seasonPicks['st_q2']);
+          s2 = findContender(this.seasonPicks['st_q3']);
+        } else if (m.id === 'st_final') {
+          s1 = findContender(this.seasonPicks['st_s1']);
+          s2 = findContender(this.seasonPicks['st_s2']);
+        }
+      }
+
+      // If one or both are still TBD in a future round
+      if (!s1 || !s2) {
+        this.dom.showdownModalContent.innerHTML = `
+          <div class="showdown-hero-banner">
+            <div style="font-size:0.68rem; font-weight:800; color:#38bdf8; letter-spacing:1px; margin-bottom:4px;">
+              ${foundRoundLabel}
+            </div>
+            <div class="showdown-hero-title">${m.title}</div>
+            <div class="showdown-hero-meta">
+              <span class="showdown-meta-item">📍 ${m.venue}</span>
+              <span class="showdown-meta-item">⏰ ${m.kickoff}</span>
+              <span class="showdown-meta-item">🏈 ${m.surface}</span>
+            </div>
+          </div>
+          <div style="padding: 24px 16px; text-align:center; background:var(--bg-card-inner); border-radius:var(--radius-md); border:1.5px dashed var(--border-card);">
+            <div style="font-size: 2.4rem; margin-bottom: 8px;">🔒</div>
+            <div style="font-family:'Outfit', sans-serif; font-size:1.1rem; font-weight:800; color:#facc15; margin-bottom:6px;">
+              Matchup TBD • Awaiting Previous Round Results
+            </div>
+            <div style="font-size:0.8rem; color:#cbd5e1; max-width:440px; margin:0 auto 16px auto; line-height:1.4;">
+              ${m.lore || 'This matchup unlocks once prior round games conclude in real-time or when you make your picks in the 18-Week Season Tournament tab!'}
+            </div>
+            <div style="font-size:0.72rem; color:#94a3b8; background:rgba(0,0,0,0.3); padding:8px 12px; border-radius:6px; display:inline-block;">
+              ⚡ Pro Tip: Select winning picks in earlier rounds to simulate and unlock projected showdown lore!
+            </div>
+          </div>
+        `;
+        this.dom.showdownModalOverlay.classList.add('open');
+        this.dom.showdownModalOverlay.style.display = 'flex';
+        return;
+      }
+
+      const userPick = isSeasonMatch ? this.seasonPicks[m.id] : this.userPicks[m.id];
 
       this.dom.showdownModalContent.innerHTML = `
-        <!-- Hero Header -->
         <div class="showdown-hero-banner">
           <div style="font-size:0.68rem; font-weight:800; color:#38bdf8; letter-spacing:1px; margin-bottom:4px;">
-            ${foundWeek.label.toUpperCase()} • ${m.roundName.toUpperCase()}
+            ${foundRoundLabel}
           </div>
           <div class="showdown-hero-title">${m.title}</div>
           <div class="showdown-hero-meta">
@@ -1506,48 +1940,43 @@
           </div>
         </div>
 
-        <!-- Tale of the Tape Grid -->
         <div class="showdown-tale-grid">
-          <!-- Contender 1 -->
           <div class="showdown-contender-card">
             <div class="showdown-contender-avatar-wrap" id="showdown-avatar-1" title="Click to toggle GIF banner">
               <img src="${s1.avatar}" class="showdown-contender-avatar-img" id="showdown-img-1" alt="${s1.name}" onerror="this.src='https://ui-avatars.com/api/?name=${s1.name}&background=0b1322&color=fff'">
             </div>
-            <div class="showdown-contender-name">${s1.seed} ${s1.name}</div>
+            <div class="showdown-contender-name">${s1.seed ? s1.seed + ' ' : ''}${s1.name}</div>
             <div class="showdown-contender-team">
               <span>${s1.teamName} (${s1.team})</span>
             </div>
             <div class="showdown-contender-stats-mini">
-              <div><strong>Rating:</strong> ${s1.rating} OVR</div>
-              <div><strong>Offensive Avg:</strong> ${s1.yards} YDS/G</div>
-              <div><strong>Red Zone TD%:</strong> ${s1.rzPct}</div>
+              <div><strong>Rating:</strong> ${s1.rating || 90} OVR</div>
+              <div><strong>Offensive Avg:</strong> ${s1.yards || 340} YDS/G</div>
+              <div><strong>Red Zone TD%:</strong> ${s1.rzPct || '65%'}</div>
             </div>
           </div>
 
-          <!-- VS Badge Center -->
           <div class="showdown-vs-center">
             <div class="showdown-vs-badge">VS</div>
             <span style="font-size:0.62rem; color:#facc15; font-weight:800;">HEAD-TO-HEAD</span>
           </div>
 
-          <!-- Contender 2 -->
           <div class="showdown-contender-card">
             <div class="showdown-contender-avatar-wrap" id="showdown-avatar-2" title="Click to toggle GIF banner">
               <img src="${s2.avatar}" class="showdown-contender-avatar-img" id="showdown-img-2" alt="${s2.name}" onerror="this.src='https://ui-avatars.com/api/?name=${s2.name}&background=0b1322&color=fff'">
             </div>
-            <div class="showdown-contender-name">${s2.seed} ${s2.name}</div>
+            <div class="showdown-contender-name">${s2.seed ? s2.seed + ' ' : ''}${s2.name}</div>
             <div class="showdown-contender-team">
               <span>${s2.teamName} (${s2.team})</span>
             </div>
             <div class="showdown-contender-stats-mini">
-              <div><strong>Rating:</strong> ${s2.rating} OVR</div>
-              <div><strong>Offensive Avg:</strong> ${s2.yards} YDS/G</div>
-              <div><strong>Red Zone TD%:</strong> ${s2.rzPct}</div>
+              <div><strong>Rating:</strong> ${s2.rating || 90} OVR</div>
+              <div><strong>Offensive Avg:</strong> ${s2.yards || 340} YDS/G</div>
+              <div><strong>Red Zone TD%:</strong> ${s2.rzPct || '65%'}</div>
             </div>
           </div>
         </div>
 
-        <!-- Rivalry Lore & Battle Backstory -->
         <div class="showdown-lore-card">
           <div class="showdown-card-section-title">
             <span>📜</span> Rivalry Lore & Battle Backstory
@@ -1555,82 +1984,61 @@
           <div class="showdown-card-text">${m.lore}</div>
         </div>
 
-        <!-- Watercooler Smack Talk -->
         <div class="showdown-smack-wrap">
-          <div style="font-size:0.75rem; font-weight:800; color:#38bdf8; display:flex; align-items:center; justify-content:space-between;">
-            <span>💬 Watercooler Smack Talk</span>
-            <button id="btn-showdown-cheer" style="background:rgba(56,189,248,0.15); border:1px solid #38bdf8; border-radius:12px; color:#38bdf8; font-size:0.65rem; padding:2px 8px; cursor:pointer;">
-              📣 Cheer Loud!
-            </button>
+          <div style="font-size:0.75rem; font-weight:800; color:#38bdf8;">
+            <span>💬 Matchup Smack Talk</span>
           </div>
 
           <div class="smack-bubble">
-            <img src="${s1.avatar}" class="smack-avatar-mini" alt="${s1.name}">
+            <img src="${s1.avatar}" class="smack-avatar-mini" alt="${s1.name}" onerror="this.src='https://ui-avatars.com/api/?name=${s1.name}&background=0b1322&color=fff'">
             <div class="smack-content">
               <span class="smack-author">${s1.name} (${s1.teamName}):</span>
-              <span class="smack-quote">"${m.smack1}"</span>
+              <span class="smack-quote">"${m.smack1 || 'Ready to bring home the postseason win!'}"</span>
             </div>
           </div>
 
           <div class="smack-bubble">
-            <img src="${s2.avatar}" class="smack-avatar-mini" alt="${s2.name}">
+            <img src="${s2.avatar}" class="smack-avatar-mini" alt="${s2.name}" onerror="this.src='https://ui-avatars.com/api/?name=${s2.name}&background=0b1322&color=fff'">
             <div class="smack-content">
               <span class="smack-author">${s2.name} (${s2.teamName}):</span>
-              <span class="smack-quote">"${m.smack2}"</span>
+              <span class="smack-quote">"${m.smack2 || 'We are marching all the way to Week 18!'}"</span>
             </div>
           </div>
         </div>
 
-        <!-- Head-to-Head Stats Comparison -->
         <div class="showdown-stats-compare">
           <div style="font-size:0.75rem; font-weight:800; color:#facc15; margin-bottom:4px;">
             📊 Tale of the Tape Metrics
           </div>
 
-          <!-- Rating -->
           <div class="stat-compare-row">
             <div class="stat-compare-labels">
-              <span style="color:#38bdf8;">${s1.name}: ${s1.rating} OVR</span>
+              <span style="color:#38bdf8;">${s1.name}: ${s1.rating || 90} OVR</span>
               <span style="color:#94a3b8;">Franchise Rating</span>
-              <span style="color:#facc15;">${s2.name}: ${s2.rating} OVR</span>
+              <span style="color:#facc15;">${s2.name}: ${s2.rating || 90} OVR</span>
             </div>
             <div class="stat-bar-track">
-              <div class="stat-bar-fill-left" style="width:${(s1.rating / (s1.rating + s2.rating)) * 100}%;"></div>
-              <div class="stat-bar-fill-right" style="width:${(s2.rating / (s1.rating + s2.rating)) * 100}%;"></div>
+              <div class="stat-bar-fill-left" style="width:${((s1.rating || 90) / ((s1.rating || 90) + (s2.rating || 90))) * 100}%;"></div>
+              <div class="stat-bar-fill-right" style="width:${((s2.rating || 90) / ((s1.rating || 90) + (s2.rating || 90))) * 100}%;"></div>
             </div>
           </div>
 
-          <!-- Yards -->
           <div class="stat-compare-row">
             <div class="stat-compare-labels">
-              <span style="color:#38bdf8;">${s1.yards} YDS</span>
+              <span style="color:#38bdf8;">${s1.yards || 340} YDS</span>
               <span style="color:#94a3b8;">Offensive Yards / Game</span>
-              <span style="color:#facc15;">${s2.yards} YDS</span>
+              <span style="color:#facc15;">${s2.yards || 340} YDS</span>
             </div>
             <div class="stat-bar-track">
-              <div class="stat-bar-fill-left" style="width:${(s1.yards / (s1.yards + s2.yards)) * 100}%;"></div>
-              <div class="stat-bar-fill-right" style="width:${(s2.yards / (s1.yards + s2.yards)) * 100}%;"></div>
-            </div>
-          </div>
-
-          <!-- Turnovers -->
-          <div class="stat-compare-row">
-            <div class="stat-compare-labels">
-              <span style="color:#38bdf8;">${s1.turnovers}</span>
-              <span style="color:#94a3b8;">Turnover Differential</span>
-              <span style="color:#facc15;">${s2.turnovers}</span>
-            </div>
-            <div class="stat-bar-track">
-              <div class="stat-bar-fill-left" style="width:55%;"></div>
-              <div class="stat-bar-fill-right" style="width:45%;"></div>
+              <div class="stat-bar-fill-left" style="width:${((s1.yards || 340) / ((s1.yards || 340) + (s2.yards || 340) || 1)) * 100}%;"></div>
+              <div class="stat-bar-fill-right" style="width:${((s2.yards || 340) / ((s1.yards || 340) + (s2.yards || 340) || 1)) * 100}%;"></div>
             </div>
           </div>
         </div>
 
-        <!-- Pick Action Row -->
         <div style="margin-top:4px;">
           <div style="font-size:0.75rem; font-weight:800; color:#fff; margin-bottom:6px; text-align:center;">
-            🎯 MAKE YOUR BRACKET PICK FOR THIS SHOWDOWN:
+            🎯 MAKE YOUR ${isSeasonMatch ? 'SEASON TOURNAMENT' : 'WEEKLY BRACKET'} PICK FOR THIS SHOWDOWN:
           </div>
           <div class="showdown-picks-row">
             <button class="btn-showdown-action ${userPick === s1.name ? 'active-pick' : ''}" id="btn-pick-contender-1">
@@ -1643,13 +2051,12 @@
         </div>
       `;
 
-      // Bind GIF toggle on avatar clicks
       let isGif1 = false;
       const avatarWrap1 = document.getElementById('showdown-avatar-1');
       const img1 = document.getElementById('showdown-img-1');
       avatarWrap1?.addEventListener('click', () => {
         isGif1 = !isGif1;
-        img1.src = isGif1 ? s1.bannerGif : s1.avatar;
+        img1.src = isGif1 ? (s1.bannerGif || s1.avatar) : s1.avatar;
       });
 
       let isGif2 = false;
@@ -1657,30 +2064,45 @@
       const img2 = document.getElementById('showdown-img-2');
       avatarWrap2?.addEventListener('click', () => {
         isGif2 = !isGif2;
-        img2.src = isGif2 ? s2.bannerGif : s2.avatar;
+        img2.src = isGif2 ? (s2.bannerGif || s2.avatar) : s2.avatar;
       });
 
-      // Bind Pick buttons inside modal
       document.getElementById('btn-pick-contender-1')?.addEventListener('click', () => {
-        this.userPicks[m.id] = s1.name;
-        localStorage.setItem('office_endzone_picks', JSON.stringify(this.userPicks));
+        if (isSeasonMatch) {
+          if (m.id.startsWith('st_q')) {
+            delete this.seasonPicks['st_final'];
+          }
+          if (m.id.startsWith('st_s')) {
+            delete this.seasonPicks['st_final'];
+          }
+          this.seasonPicks[m.id] = s1.name;
+          localStorage.setItem('office_endzone_season_picks', JSON.stringify(this.seasonPicks));
+        } else {
+          this.userPicks[m.id] = s1.name;
+          localStorage.setItem('office_endzone_picks', JSON.stringify(this.userPicks));
+        }
         this.openShowdownModal(m.id);
         this.renderBracketsHub();
       });
 
       document.getElementById('btn-pick-contender-2')?.addEventListener('click', () => {
-        this.userPicks[m.id] = s2.name;
-        localStorage.setItem('office_endzone_picks', JSON.stringify(this.userPicks));
+        if (isSeasonMatch) {
+          if (m.id.startsWith('st_q')) {
+            delete this.seasonPicks['st_final'];
+          }
+          if (m.id.startsWith('st_s')) {
+            delete this.seasonPicks['st_final'];
+          }
+          this.seasonPicks[m.id] = s2.name;
+          localStorage.setItem('office_endzone_season_picks', JSON.stringify(this.seasonPicks));
+        } else {
+          this.userPicks[m.id] = s2.name;
+          localStorage.setItem('office_endzone_picks', JSON.stringify(this.userPicks));
+        }
         this.openShowdownModal(m.id);
         this.renderBracketsHub();
       });
 
-      // Bind Cheer button
-      document.getElementById('btn-showdown-cheer')?.addEventListener('click', () => {
-        this.showBanner('STADIUM ROAR! 📣🔥', `Office crowd goes wild for ${m.rivalryName}!`);
-      });
-
-      // Open Modal
       this.dom.showdownModalOverlay.classList.add('open');
       this.dom.showdownModalOverlay.style.display = 'flex';
     }
@@ -1692,113 +2114,600 @@
     }
 
     renderSeasonLadderContent() {
+      const findContender = (nameOrPick) => {
+        if (!nameOrPick) return null;
+        if (nameOrPick === 'Carolina Panthers' || nameOrPick.includes('Panthers')) {
+          return {
+            name: "Carolina Panthers",
+            team: "CAR",
+            teamName: "Panthers",
+            seed: "NFL #32",
+            score: 0,
+            pick: "CAR Panthers (NFL #32)"
+          };
+        }
+        return CONTENDERS_LIST.find(c => 
+          c.name.toLowerCase() === nameOrPick.toLowerCase() || 
+          c.team.toLowerCase() === nameOrPick.toLowerCase() ||
+          (nameOrPick.toLowerCase().includes('cardinal') && c.team === 'ARI')
+        ) || null;
+      };
+
+      // QF Contenders
+      const qf1_c1 = CONTENDERS_LIST.find(c => c.name === 'Andrea') || { name: 'Andrea', team: 'GB', seed: '#1', pick: 'GB Packers' };
+      const qf1_c2 = CONTENDERS_LIST.find(c => c.name === 'Saul') || { name: 'Saul', team: 'SF', seed: '#6', pick: 'SF 49ers' };
+
+      const qf2_c1 = CONTENDERS_LIST.find(c => c.name === 'Mariah') || { name: 'Mariah', team: 'PHI', seed: '#2', pick: 'PHI Eagles' };
+      const qf2_c2 = CONTENDERS_LIST.find(c => c.name === 'Nicole') || { name: 'Nicole', team: 'LV', seed: '#5', pick: 'LV Raiders' };
+
+      const qf3_c1 = CONTENDERS_LIST.find(c => c.name === 'CJ') || { name: 'CJ', team: 'CHI', seed: '#3', pick: 'CHI Bears' };
+      const qf3_c2 = CONTENDERS_LIST.find(c => c.name === 'Mario') || { name: 'Mario', team: 'CLE', seed: '#4', pick: 'CLE Browns' };
+
+      const qf4_c1 = CONTENDERS_LIST.find(c => c.name === 'Cardinals Flag') || { name: 'Cardinals Flag', team: 'ARI', seed: '#7', pick: 'ARI Cardinals' };
+      const qf4_c2 = { name: 'Carolina Panthers', team: 'CAR', teamName: 'Panthers', seed: 'NFL #32', pick: 'CAR Panthers (NFL #32)' };
+
+      // Semifinal Contenders (resolved from picks or placeholders)
+      const s1_c1 = findContender(this.seasonPicks['st_q1']) || { name: 'TBD (Winner QF 1: Andrea/Saul)', team: '', seed: 'ADV', pick: 'Winner QF 1' };
+      const s1_c2 = findContender(this.seasonPicks['st_q4']) || { name: 'TBD (Winner QF 4: Flag/Panthers)', team: '', seed: 'ADV', pick: 'Winner QF 4' };
+
+      const s2_c1 = findContender(this.seasonPicks['st_q2']) || { name: 'TBD (Winner QF 2: Mariah/Nicole)', team: '', seed: 'ADV', pick: 'Winner QF 2' };
+      const s2_c2 = findContender(this.seasonPicks['st_q3']) || { name: 'TBD (Winner QF 3: CJ/Mario)', team: '', seed: 'ADV', pick: 'Winner QF 3' };
+
+      // Finalist Contenders (resolved from semi picks or placeholders)
+      const f_c1 = findContender(this.seasonPicks['st_s1']) || { name: 'TBD (Winner Semifinal 1)', team: '', seed: 'TOP', pick: 'Winner SF 1' };
+      const f_c2 = findContender(this.seasonPicks['st_s2']) || { name: 'TBD (Winner Semifinal 2)', team: '', seed: 'TOP', pick: 'Winner SF 2' };
+
+      const seasonPicksCount = Object.keys(this.seasonPicks).length;
+      const crownedChamp = this.seasonPicks['st_final'];
+
+      const renderSeasonNode = (matchId, weekLabel, rivalryName, c1, c2, isFinal = false) => {
+        const userPick = this.seasonPicks[matchId];
+        const canPick1 = c1 && c1.name && !c1.name.startsWith('TBD');
+        const canPick2 = c2 && c2.name && !c2.name.startsWith('TBD');
+
+        return `
+          <div class="bracket-matchup-node ${isFinal ? 'championship-node' : ''}" data-match-id="${matchId}" role="button" tabindex="0">
+            <div class="match-node-top">
+              <span class="match-rivalry-name">${rivalryName}</span>
+              <span class="matchup-status-pill preview">${weekLabel}</span>
+            </div>
+
+            <div class="match-node-contenders">
+              <div class="bracket-contestant-row ${userPick === c1?.name ? 'user-picked' : ''}" style="${!canPick1 ? 'background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.12);' : ''}">
+                <div class="contestant-identity">
+                  <div class="contestant-name-box">
+                    <span class="contestant-staff-name" style="${!canPick1 ? 'color:#94a3b8; font-style:italic;' : ''}">${c1?.seed ? c1.seed + ' ' : ''}${c1?.name || 'TBD'} ${c1?.team ? '(' + c1.team + ')' : ''}</span>
+                    <span class="contestant-team-pick" style="color:#64748b;">${c1?.pick || (canPick1 ? c1?.teamName : 'Awaiting Previous Round')}</span>
+                  </div>
+                </div>
+                <div class="contestant-score-action">
+                  ${canPick1 ? `
+                    <button class="btn-season-pick btn-bracket-pick ${userPick === c1.name ? 'active' : ''}" data-match-id="${matchId}" data-staff="${c1.name}">
+                      ${userPick === c1.name ? '✓ Picked' : 'Pick'}
+                    </button>
+                  ` : `<span class="contestant-score-num" style="color:#64748b; font-size:0.68rem;">TBD</span>`}
+                </div>
+              </div>
+
+              <div class="bracket-vs-divider">VS</div>
+
+              <div class="bracket-contestant-row ${userPick === c2?.name ? 'user-picked' : ''}" style="${!canPick2 ? 'background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.12);' : ''}">
+                <div class="contestant-identity">
+                  <div class="contestant-name-box">
+                    <span class="contestant-staff-name" style="${!canPick2 ? 'color:#94a3b8; font-style:italic;' : ''}">${c2?.seed ? c2.seed + ' ' : ''}${c2?.name || 'TBD'} ${c2?.team ? '(' + c2.team + ')' : ''}</span>
+                    <span class="contestant-team-pick" style="color:#64748b;">${c2?.pick || (canPick2 ? c2?.teamName : 'Awaiting Previous Round')}</span>
+                  </div>
+                </div>
+                <div class="contestant-score-action">
+                  ${canPick2 ? `
+                    <button class="btn-season-pick btn-bracket-pick ${userPick === c2.name ? 'active' : ''}" data-match-id="${matchId}" data-staff="${c2.name}">
+                      ${userPick === c2.name ? '✓ Picked' : 'Pick'}
+                    </button>
+                  ` : `<span class="contestant-score-num" style="color:#64748b; font-size:0.68rem;">TBD</span>`}
+                </div>
+              </div>
+            </div>
+
+            <button class="btn-season-reveal-showdown btn-reveal-showdown" data-match-id="${matchId}">
+              <span>⚔️</span> Reveal Showdown Lore & Matchup Stats
+            </button>
+          </div>
+        `;
+      };
+
       return `
         <div class="season-ladder-view">
+          <!-- Explainer Card -->
           <div class="ladder-explainer-card">
             <span style="font-size:1.3rem;">🛡️</span>
             <div class="ladder-info-text">
-              <strong>2026 Office Endzone Regular Season Championship (Weeks 1-18)</strong><br>
-              Tracks the entire 2026 NFL regular season journey among office members. Concludes at the final game of Week 18 prior to the NFL playoffs to crown the 2026 Office Gridiron Champion!
+              <strong>2026 Office Endzone Regular Season Championship (Weeks 16–18)</strong><br>
+              Featuring all 7 office contenders! Weeks 1–15 determine regular season seeding (#1 through #7). Tap "Pick" on any matchup below to simulate and advance your chosen contenders to the Week 18 Grand Finale!
             </div>
           </div>
 
-          <div class="ladder-rounds-grid">
-            <!-- Round 1 / Quarterfinals -->
-            <div class="ladder-round-box">
-              <span class="ladder-round-label">Round 1 • Quarterfinals (2026 Playoff Qualifier)</span>
-              <div class="bracket-contestant-row">
-                <span class="contestant-staff-name">#3 Mario (CLE Browns)</span>
-                <span class="contestant-score-num">0 PTS</span>
-              </div>
-              <div class="bracket-contestant-row">
-                <span class="contestant-staff-name">#6 Cardinals Flag (ARI Cardinals)</span>
-                <span class="contestant-score-num">0 PTS</span>
-              </div>
-              <div style="height:4px;"></div>
-              <div class="bracket-contestant-row">
-                <span class="contestant-staff-name">#4 Nicole (LV Raiders)</span>
-                <span class="contestant-score-num">0 PTS</span>
-              </div>
-              <div class="bracket-contestant-row">
-                <span class="contestant-staff-name">#5 Saul (SF 49ers)</span>
-                <span class="contestant-score-num">0 PTS</span>
-              </div>
+          <!-- User Season Pick Tracker Bar -->
+          <div class="user-picks-tracker-bar">
+            <div class="user-picks-tracker-text">
+              🎯 SEASON BRACKET PICKS: ${seasonPicksCount}/7 ROUNDS LOCKED
             </div>
+            <button class="btn-reset-season-picks" title="Reset all season tournament picks">
+              ↺ Reset Season Picks
+            </button>
+          </div>
 
-            <!-- Round 2 / Semifinals -->
-            <div class="ladder-round-box">
-              <span class="ladder-round-label">Round 2 • Semifinals (2026 Championship Semis)</span>
-              <div class="bracket-contestant-row">
-                <span class="contestant-staff-name">#1 Andrea (GB Packers • Round 1 Bye)</span>
-                <span class="contestant-score-num">0 PTS</span>
-              </div>
-              <div class="bracket-contestant-row">
-                <span class="contestant-staff-name">Winner QF 1</span>
-                <span class="contestant-score-num">0 PTS</span>
-              </div>
-              <div style="height:4px;"></div>
-              <div class="bracket-contestant-row">
-                <span class="contestant-staff-name">#2 CJ (CHI Bears • Round 1 Bye)</span>
-                <span class="contestant-score-num">0 PTS</span>
-              </div>
-              <div class="bracket-contestant-row">
-                <span class="contestant-staff-name">Winner QF 2</span>
-                <span class="contestant-score-num">0 PTS</span>
-              </div>
-            </div>
-
-            <!-- Championship Finale -->
-            <div class="ladder-round-box ladder-championship-grand">
-              <span class="ladder-round-label">👑 Week 18 Regular Season Grand Finale</span>
-              <div class="bracket-contestant-row" style="background:rgba(250,204,21,0.1);">
-                <div class="contestant-identity">
-                  <span class="contestant-staff-name" style="color:#facc15; font-size:0.9rem;">2026 Semifinal 1 Winner</span>
-                </div>
-                <span class="contestant-score-num" style="font-size:1.1rem;">0 PTS</span>
-              </div>
-              <div class="bracket-vs-divider" style="color:#facc15;">VS</div>
-              <div class="bracket-contestant-row">
-                <div class="contestant-identity">
-                  <span class="contestant-staff-name">2026 Semifinal 2 Winner</span>
-                </div>
-                <span class="contestant-score-num">0 PTS</span>
-              </div>
-            </div>
-
-            <!-- Grand Winner Ribbon -->
-            <div class="weekly-crown-banner" style="background:linear-gradient(90deg, #38bdf8, #2563eb); color:#fff;">
-              <div class="crown-icon">🏈</div>
+          <!-- Crowned Champion Banner if Chosen -->
+          ${crownedChamp ? `
+            <div class="weekly-crown-banner championship-crowned-banner" style="background:linear-gradient(90deg, #facc15, #f59e0b); color:#0b1322;">
+              <div class="crown-icon">🏆</div>
               <div class="crown-details">
-                <div class="crown-title" style="color:#fff; font-weight:900;">2026 Office Endzone Season Championship: Starting Gate</div>
-                <div class="crown-sub" style="color:#e2e8f0; font-weight:700;">6 Contenders Ready • Crowned Week 18 Prior to NFL Playoffs</div>
+                <div class="crown-title" style="color:#0b1322; font-size:0.95rem; font-weight:900;">2026 REGULAR SEASON CHAMPION: ${crownedChamp.toUpperCase()}</div>
+                <div class="crown-sub" style="color:#1e293b; font-weight:800;">Winner of the 18-Week Tournament! Eternal office bragging rights & Lombardi Trophy!</div>
               </div>
+            </div>
+          ` : ''}
+
+          <!-- 3-Round Interactive Tournament Bracket Tree (Names Only) -->
+          <div class="tournament-bracket-tree">
+            <!-- Column 1: Quarterfinals (Week 16) -->
+            <div class="bracket-round-column">
+              <div class="bracket-round-header">
+                <span class="round-header-title">Round 1 • Quarterfinals</span>
+                <span class="round-header-badge">WEEK 16 (4 MATCHES)</span>
+              </div>
+              ${renderSeasonNode('st_q1', 'WEEK 16', '#1 Andrea vs #6 Saul', qf1_c1, qf1_c2)}
+              ${renderSeasonNode('st_q2', 'WEEK 16', '#2 Mariah vs #5 Nicole', qf2_c1, qf2_c2)}
+              ${renderSeasonNode('st_q3', 'WEEK 16', '#3 CJ vs #4 Mario', qf3_c1, qf3_c2)}
+              ${renderSeasonNode('st_q4', 'WEEK 16', '#7 Cardinals Flag vs NFL #32 Panthers', qf4_c1, qf4_c2)}
+            </div>
+
+            <!-- Column 2: Semifinals (Week 17) -->
+            <div class="bracket-round-column">
+              <div class="bracket-round-header">
+                <span class="round-header-title">Round 2 • Semifinals</span>
+                <span class="round-header-badge">WEEK 17 (2 MATCHES)</span>
+              </div>
+              ${renderSeasonNode('st_s1', 'WEEK 17', 'Semifinal 1 (Winner QF 1 vs QF 4)', s1_c1, s1_c2)}
+              ${renderSeasonNode('st_s2', 'WEEK 17', 'Semifinal 2 (Winner QF 2 vs QF 3)', s2_c1, s2_c2)}
+            </div>
+
+            <!-- Column 3: Grand Championship Finale (Week 18) -->
+            <div class="bracket-round-column">
+              <div class="bracket-round-header gold">
+                <span class="round-header-title" style="color:#facc15;">👑 Round 3 • Championship</span>
+                <span class="round-header-badge" style="background:rgba(250,204,21,0.2); color:#facc15;">WEEK 18 FINALE</span>
+              </div>
+              ${renderSeasonNode('st_final', 'WEEK 18', '👑 2026 Season Grand Championship', f_c1, f_c2, true)}
             </div>
           </div>
         </div>
       `;
     }
 
+    // =========================================================================
+    // FULL INTERACTIVE NFL BOX SCORE ENGINE
+    // =========================================================================
+    openBoxScoreModal(matchupData, mode = 'CURRENT') {
+      if (!this.dom.boxScoreModalContent || !this.dom.boxScoreModalOverlay) return;
+
+      const gamesList = mode === 'LAST_WEEK' ? YESTERDAY_TICKER_GAMES : TODAY_TICKER_GAMES;
+
+      // Determine active game
+      let selectedGame = null;
+      if (matchupData && matchupData.away && matchupData.home) {
+        const awayCode = typeof matchupData.away === 'string' ? matchupData.away : matchupData.away.code;
+        const homeCode = typeof matchupData.home === 'string' ? matchupData.home : matchupData.home.code;
+        selectedGame = gamesList.find(g => g.away === awayCode && g.home === homeCode) || {
+          away: awayCode,
+          awayScore: "24",
+          home: homeCode,
+          homeScore: "21",
+          status: "FINAL",
+          isLive: false
+        };
+      } else {
+        selectedGame = gamesList[0];
+      }
+
+      this.renderBoxScoreModalContent(selectedGame, gamesList, mode);
+
+      this.dom.boxScoreModalOverlay.classList.add('open');
+      this.dom.boxScoreModalOverlay.style.display = 'flex';
+    }
+
+    renderBoxScoreModalContent(activeGame, gamesList, mode) {
+      const awayTeam = this.teams.find(t => t.abbreviation === activeGame.away) || {
+        city: activeGame.away,
+        name: "Football Team",
+        abbreviation: activeGame.away,
+        color: "#38bdf8",
+        logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${activeGame.away.toLowerCase()}.png`,
+        qb: "Starting Quarterback"
+      };
+
+      const homeTeam = this.teams.find(t => t.abbreviation === activeGame.home) || {
+        city: activeGame.home,
+        name: "Football Team",
+        abbreviation: activeGame.home,
+        color: "#facc15",
+        logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${activeGame.home.toLowerCase()}.png`,
+        qb: "Starting Quarterback"
+      };
+
+      const awayNum = parseInt(activeGame.awayScore) || 24;
+      const homeNum = parseInt(activeGame.homeScore) || 21;
+
+      // Linescore quarter breakdown calculation
+      const q1Away = Math.floor(awayNum * 0.2);
+      const q2Away = Math.floor(awayNum * 0.35);
+      const q3Away = Math.floor(awayNum * 0.2);
+      const q4Away = awayNum - (q1Away + q2Away + q3Away);
+
+      const q1Home = Math.floor(homeNum * 0.25);
+      const q2Home = Math.floor(homeNum * 0.3);
+      const q3Home = Math.floor(homeNum * 0.2);
+      const q4Home = homeNum - (q1Home + q2Home + q3Home);
+
+      // Realistic team stats
+      const awayYards = 260 + (awayNum * 5);
+      const homeYards = 250 + (homeNum * 5);
+      const awayPass = Math.floor(awayYards * 0.68);
+      const awayRush = awayYards - awayPass;
+      const homePass = Math.floor(homeYards * 0.65);
+      const homeRush = homeYards - homePass;
+
+      if (this.dom.boxScoreBadgeStatus) {
+        this.dom.boxScoreBadgeStatus.textContent = mode === 'LAST_WEEK' ? "📅 LAST WEEK'S BOX SCORE" : "📊 LIVE NFL BOX SCORE";
+      }
+      if (this.dom.boxScoreVenueTime) {
+        this.dom.boxScoreVenueTime.textContent = `${activeGame.status} • ${homeTeam.stadium || 'NFL Stadium'}`;
+      }
+
+      this.dom.boxScoreModalContent.innerHTML = `
+        <!-- Game Selector Pills -->
+        <div class="box-score-game-selector">
+          ${gamesList.map((g, idx) => {
+            const isActive = g.away === activeGame.away && g.home === activeGame.home;
+            return `
+              <button class="box-selector-btn ${isActive ? 'active' : ''}" data-idx="${idx}">
+                ${g.away} ${g.awayScore} @ ${g.home} ${g.homeScore}
+              </button>
+            `;
+          }).join('')}
+        </div>
+
+        <!-- Hero Scoreboard -->
+        <div class="box-score-hero">
+          <div class="box-hero-team away">
+            <img src="${awayTeam.logo}" class="box-hero-logo" alt="${awayTeam.name}" onerror="this.src='https://ui-avatars.com/api/?name=${awayTeam.abbreviation}&background=0b1322&color=fff'">
+            <div class="box-hero-info">
+              <span class="box-hero-name" style="color:${awayTeam.color};">${awayTeam.city}</span>
+              <span class="box-hero-sub">${awayTeam.name}</span>
+            </div>
+          </div>
+
+          <div class="box-hero-score-center">
+            <div class="box-hero-score-nums">
+              <span class="${awayNum >= homeNum ? 'winner-score' : ''}">${awayNum}</span>
+              <span style="color:#64748b; font-size:1.4rem;">-</span>
+              <span class="${homeNum >= awayNum ? 'winner-score' : ''}">${homeNum}</span>
+            </div>
+            <div class="box-hero-status-pill">${activeGame.status}</div>
+          </div>
+
+          <div class="box-hero-team home">
+            <img src="${homeTeam.logo}" class="box-hero-logo" alt="${homeTeam.name}" onerror="this.src='https://ui-avatars.com/api/?name=${homeTeam.abbreviation}&background=0b1322&color=fff'">
+            <div class="box-hero-info">
+              <span class="box-hero-name" style="color:${homeTeam.color};">${homeTeam.city}</span>
+              <span class="box-hero-sub">${homeTeam.name}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Linescore Table -->
+        <div>
+          <div class="box-section-title"><span>📋</span> Line Score (Quarter Breakdown)</div>
+          <div class="box-linescore-wrap">
+            <table class="box-linescore-table">
+              <thead>
+                <tr>
+                  <th style="text-align:left; padding-left:14px;">Team</th>
+                  <th>Q1</th>
+                  <th>Q2</th>
+                  <th>Q3</th>
+                  <th>Q4</th>
+                  <th>TOTAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="team-cell" style="padding-left:14px;">
+                    <img src="${awayTeam.logo}" style="width:16px; height:16px; object-fit:contain;" alt="">
+                    <span>${awayTeam.abbreviation}</span>
+                  </td>
+                  <td>${q1Away}</td>
+                  <td>${q2Away}</td>
+                  <td>${q3Away}</td>
+                  <td>${q4Away}</td>
+                  <td class="total-cell">${awayNum}</td>
+                </tr>
+                <tr>
+                  <td class="team-cell" style="padding-left:14px;">
+                    <img src="${homeTeam.logo}" style="width:16px; height:16px; object-fit:contain;" alt="">
+                    <span>${homeTeam.abbreviation}</span>
+                  </td>
+                  <td>${q1Home}</td>
+                  <td>${q2Home}</td>
+                  <td>${q3Home}</td>
+                  <td>${q4Home}</td>
+                  <td class="total-cell">${homeNum}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Team Comparison Stats -->
+        <div>
+          <div class="box-section-title"><span>📊</span> Team Matchup Statistics</div>
+          <div class="box-stats-card">
+            <!-- 1st Downs -->
+            <div class="box-stat-row">
+              <div class="box-stat-labels">
+                <span class="box-stat-val-away">${Math.floor(awayYards / 18)}</span>
+                <span class="box-stat-name">First Downs</span>
+                <span class="box-stat-val-home">${Math.floor(homeYards / 18)}</span>
+              </div>
+              <div class="box-stat-bar-track">
+                <div class="box-stat-bar-away" style="width:50%;"></div>
+                <div class="box-stat-bar-home" style="width:50%;"></div>
+              </div>
+            </div>
+
+            <!-- Total Yards -->
+            <div class="box-stat-row">
+              <div class="box-stat-labels">
+                <span class="box-stat-val-away">${awayYards}</span>
+                <span class="box-stat-name">Total Net Yards</span>
+                <span class="box-stat-val-home">${homeYards}</span>
+              </div>
+              <div class="box-stat-bar-track">
+                <div class="box-stat-bar-away" style="width:${(awayYards / (awayYards + homeYards)) * 100}%;"></div>
+                <div class="box-stat-bar-home" style="width:${(homeYards / (awayYards + homeYards)) * 100}%;"></div>
+              </div>
+            </div>
+
+            <!-- Passing Yards -->
+            <div class="box-stat-row">
+              <div class="box-stat-labels">
+                <span class="box-stat-val-away">${awayPass}</span>
+                <span class="box-stat-name">Passing Yards</span>
+                <span class="box-stat-val-home">${homePass}</span>
+              </div>
+              <div class="box-stat-bar-track">
+                <div class="box-stat-bar-away" style="width:${(awayPass / (awayPass + homePass)) * 100}%;"></div>
+                <div class="box-stat-bar-home" style="width:${(homePass / (awayPass + homePass)) * 100}%;"></div>
+              </div>
+            </div>
+
+            <!-- Rushing Yards -->
+            <div class="box-stat-row">
+              <div class="box-stat-labels">
+                <span class="box-stat-val-away">${awayRush}</span>
+                <span class="box-stat-name">Rushing Yards</span>
+                <span class="box-stat-val-home">${homeRush}</span>
+              </div>
+              <div class="box-stat-bar-track">
+                <div class="box-stat-bar-away" style="width:${(awayRush / (awayRush + homeRush)) * 100}%;"></div>
+                <div class="box-stat-bar-home" style="width:${(homeRush / (awayRush + homeRush)) * 100}%;"></div>
+              </div>
+            </div>
+
+            <!-- 3rd Down Efficiency -->
+            <div class="box-stat-row">
+              <div class="box-stat-labels">
+                <span class="box-stat-val-away">6/12</span>
+                <span class="box-stat-name">3rd Down Efficiency</span>
+                <span class="box-stat-val-home">5/11</span>
+              </div>
+              <div class="box-stat-bar-track">
+                <div class="box-stat-bar-away" style="width:52%;"></div>
+                <div class="box-stat-bar-home" style="width:48%;"></div>
+              </div>
+            </div>
+
+            <!-- Turnovers -->
+            <div class="box-stat-row">
+              <div class="box-stat-labels">
+                <span class="box-stat-val-away">${awayNum > homeNum ? '0' : '2'}</span>
+                <span class="box-stat-name">Turnovers Lost</span>
+                <span class="box-stat-val-home">${homeNum > awayNum ? '0' : '1'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key Player Leaders -->
+        <div>
+          <div class="box-section-title"><span>⭐</span> Key Individual Leaders</div>
+          <div class="box-leaders-grid">
+            <div class="box-leader-card">
+              <span class="box-leader-cat">${awayTeam.abbreviation} Passing</span>
+              <span class="box-leader-player">${awayTeam.qb || 'Franchise QB'}</span>
+              <span class="box-leader-stat">${Math.floor(awayPass / 12)}/28, ${awayPass} YDS, 2 TD</span>
+            </div>
+            <div class="box-leader-card">
+              <span class="box-leader-cat">${homeTeam.abbreviation} Passing</span>
+              <span class="box-leader-player">${homeTeam.qb || 'Franchise QB'}</span>
+              <span class="box-leader-stat">${Math.floor(homePass / 11)}/26, ${homePass} YDS, 2 TD</span>
+            </div>
+            <div class="box-leader-card">
+              <span class="box-leader-cat">${awayTeam.abbreviation} Rushing</span>
+              <span class="box-leader-player">Lead Tailback</span>
+              <span class="box-leader-stat">16 CAR, ${awayRush} YDS, 1 TD</span>
+            </div>
+            <div class="box-leader-card">
+              <span class="box-leader-cat">${homeTeam.abbreviation} Rushing</span>
+              <span class="box-leader-player">Lead Tailback</span>
+              <span class="box-leader-stat">18 CAR, ${homeRush} YDS, 1 TD</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scoring Drives Summary -->
+        <div>
+          <div class="box-section-title"><span>🎯</span> Scoring Drives Breakdown</div>
+          <div class="box-drives-list">
+            <div class="box-drive-item">
+              <span class="box-drive-desc"><strong>Q1 09:14</strong> • ${awayTeam.abbreviation} - 28-yard field goal</span>
+              <span class="box-drive-score">3 - 0</span>
+            </div>
+            <div class="box-drive-item home-score">
+              <span class="box-drive-desc"><strong>Q2 11:20</strong> • ${homeTeam.abbreviation} - 12-yard TD pass by ${homeTeam.qb} (XP Good)</span>
+              <span class="box-drive-score">3 - 7</span>
+            </div>
+            <div class="box-drive-item">
+              <span class="box-drive-desc"><strong>Q2 01:45</strong> • ${awayTeam.abbreviation} - 35-yard TD pass by ${awayTeam.qb} (XP Good)</span>
+              <span class="box-drive-score">10 - 7</span>
+            </div>
+            <div class="box-drive-item home-score">
+              <span class="box-drive-desc"><strong>Q3 04:30</strong> • ${homeTeam.abbreviation} - 4-yard rushing TD (XP Good)</span>
+              <span class="box-drive-score">10 - 14</span>
+            </div>
+            <div class="box-drive-item">
+              <span class="box-drive-desc"><strong>Q4 02:15</strong> • ${awayTeam.abbreviation} - Go-ahead 18-yard TD pass (XP Good)</span>
+              <span class="box-drive-score">${awayNum} - ${homeNum}</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Bind switcher buttons
+      this.dom.boxScoreModalContent.querySelectorAll('.box-selector-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.dataset.idx, 10);
+          this.renderBoxScoreModalContent(gamesList[idx], gamesList, mode);
+        });
+      });
+    }
+
+    closeBoxScoreModal() {
+      if (!this.dom.boxScoreModalOverlay) return;
+      this.dom.boxScoreModalOverlay.classList.remove('open');
+      this.dom.boxScoreModalOverlay.style.display = 'none';
+    }
+
     openChallengesDrawer() {
       if (!this.dom.drawerBody || !this.dom.secondaryDrawer) return;
       this.dom.drawerTitle.textContent = "🏆 2026 Active Office Football Challenges";
+      
+      const contendersBadges = [
+        { name: "Andrea", team: "GB", color: "#facc15", badges: ["🧀 Lambeau Scout", "🏆 Wk 1 Contender"], icons: ["🔥", "🚀", "🏆"] },
+        { name: "Mariah", team: "PHI", color: "#2dd4bf", badges: ["🦅 Midnight Green", "🏆 Wk 1 Contender"], icons: ["🚀", "🎯", "🏆"] },
+        { name: "CJ", team: "CHI", color: "#f87171", badges: ["🐻 Bear Down", "🏆 Wk 1 Contender"], icons: ["🚀", "🔥", "🏆"] },
+        { name: "Mario", team: "CLE", color: "#fb923c", badges: ["🐶 Dawg Pound", "🏆 Wk 1 Contender"], icons: ["💥", "🎯", "🏆"] },
+        { name: "Nicole", team: "LV", color: "#38bdf8", badges: ["☠️ Raider Nation", "🏆 Wk 1 Contender"], icons: ["🔥", "🚀", "🏆"] },
+        { name: "Saul", team: "SF", color: "#fb7185", badges: ["⛏️ Faithful 49ers", "🏆 Wk 1 Contender"], icons: ["💥", "🎯", "🏆"] },
+        { name: "Cardinals Flag", team: "ARI", color: "#f43f5e", badges: ["🚩 Desert Flag", "🏆 Wk 1 Contender"], icons: ["🎯", "🔥", "🏆"] }
+      ];
+
       this.dom.drawerBody.innerHTML = `
-        <div style="display:flex; flex-direction:column; gap:12px;">
-          <div style="background:#0b1322; padding:12px; border-radius:10px; border-top:3px solid #10b981; border:1px solid rgba(255,255,255,0.08);">
-            <strong style="color:#10b981;">🚀 400-Yard Aerial Assault Challenge</strong>
-            <p style="color:#94a3b8; font-size:0.75rem; margin-top:4px;">Predict 400+ total passing & rushing yards in a single game.</p>
-            <div style="margin-top:6px; font-size:0.72rem; color:#facc15;">Leader: 2026 Preseason Kickoff</div>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <!-- 100% Automatic Explainer Banner -->
+          <div class="ladder-explainer-card" style="border-left:4px solid #10b981; background:linear-gradient(135deg, rgba(16,185,129,0.1), rgba(15,23,42,0.9));">
+            <span style="font-size:1.4rem;">⚡</span>
+            <div class="ladder-info-text">
+              <strong style="color:#10b981;">100% Automated Weekly Milestones — Zero Manual Picks Required!</strong><br>
+              Every week, the app automatically tracks your team's real NFL game stats (Yards, Points, Sacks & Field Goals). Whenever your team hits a milestone in their game, you automatically win that challenge's achievement icon!
+            </div>
           </div>
 
-          <div style="background:#0b1322; padding:12px; border-radius:10px; border-top:3px solid #facc15; border:1px solid rgba(255,255,255,0.08);">
-            <strong style="color:#facc15;">🔥 High-Octane 50+ Shootout Challenge</strong>
-            <p style="color:#94a3b8; font-size:0.75rem; margin-top:4px;">Pick the highest scoring matchup of the week.</p>
-            <div style="margin-top:6px; font-size:0.72rem; color:#facc15;">Leader: 2026 Preseason Kickoff</div>
+          <!-- Automated Weekly Badge Board -->
+          <div class="standings-table-wrap">
+            <div style="padding:10px 14px; background:rgba(0,0,0,0.3); font-family:'Outfit',sans-serif; font-size:0.8rem; font-weight:800; color:#facc15; display:flex; justify-content:space-between; align-items:center;">
+              <span>🎖️ AUTOMATED WEEKLY BADGE SHOWCASE</span>
+              <span style="font-size:0.68rem; color:#94a3b8; font-weight:600;">Auto-awarded from weekly NFL games</span>
+            </div>
+            <table class="dugout-standings-table">
+              <thead>
+                <tr>
+                  <th class="col-team">STAFF MEMBER</th>
+                  <th class="col-stat">TEAM</th>
+                  <th style="text-align:center;">EARNED ICONS</th>
+                  <th class="col-stat">STATUS</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${contendersBadges.map(c => `
+                  <tr>
+                    <td style="color:#fff; font-weight:800;">${c.name}</td>
+                    <td style="color:${c.color}; font-weight:800;">${c.team}</td>
+                    <td style="text-align:center; font-size:1.15rem; letter-spacing:4px;">
+                      ${c.icons.map(ic => `<span title="Automated Weekly Award" style="cursor:help;">${ic}</span>`).join(' ')}
+                    </td>
+                    <td class="col-stat" style="color:#10b981; font-weight:800; font-size:0.7rem;">AUTO-ACTIVE</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
           </div>
 
-          <div style="background:#0b1322; padding:12px; border-radius:10px; border-top:3px solid #f97316; border:1px solid rgba(255,255,255,0.08);">
-            <strong style="color:#fb923c;">💥 Sack Attack Blitz Defense</strong>
-            <p style="color:#94a3b8; font-size:0.75rem; margin-top:4px;">Predict which defense tallies 4+ sacks.</p>
-            <div style="margin-top:6px; font-size:0.72rem; color:#facc15;">Leader: 2026 Preseason Kickoff</div>
+          <!-- Active Milestone Challenge Cards -->
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;">
+            <!-- Rocket Challenge -->
+            <div style="background:#0b1322; padding:14px; border-radius:12px; border-top:4px solid #10b981; border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:6px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:1.3rem;">🚀</span>
+                <span style="font-size:0.68rem; color:#10b981; background:rgba(16,185,129,0.15); padding:2px 8px; border-radius:10px; font-weight:800;">OFFENSE • 400+ YDS</span>
+              </div>
+              <strong style="color:#10b981; font-size:0.9rem;">400-Yard Aerial Assault</strong>
+              <p style="color:#94a3b8; font-size:0.75rem; line-height:1.3;">Automatically awarded when a contender's team records 400+ total passing and rushing yards in their weekly game.</p>
+              <div style="margin-top:4px; font-size:0.72rem; color:#facc15; font-weight:700;">🎁 Reward: 🚀 Rocket Icon + 150 Office Pts</div>
+            </div>
+
+            <!-- Flame Challenge -->
+            <div style="background:#0b1322; padding:14px; border-radius:12px; border-top:4px solid #facc15; border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:6px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:1.3rem;">🔥</span>
+                <span style="font-size:0.68rem; color:#facc15; background:rgba(250,204,21,0.15); padding:2px 8px; border-radius:10px; font-weight:800;">SCORING • 30+ PTS</span>
+              </div>
+              <strong style="color:#facc15; font-size:0.9rem;">High-Octane Shootout</strong>
+              <p style="color:#94a3b8; font-size:0.75rem; line-height:1.3;">Automatically awarded when a contender's team scores 30+ points or participates in a 50+ total point weekly game.</p>
+              <div style="margin-top:4px; font-size:0.72rem; color:#facc15; font-weight:700;">🎁 Reward: 🔥 Flame Icon + 200 Office Pts</div>
+            </div>
+
+            <!-- Explosion Challenge -->
+            <div style="background:#0b1322; padding:14px; border-radius:12px; border-top:4px solid #f97316; border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:6px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:1.3rem;">💥</span>
+                <span style="font-size:0.68rem; color:#fb923c; background:rgba(249,115,22,0.15); padding:2px 8px; border-radius:10px; font-weight:800;">DEFENSE • 4+ SACKS</span>
+              </div>
+              <strong style="color:#fb923c; font-size:0.9rem;">Sack City Blitz Patrol</strong>
+              <p style="color:#94a3b8; font-size:0.75rem; line-height:1.3;">Automatically awarded when a contender's defense forces 4+ QB sacks in their weekly game.</p>
+              <div style="margin-top:4px; font-size:0.72rem; color:#facc15; font-weight:700;">🎁 Reward: 💥 Explosion Icon + 175 Office Pts</div>
+            </div>
+
+            <!-- Target Challenge -->
+            <div style="background:#0b1322; padding:14px; border-radius:12px; border-top:4px solid #38bdf8; border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:6px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:1.3rem;">🎯</span>
+                <span style="font-size:0.68rem; color:#38bdf8; background:rgba(56,189,248,0.15); padding:2px 8px; border-radius:10px; font-weight:800;">SPECIAL TEAMS • 3+ FG</span>
+              </div>
+              <strong style="color:#38bdf8; font-size:0.9rem;">Clutch Kicker 50+ Showdown</strong>
+              <p style="color:#94a3b8; font-size:0.75rem; line-height:1.3;">Automatically awarded when a contender's kicker converts 3+ field goals or a 45+ yard kick.</p>
+              <div style="margin-top:4px; font-size:0.72rem; color:#facc15; font-weight:700;">🎁 Reward: 🎯 Target Icon + 125 Office Pts</div>
+            </div>
+
+            <!-- Trophy Challenge -->
+            <div style="background:#0b1322; padding:14px; border-radius:12px; border-top:4px solid #eab308; border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:6px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:1.3rem;">🏆</span>
+                <span style="font-size:0.68rem; color:#eab308; background:rgba(234,179,8,0.15); padding:2px 8px; border-radius:10px; font-weight:800;">VICTORY • GAME WIN</span>
+              </div>
+              <strong style="color:#eab308; font-size:0.9rem;">Weekly Game Victory Crown</strong>
+              <p style="color:#94a3b8; font-size:0.75rem; line-height:1.3;">Automatically awarded whenever a contender's team wins their weekly NFL game.</p>
+              <div style="margin-top:4px; font-size:0.72rem; color:#facc15; font-weight:700;">🎁 Reward: 🏆 Trophy Icon + 250 Office Pts</div>
+            </div>
           </div>
         </div>
       `;

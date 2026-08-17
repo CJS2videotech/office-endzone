@@ -29,12 +29,19 @@ export class CompetitionsController {
     containerEl.innerHTML = `
       <div class="challenges-header">
         <div>
-          <h3 class="section-heading">⚡ Active Office Football Challenges</h3>
-          <p class="section-subheading">${this.data.activeWeek} • Compete in Yards, Points, Sacks & Field Goals</p>
+          <h3 class="section-heading">⚡ Automated Office Football Challenges</h3>
+          <p class="section-subheading">${this.data.activeWeek} • 100% Automatic Milestone Awards (No Manual Picks Required)</p>
         </div>
         <button class="btn-refresh-challenges" id="btn-simulate-challenges" title="Simulate Challenge Progress">
           🎲 Advance Challenge Week
         </button>
+      </div>
+
+      <div class="ladder-explainer-card" style="margin-bottom: 16px; border-left:4px solid #10b981;">
+        <span style="font-size:1.3rem;">⚡</span>
+        <div class="ladder-info-text">
+          <strong style="color:#10b981;">100% Automated Weekly Milestones:</strong> Whenever your team hits a stat milestone in their weekly game (Yards, Points, Sacks, Field Goals or Wins), you automatically win that challenge's achievement icon (🚀 Rocket, 🔥 Flame, 💥 Explosion, 🎯 Target, 🏆 Trophy)!
+        </div>
       </div>
 
       <div class="challenges-grid">
@@ -162,7 +169,6 @@ export class CompetitionsController {
 
         <div class="staff-pick-row ${m.staff1.score > m.staff2.score && m.status !== 'UPCOMING' ? 'winner' : ''} ${userPick === m.staff1.name ? 'user-selected' : ''}">
           <div class="staff-info">
-            <img src="${m.staff1.avatar}" class="staff-avatar-micro" alt="${m.staff1.name}" onerror="this.src='https://ui-avatars.com/api/?name=${m.staff1.name}&background=10b981&color=fff'">
             <div>
               <div class="staff-name-text">${m.staff1.name}</div>
               <div class="staff-pick-detail">Picked <strong>${m.staff1.pick}</strong> (${m.staff1.spread})</div>
@@ -178,7 +184,6 @@ export class CompetitionsController {
 
         <div class="staff-pick-row ${m.staff2.score > m.staff1.score && m.status !== 'UPCOMING' ? 'winner' : ''} ${userPick === m.staff2.name ? 'user-selected' : ''}">
           <div class="staff-info">
-            <img src="${m.staff2.avatar}" class="staff-avatar-micro" alt="${m.staff2.name}" onerror="this.src='https://ui-avatars.com/api/?name=${m.staff2.name}&background=3b82f6&color=fff'">
             <div>
               <div class="staff-name-text">${m.staff2.name}</div>
               <div class="staff-pick-detail">Picked <strong>${m.staff2.pick}</strong> (${m.staff2.spread})</div>

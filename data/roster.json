@@ -295,5 +295,51 @@
         "State Farm Stadium roof open, ready for 2026 kickoff!"
       ]
     }
+  },
+  {
+    "id": "char_mariah",
+    "name": "Mariah",
+    "role": "Executive Producer & Midnight Green Strategist",
+    "dept": "Creative & Broadcast Operations",
+    "image": "assets/avatars/Mariah football.jpg",
+    "bannerGif": "assets/Mariah football banner.mp4",
+    "favoriteTeam": "PHI",
+    "teamName": "Philadelphia Eagles",
+    "teamLogo": "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png",
+    "stats": {
+      "seasonPoints": 0,
+      "totalYards": 0,
+      "sacks": 0,
+      "fieldGoals": 0,
+      "bracketWinPct": "0%"
+    },
+    "reactions": {
+      "TOUCHDOWN_HOME": [
+        "FLY EAGLES FLY! Jalen Hurts and Saquon Barkley into the endzone!",
+        "Midnight Green touchdown! Philadelphia takes the lead!",
+        "Unstoppable drive! Tush push right into the endzone!"
+      ],
+      "TOUCHDOWN_AWAY": [
+        "Regroup defense! Philadelphia crowd is ready to bring the noise on 3rd down!",
+        "We're coming right back with an explosive scoring drive!"
+      ],
+      "TURNOVER": [
+        "TURNOVER PHILLY! Midnight Green defense forces the fumble!",
+        "PICK SIX OPPORTUNITY! Lincoln Financial Field is on fire!"
+      ],
+      "FIELD_GOAL": [
+        "Jake Elliott splits the uprights from 52 yards! 3 points on the board!",
+        "Solid 3 points for Philadelphia! Moving the chains!"
+      ],
+      "SACK": [
+        "SACK! Pass rush collapses the pocket with relentless pressure!",
+        "Down goes the quarterback! Fly Eagles Fly!"
+      ],
+      "IDLE": [
+        "Fly Eagles Fly! Reviewing the 2026 Philadelphia playbook...",
+        "Midnight Green energy ready to dominate the office gridiron!",
+        "Jalen Hurts and Saquon Barkley dialing up dynamic red zone schemes."
+      ]
+    }
   }
 ]
