@@ -37,24 +37,55 @@
     }
   }
 
-  // 1. DATASETS
+  // 1. DATASETS - ALL 32 NFL FRANCHISES
   const TEAMS = [
+    // NFC North
     { id: "CHI", city: "Chicago", name: "Bears", abbreviation: "CHI", color: "#ef4444", secondaryColor: "#0B162A", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png", stadium: "Soldier Field", division: "NFC North", qb: "Caleb Williams" },
     { id: "GB", city: "Green Bay", name: "Packers", abbreviation: "GB", color: "#facc15", secondaryColor: "#203731", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png", stadium: "Lambeau Field", division: "NFC North", qb: "Jordan Love" },
-    { id: "CLE", city: "Cleveland", name: "Browns", abbreviation: "CLE", color: "#fb923c", secondaryColor: "#311D00", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png", stadium: "Huntington Bank Field", division: "AFC North", qb: "Deshaun Watson" },
-    { id: "LV", city: "Las Vegas", name: "Raiders", abbreviation: "LV", color: "#38bdf8", secondaryColor: "#000000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png", stadium: "Allegiant Stadium", division: "AFC West", qb: "Gardner Minshew" },
-    { id: "SF", city: "San Francisco", name: "49ers", abbreviation: "SF", color: "#fb7185", secondaryColor: "#AA0000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png", stadium: "Levi's Stadium", division: "NFC West", qb: "Brock Purdy" },
-    { id: "ARI", city: "Arizona", name: "Cardinals", abbreviation: "ARI", color: "#f43f5e", secondaryColor: "#97233F", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png", stadium: "State Farm Stadium", division: "NFC West", qb: "Kyler Murray" },
     { id: "DET", city: "Detroit", name: "Lions", abbreviation: "DET", color: "#0076B6", secondaryColor: "#B0B7BC", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/det.png", stadium: "Ford Field", division: "NFC North", qb: "Jared Goff" },
     { id: "MIN", city: "Minnesota", name: "Vikings", abbreviation: "MIN", color: "#4F2683", secondaryColor: "#FFC62F", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/min.png", stadium: "U.S. Bank Stadium", division: "NFC North", qb: "Sam Darnold" },
+    
+    // AFC North
+    { id: "CLE", city: "Cleveland", name: "Browns", abbreviation: "CLE", color: "#fb923c", secondaryColor: "#311D00", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png", stadium: "Huntington Bank Field", division: "AFC North", qb: "Deshaun Watson" },
     { id: "PIT", city: "Pittsburgh", name: "Steelers", abbreviation: "PIT", color: "#FFB612", secondaryColor: "#101820", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png", stadium: "Acrisure Stadium", division: "AFC North", qb: "Russell Wilson" },
     { id: "BAL", city: "Baltimore", name: "Ravens", abbreviation: "BAL", color: "#241773", secondaryColor: "#9E7C0C", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png", stadium: "M&T Bank Stadium", division: "AFC North", qb: "Lamar Jackson" },
+    { id: "CIN", city: "Cincinnati", name: "Bengals", abbreviation: "CIN", color: "#FB4F14", secondaryColor: "#000000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png", stadium: "Paycor Stadium", division: "AFC North", qb: "Joe Burrow" },
+
+    // AFC West
+    { id: "LV", city: "Las Vegas", name: "Raiders", abbreviation: "LV", color: "#38bdf8", secondaryColor: "#000000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png", stadium: "Allegiant Stadium", division: "AFC West", qb: "Gardner Minshew" },
     { id: "KC", city: "Kansas City", name: "Chiefs", abbreviation: "KC", color: "#E31837", secondaryColor: "#FFB81C", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png", stadium: "Arrowhead Stadium", division: "AFC West", qb: "Patrick Mahomes" },
     { id: "LAC", city: "Los Angeles", name: "Chargers", abbreviation: "LAC", color: "#0080C6", secondaryColor: "#FFC20E", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png", stadium: "SoFi Stadium", division: "AFC West", qb: "Justin Herbert" },
     { id: "DEN", city: "Denver", name: "Broncos", abbreviation: "DEN", color: "#FB4F14", secondaryColor: "#002244", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/den.png", stadium: "Empower Field", division: "AFC West", qb: "Bo Nix" },
+
+    // NFC West
+    { id: "SF", city: "San Francisco", name: "49ers", abbreviation: "SF", color: "#fb7185", secondaryColor: "#AA0000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png", stadium: "Levi's Stadium", division: "NFC West", qb: "Brock Purdy" },
+    { id: "ARI", city: "Arizona", name: "Cardinals", abbreviation: "ARI", color: "#f43f5e", secondaryColor: "#97233F", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png", stadium: "State Farm Stadium", division: "NFC West", qb: "Kyler Murray" },
     { id: "LAR", city: "Los Angeles", name: "Rams", abbreviation: "LAR", color: "#003594", secondaryColor: "#FFA300", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png", stadium: "SoFi Stadium", division: "NFC West", qb: "Matthew Stafford" },
     { id: "SEA", city: "Seattle", name: "Seahawks", abbreviation: "SEA", color: "#002244", secondaryColor: "#69BE28", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png", stadium: "Lumen Field", division: "NFC West", qb: "Geno Smith" },
-    { id: "PHI", city: "Philadelphia", name: "Eagles", abbreviation: "PHI", color: "#004C54", secondaryColor: "#A5ACAF", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png", stadium: "Lincoln Financial Field", division: "NFC East", qb: "Jalen Hurts" }
+
+    // NFC East
+    { id: "PHI", city: "Philadelphia", name: "Eagles", abbreviation: "PHI", color: "#004C54", secondaryColor: "#A5ACAF", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png", stadium: "Lincoln Financial Field", division: "NFC East", qb: "Jalen Hurts" },
+    { id: "DAL", city: "Dallas", name: "Cowboys", abbreviation: "DAL", color: "#003594", secondaryColor: "#041E42", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png", stadium: "AT&T Stadium", division: "NFC East", qb: "Dak Prescott" },
+    { id: "NYG", city: "New York", name: "Giants", abbreviation: "NYG", color: "#0B2265", secondaryColor: "#A71930", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png", stadium: "MetLife Stadium", division: "NFC East", qb: "Daniel Jones" },
+    { id: "WAS", city: "Washington", name: "Commanders", abbreviation: "WAS", color: "#5A1414", secondaryColor: "#FFB612", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/was.png", stadium: "Northwest Stadium", division: "NFC East", qb: "Jayden Daniels" },
+
+    // AFC South
+    { id: "HOU", city: "Houston", name: "Texans", abbreviation: "HOU", color: "#03202F", secondaryColor: "#A71930", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png", stadium: "NRG Stadium", division: "AFC South", qb: "C.J. Stroud" },
+    { id: "IND", city: "Indianapolis", name: "Colts", abbreviation: "IND", color: "#002C5F", secondaryColor: "#A2AAAD", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png", stadium: "Lucas Oil Stadium", division: "AFC South", qb: "Anthony Richardson" },
+    { id: "JAX", city: "Jacksonville", name: "Jaguars", abbreviation: "JAX", color: "#006778", secondaryColor: "#D7A22A", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png", stadium: "EverBank Stadium", division: "AFC South", qb: "Trevor Lawrence" },
+    { id: "TEN", city: "Tennessee", name: "Titans", abbreviation: "TEN", color: "#0C2340", secondaryColor: "#4B92DB", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png", stadium: "Nissan Stadium", division: "AFC South", qb: "Will Levis" },
+
+    // AFC East
+    { id: "BUF", city: "Buffalo", name: "Bills", abbreviation: "BUF", color: "#00338D", secondaryColor: "#C60C30", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png", stadium: "Highmark Stadium", division: "AFC East", qb: "Josh Allen" },
+    { id: "MIA", city: "Miami", name: "Dolphins", abbreviation: "MIA", color: "#008E97", secondaryColor: "#FC4C02", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png", stadium: "Hard Rock Stadium", division: "AFC East", qb: "Tua Tagovailoa" },
+    { id: "NE", city: "New England", name: "Patriots", abbreviation: "NE", color: "#002244", secondaryColor: "#C60C30", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png", stadium: "Gillette Stadium", division: "AFC East", qb: "Drake Maye" },
+    { id: "NYJ", city: "New York", name: "Jets", abbreviation: "NYJ", color: "#125740", secondaryColor: "#000000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png", stadium: "MetLife Stadium", division: "AFC East", qb: "Aaron Rodgers" },
+
+    // NFC South
+    { id: "ATL", city: "Atlanta", name: "Falcons", abbreviation: "ATL", color: "#A71930", secondaryColor: "#000000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png", stadium: "Mercedes-Benz Stadium", division: "NFC South", qb: "Kirk Cousins" },
+    { id: "CAR", city: "Carolina", name: "Panthers", abbreviation: "CAR", color: "#0085CA", secondaryColor: "#101820", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/car.png", stadium: "Bank of America Stadium", division: "NFC South", qb: "Bryce Young" },
+    { id: "NO", city: "New Orleans", name: "Saints", abbreviation: "NO", color: "#D3BC8D", secondaryColor: "#101820", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/no.png", stadium: "Caesars Superdome", division: "NFC South", qb: "Derek Carr" },
+    { id: "TB", city: "Tampa Bay", name: "Buccaneers", abbreviation: "TB", color: "#D50A0A", secondaryColor: "#0A0A08", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png", stadium: "Raymond James Stadium", division: "NFC South", qb: "Baker Mayfield" }
   ];
 
   const ROSTER = [
@@ -1322,7 +1353,7 @@
           this.openMemberModal(homeMemberId);
         } else {
           // Open box score for this marquee game!
-          this.openBoxScoreModal({ away: { code: away }, home: { code: home } });
+          this.openBoxScoreModal({ away: { code: away }, home: { code: home } }, this.currentTickerMode === 'YESTERDAY' ? 'LAST_WEEK' : 'CURRENT');
         }
       });
 
@@ -2290,63 +2321,83 @@
     openBoxScoreModal(matchupData, mode = 'CURRENT') {
       if (!this.dom.boxScoreModalContent || !this.dom.boxScoreModalOverlay) return;
 
-      const gamesList = mode === 'LAST_WEEK' ? YESTERDAY_TICKER_GAMES : TODAY_TICKER_GAMES;
-
-      // Determine active game
+      // Auto-detect mode if matchupData belongs specifically to yesterday vs today
+      let activeMode = mode;
       let selectedGame = null;
+
       if (matchupData && matchupData.away && matchupData.home) {
-        const awayCode = typeof matchupData.away === 'string' ? matchupData.away : matchupData.away.code;
-        const homeCode = typeof matchupData.home === 'string' ? matchupData.home : matchupData.home.code;
-        selectedGame = gamesList.find(g => g.away === awayCode && g.home === homeCode) || {
-          away: awayCode,
-          awayScore: "24",
-          home: homeCode,
-          homeScore: "21",
-          status: "FINAL",
-          isLive: false
-        };
-      } else {
+        const awayCode = (typeof matchupData.away === 'string' ? matchupData.away : matchupData.away.code || '').toUpperCase();
+        const homeCode = (typeof matchupData.home === 'string' ? matchupData.home : matchupData.home.code || '').toUpperCase();
+        
+        const todayMatch = TODAY_TICKER_GAMES.find(g => g.away.toUpperCase() === awayCode && g.home.toUpperCase() === homeCode);
+        const yestMatch = YESTERDAY_TICKER_GAMES.find(g => g.away.toUpperCase() === awayCode && g.home.toUpperCase() === homeCode);
+
+        if (yestMatch && !todayMatch) {
+          activeMode = 'LAST_WEEK';
+          selectedGame = yestMatch;
+        } else if (todayMatch) {
+          activeMode = 'CURRENT';
+          selectedGame = todayMatch;
+        } else {
+          selectedGame = {
+            away: awayCode,
+            awayScore: "24",
+            home: homeCode,
+            homeScore: "21",
+            status: "FINAL",
+            isLive: false
+          };
+        }
+      }
+
+      const gamesList = activeMode === 'LAST_WEEK' ? YESTERDAY_TICKER_GAMES : TODAY_TICKER_GAMES;
+      if (!selectedGame) {
         selectedGame = gamesList[0];
       }
 
-      this.renderBoxScoreModalContent(selectedGame, gamesList, mode);
+      this.renderBoxScoreModalContent(selectedGame, gamesList, activeMode);
 
       this.dom.boxScoreModalOverlay.classList.add('open');
       this.dom.boxScoreModalOverlay.style.display = 'flex';
     }
 
     renderBoxScoreModalContent(activeGame, gamesList, mode) {
-      const awayTeam = this.teams.find(t => t.abbreviation === activeGame.away) || {
-        city: activeGame.away,
+      const awayCode = (activeGame.away || 'CHI').toUpperCase();
+      const homeCode = (activeGame.home || 'GB').toUpperCase();
+
+      const awayTeam = this.teams.find(t => t.abbreviation.toUpperCase() === awayCode || t.id.toUpperCase() === awayCode) || {
+        city: awayCode,
         name: "Football Team",
-        abbreviation: activeGame.away,
+        abbreviation: awayCode,
         color: "#38bdf8",
-        logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${activeGame.away.toLowerCase()}.png`,
-        qb: "Starting Quarterback"
+        logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${awayCode.toLowerCase()}.png`,
+        qb: "Starting Quarterback",
+        stadium: "NFL Stadium"
       };
 
-      const homeTeam = this.teams.find(t => t.abbreviation === activeGame.home) || {
-        city: activeGame.home,
+      const homeTeam = this.teams.find(t => t.abbreviation.toUpperCase() === homeCode || t.id.toUpperCase() === homeCode) || {
+        city: homeCode,
         name: "Football Team",
-        abbreviation: activeGame.home,
+        abbreviation: homeCode,
         color: "#facc15",
-        logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${activeGame.home.toLowerCase()}.png`,
-        qb: "Starting Quarterback"
+        logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${homeCode.toLowerCase()}.png`,
+        qb: "Starting Quarterback",
+        stadium: "NFL Stadium"
       };
 
-      const awayNum = parseInt(activeGame.awayScore) || 24;
-      const homeNum = parseInt(activeGame.homeScore) || 21;
+      const awayNum = parseInt(activeGame.awayScore) || 20;
+      const homeNum = parseInt(activeGame.homeScore) || 19;
 
       // Linescore quarter breakdown calculation
-      const q1Away = Math.floor(awayNum * 0.2);
-      const q2Away = Math.floor(awayNum * 0.35);
-      const q3Away = Math.floor(awayNum * 0.2);
-      const q4Away = awayNum - (q1Away + q2Away + q3Away);
+      const q1Away = Math.max(0, Math.floor(awayNum * 0.2));
+      const q2Away = Math.max(0, Math.floor(awayNum * 0.35));
+      const q3Away = Math.max(0, Math.floor(awayNum * 0.2));
+      const q4Away = Math.max(0, awayNum - (q1Away + q2Away + q3Away));
 
-      const q1Home = Math.floor(homeNum * 0.25);
-      const q2Home = Math.floor(homeNum * 0.3);
-      const q3Home = Math.floor(homeNum * 0.2);
-      const q4Home = homeNum - (q1Home + q2Home + q3Home);
+      const q1Home = Math.max(0, Math.floor(homeNum * 0.25));
+      const q2Home = Math.max(0, Math.floor(homeNum * 0.3));
+      const q3Home = Math.max(0, Math.floor(homeNum * 0.2));
+      const q4Home = Math.max(0, homeNum - (q1Home + q2Home + q3Home));
 
       // Realistic team stats
       const awayYards = 260 + (awayNum * 5);
@@ -2364,12 +2415,22 @@
       }
 
       this.dom.boxScoreModalContent.innerHTML = `
-        <!-- Game Selector Pills -->
+        <!-- Week Selector Tabs -->
+        <div class="box-score-week-tabs">
+          <button class="box-week-tab-btn ${mode === 'CURRENT' ? 'active' : ''}" data-target-mode="CURRENT">
+            ⚡ THIS WEEK (8 GAMES)
+          </button>
+          <button class="box-week-tab-btn ${mode === 'LAST_WEEK' ? 'active' : ''}" data-target-mode="LAST_WEEK">
+            📅 LAST WEEK (8 GAMES)
+          </button>
+        </div>
+
+        <!-- Game Selector Horizontal Pills -->
         <div class="box-score-game-selector">
           ${gamesList.map((g, idx) => {
-            const isActive = g.away === activeGame.away && g.home === activeGame.home;
+            const isActive = g.away.toUpperCase() === awayCode && g.home.toUpperCase() === homeCode;
             return `
-              <button class="box-selector-btn ${isActive ? 'active' : ''}" data-idx="${idx}">
+              <button class="box-selector-btn ${isActive ? 'active' : ''}" data-idx="${idx}" title="${g.away} vs ${g.home}">
                 ${g.away} ${g.awayScore} @ ${g.home} ${g.homeScore}
               </button>
             `;
@@ -2389,7 +2450,7 @@
           <div class="box-hero-score-center">
             <div class="box-hero-score-nums">
               <span class="${awayNum >= homeNum ? 'winner-score' : ''}">${awayNum}</span>
-              <span style="color:#64748b; font-size:1.4rem;">-</span>
+              <span style="color:#64748b; font-size:1.3rem;">-</span>
               <span class="${homeNum >= awayNum ? 'winner-score' : ''}">${homeNum}</span>
             </div>
             <div class="box-hero-status-pill">${activeGame.status}</div>
@@ -2423,7 +2484,7 @@
                 <tr>
                   <td class="team-cell" style="padding-left:14px;">
                     <img src="${awayTeam.logo}" style="width:16px; height:16px; object-fit:contain;" alt="">
-                    <span>${awayTeam.abbreviation}</span>
+                    <span style="font-weight:800; color:${awayTeam.color};">${awayTeam.abbreviation}</span>
                   </td>
                   <td>${q1Away}</td>
                   <td>${q2Away}</td>
@@ -2434,7 +2495,7 @@
                 <tr>
                   <td class="team-cell" style="padding-left:14px;">
                     <img src="${homeTeam.logo}" style="width:16px; height:16px; object-fit:contain;" alt="">
-                    <span>${homeTeam.abbreviation}</span>
+                    <span style="font-weight:800; color:${homeTeam.color};">${homeTeam.abbreviation}</span>
                   </td>
                   <td>${q1Home}</td>
                   <td>${q2Home}</td>
@@ -2582,7 +2643,16 @@
         </div>
       `;
 
-      // Bind switcher buttons
+      // Bind week toggle buttons inside the modal
+      this.dom.boxScoreModalContent.querySelectorAll('.box-week-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetMode = btn.dataset.targetMode;
+          const targetList = targetMode === 'LAST_WEEK' ? YESTERDAY_TICKER_GAMES : TODAY_TICKER_GAMES;
+          this.renderBoxScoreModalContent(targetList[0], targetList, targetMode);
+        });
+      });
+
+      // Bind matchup switcher buttons
       this.dom.boxScoreModalContent.querySelectorAll('.box-selector-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const idx = parseInt(btn.dataset.idx, 10);

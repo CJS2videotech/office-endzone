@@ -8,13 +8,13 @@
   "theme_color": "#0b1322",
   "icons": [
     {
-      "src": "assets/OE Group button.jpg",
+      "src": "assets/OE Group button1.jpg",
       "sizes": "192x192",
       "type": "image/jpeg",
       "purpose": "any maskable"
     },
     {
-      "src": "assets/OE Group button.jpg",
+      "src": "assets/OE Group button1.jpg",
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "any maskable"
