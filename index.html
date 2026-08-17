@@ -38,8 +38,8 @@
       
       <div class="header-right-actions">
         <button class="header-pill-btn btn-yesterday-scores" id="btn-yesterday-modal-toggle">
-          <span class="pill-icon">📅</span>
-          <span class="pill-text">YESTERDAY'S<br>BOX SCORES</span>
+          <span class="pill-icon">📊</span>
+          <span class="pill-text">LAST WEEK'S<br>BOX SCORES</span>
         </button>
 
         <button class="header-pill-btn btn-signin" id="btn-signin">
@@ -56,11 +56,11 @@
       </div>
     </header>
 
-    <!-- Ticker Section with Today / Yesterday Toggle -->
+    <!-- Ticker Section with Week / Last Week Toggle -->
     <section class="ticker-wrapper" aria-label="Game Tickers">
       <div class="ticker-tabs">
-        <button class="ticker-tab-btn active" id="tab-today-ticker">TODAY'S TICKER</button>
-        <button class="ticker-tab-btn" id="tab-yesterday-ticker">YESTERDAY'S TICKER</button>
+        <button class="ticker-tab-btn active" id="tab-today-ticker">WEEK</button>
+        <button class="ticker-tab-btn" id="tab-yesterday-ticker">LAST WEEK</button>
       </div>
 
       <!-- Matchup Ticker Grid -->
@@ -133,11 +133,11 @@
         <div class="modal-team-name-text" id="modal-team-name">BEARS</div>
       </div>
 
-      <!-- SECTION: DAILY PICKS -->
+      <!-- SECTION: PICKS & RECORD -->
       <section class="modal-section">
         <div class="modal-section-header">
           <span class="section-bullet gold">●</span>
-          <span class="modal-section-title">DAILY PICKS</span>
+          <span class="modal-section-title">WEEKLY PICKS</span>
         </div>
 
         <div class="picks-stats-row">
@@ -159,15 +159,15 @@
         <div class="trophy-banner" id="trophy-banner">
           <span class="trophy-icon">🏆</span>
           <span class="trophy-count" id="trophy-count">× 34</span>
-          <span class="trophy-label" id="trophy-label">DAILY YARDS & TOUCHDOWNS LEADER</span>
+          <span class="trophy-label" id="trophy-label">WEEKLY YARDS & TOUCHDOWNS LEADER</span>
         </div>
       </section>
 
-      <!-- SECTION: TODAY'S MATCHUP -->
+      <!-- SECTION: THIS WEEK'S MATCHUP -->
       <section class="modal-section">
         <div class="modal-section-header">
           <span class="section-bullet green">●</span>
-          <span class="modal-section-title">TODAY'S MATCHUP</span>
+          <span class="modal-section-title">THIS WEEK'S MATCHUP</span>
         </div>
 
         <div class="today-matchup-card" id="today-matchup-card">
@@ -209,11 +209,11 @@
         </div>
       </section>
 
-      <!-- SECTION: NEXT 5 DAYS / SCHEDULE -->
+      <!-- SECTION: NEXT 5 GAMES / SCHEDULE -->
       <section class="modal-section">
         <div class="modal-section-header">
           <span class="section-bullet white">●</span>
-          <span class="modal-section-title">NEXT 5 DAYS</span>
+          <span class="modal-section-title">UPCOMING SCHEDULE (NEXT 5 WEEKS)</span>
         </div>
 
         <div class="schedule-list-card" id="schedule-list">
@@ -245,11 +245,11 @@
         </div>
       </section>
 
-      <!-- SECTION: DAILY RUNS/YARDS & HITS/TDS LEADER -->
+      <!-- SECTION: WEEKLY YARDS & TOUCHDOWNS LEADER -->
       <section class="modal-section">
         <div class="modal-section-header">
           <span class="section-bullet red">●</span>
-          <span class="modal-section-title" id="leader-table-title">DAILY YARDS & TOUCHDOWNS LEADER</span>
+          <span class="modal-section-title" id="leader-table-title">WEEKLY YARDS & TOUCHDOWNS LEADER</span>
         </div>
 
         <div class="standings-table-wrap">
@@ -267,15 +267,6 @@
             </tbody>
           </table>
         </div>
-      </section>
-
-      <!-- Office Cheer & Banter Bubble inside Modal -->
-      <section class="modal-banter-card" id="modal-banter-card">
-        <div class="banter-header">
-          <span class="banter-speaker" id="banter-speaker">CJ's Watercooler Intel:</span>
-          <button class="btn-cheer-sm" id="btn-modal-cheer">📣 Cheer & Chant</button>
-        </div>
-        <div class="banter-dialog" id="modal-dialog-text">Bear Down! Dialing up our red zone strategy for today's matchup!</div>
       </section>
 
     </div>
@@ -298,8 +289,22 @@
     </div>
   </div>
 
-  <!-- Event Notification Pop-up Banner -->
-  <div class="event-banner" id="event-banner"></div>
+  <!-- Interactive Full NFL Box Score Modal -->
+  <div class="member-modal-overlay box-score-modal-overlay" id="box-score-modal-overlay" aria-hidden="true">
+    <div class="dugout-modal-card box-score-modal-card">
+      <header class="modal-header">
+        <div class="modal-title-row">
+          <span class="modal-badge-status" id="box-score-badge-status">📊 NFL BOX SCORE</span>
+          <span class="modal-game-time" id="box-score-venue-time">Final • Soldier Field</span>
+        </div>
+        <button class="modal-close-btn" id="box-score-modal-close" aria-label="Close Box Score">&times;</button>
+      </header>
+
+      <div class="box-score-modal-content" id="box-score-modal-content">
+        <!-- Injected dynamically by DugoutEndzoneApp.openBoxScoreModal() -->
+      </div>
+    </div>
+  </div>
 
   <!-- Standalone Application Bundle Script -->
   <script src="js/app.bundle.js"></script>
