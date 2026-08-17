@@ -165,6 +165,10 @@ export class CharacterController {
     if (!this.stage) return;
     const colors = ['#10b981', '#3b82f6', '#f59e0b', '#ec4899', '#8b5cf6', '#fbbf24', '#ffffff'];
     
+    // ⚡ Bolt: Batch DOM insertion using DocumentFragment to prevent 50 separate reflows
+    const fragment = document.createDocumentFragment();
+    const particles = [];
+
     for (let i = 0; i < 50; i++) {
       const particle = document.createElement('div');
       particle.className = 'confetti-particle';
@@ -175,8 +179,14 @@ export class CharacterController {
       particle.style.animationDuration = `${Math.random() * 1.5 + 1.2}s`;
       particle.style.animationDelay = `${Math.random() * 0.2}s`;
       
-      this.stage.appendChild(particle);
-      setTimeout(() => particle.remove(), 2800);
+      fragment.appendChild(particle);
+      particles.push(particle);
     }
+
+    this.stage.appendChild(fragment);
+
+    setTimeout(() => {
+      particles.forEach(p => p.remove());
+    }, 2800);
   }
 }

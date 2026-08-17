@@ -65,17 +65,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderEventLogs(history) {
     if (!eventLogListEl) return;
-    eventLogListEl.innerHTML = '';
     
-    history.forEach(item => {
-      const row = document.createElement('div');
-      row.className = `event-item ${item.type}`;
-      row.innerHTML = `
+    // ⚡ Bolt: Batch DOM updates by setting innerHTML once instead of appending elements in a loop
+    eventLogListEl.innerHTML = history.map(item => `
+      <div class="event-item ${item.type}">
         <span class="event-text">${item.text}</span>
         <span class="event-time">${item.timestamp}</span>
-      `;
-      eventLogListEl.appendChild(row);
-    });
+      </div>
+    `).join('');
   }
 
   // 5. Subscribe to GameState Events to trigger Mascot Animations & UI Sync
