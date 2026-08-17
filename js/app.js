@@ -434,16 +434,14 @@ class OfficeEndzoneApp {
 
   renderLogs(history) {
     if (!this.dom.eventLogList) return;
-    this.dom.eventLogList.innerHTML = '';
-    history.forEach(item => {
-      const row = document.createElement('div');
-      row.className = `event-item ${item.type}`;
-      row.innerHTML = `
+
+    // ⚡ Bolt: Batch DOM updates by setting innerHTML once instead of appending elements in a loop
+    this.dom.eventLogList.innerHTML = history.map(item => `
+      <div class="event-item ${item.type}">
         <span class="event-text">${item.text}</span>
         <span class="event-time">${item.timestamp}</span>
-      `;
-      this.dom.eventLogList.appendChild(row);
-    });
+      </div>
+    `).join('');
   }
 }
 
