@@ -1109,14 +1109,18 @@
       if (!this.dom.tickerGrid) return;
       const games = this.currentTickerMode === 'TODAY' ? TODAY_TICKER_GAMES : YESTERDAY_TICKER_GAMES;
 
+      // ⚡ Bolt Optimization: O(n) map construction for O(1) loop lookups instead of O(n^2)
+      const teamByAbbrev = this.teams.reduce((acc, t) => { acc[t.abbreviation] = t; return acc; }, {});
+      const rosterById = this.roster.reduce((acc, m) => { acc[m.id] = m; return acc; }, {});
+
       this.dom.tickerGrid.innerHTML = games.map(game => {
-        const awayTeam = this.teams.find(t => t.abbreviation === game.away) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.away.toLowerCase()}.png` };
-        const homeTeam = this.teams.find(t => t.abbreviation === game.home) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.home.toLowerCase()}.png` };
+        const awayTeam = teamByAbbrev[game.away] || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.away.toLowerCase()}.png` };
+        const homeTeam = teamByAbbrev[game.home] || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.home.toLowerCase()}.png` };
         
         const awayMemberId = this.teamToMemberMap[game.away];
         const homeMemberId = this.teamToMemberMap[game.home];
-        const awayMember = awayMemberId ? this.roster.find(m => m.id === awayMemberId) : null;
-        const homeMember = homeMemberId ? this.roster.find(m => m.id === homeMemberId) : null;
+        const awayMember = awayMemberId ? rosterById[awayMemberId] : null;
+        const homeMember = homeMemberId ? rosterById[homeMemberId] : null;
         const hasOfficeMember = awayMember || homeMember;
 
         const awayNum = parseInt(game.awayScore) || 0;
