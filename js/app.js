@@ -438,10 +438,18 @@ class OfficeEndzoneApp {
     history.forEach(item => {
       const row = document.createElement('div');
       row.className = `event-item ${item.type}`;
-      row.innerHTML = `
-        <span class="event-text">${item.text}</span>
-        <span class="event-time">${item.timestamp}</span>
-      `;
+
+      const textSpan = document.createElement('span');
+      textSpan.className = 'event-text';
+      textSpan.textContent = item.text;
+
+      const timeSpan = document.createElement('span');
+      timeSpan.className = 'event-time';
+      timeSpan.textContent = item.timestamp;
+
+      row.appendChild(textSpan);
+      row.appendChild(timeSpan);
+
       this.dom.eventLogList.appendChild(row);
     });
   }
