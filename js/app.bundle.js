@@ -1109,7 +1109,7 @@
       if (!this.dom.tickerGrid) return;
       const games = this.currentTickerMode === 'TODAY' ? TODAY_TICKER_GAMES : YESTERDAY_TICKER_GAMES;
 
-      this.dom.tickerGrid.innerHTML = games.map(game => {
+      const html = games.map(game => {
         const awayTeam = this.teams.find(t => t.abbreviation === game.away) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.away.toLowerCase()}.png` };
         const homeTeam = this.teams.find(t => t.abbreviation === game.home) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.home.toLowerCase()}.png` };
         
@@ -1163,6 +1163,11 @@
           </div>
         `;
       }).join('');
+
+      // ⚡ Bolt: Cache HTML to prevent unnecessary re-renders on every 45s interval
+      if (this._lastTickerHtml === html) return;
+      this._lastTickerHtml = html;
+      this.dom.tickerGrid.innerHTML = html;
     }
 
     renderRosterGrid() {

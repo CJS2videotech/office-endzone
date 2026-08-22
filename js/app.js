@@ -160,7 +160,7 @@ class OfficeEndzoneApp {
       return;
     }
 
-    this.dom.tickerCarousel.innerHTML = this.liveGames.map(game => {
+    const html = this.liveGames.map(game => {
       const isSelected = game.id === this.activeGameId;
       const isLive = game.status.state === 'in';
       const statusBadgeClass = isLive ? 'badge-live' : (game.status.completed ? 'badge-final' : 'badge-pre');
@@ -186,6 +186,11 @@ class OfficeEndzoneApp {
         </div>
       `;
     }).join('');
+
+    // ⚡ Bolt: Cache HTML to prevent unnecessary re-renders
+    if (this._lastTickerHtml === html) return;
+    this._lastTickerHtml = html;
+    this.dom.tickerCarousel.innerHTML = html;
 
     this.dom.tickerCarousel.querySelectorAll('.ticker-game-card').forEach(card => {
       card.addEventListener('click', () => {
