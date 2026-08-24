@@ -166,7 +166,7 @@ class OfficeEndzoneApp {
       const statusBadgeClass = isLive ? 'badge-live' : (game.status.completed ? 'badge-final' : 'badge-pre');
 
       return `
-        <div class="ticker-game-card ${isSelected ? 'selected' : ''}" data-game-id="${game.id}">
+        <div class="ticker-game-card ${isSelected ? 'selected' : ''}" data-game-id="${game.id}" role="button" tabindex="0" aria-label="${game.awayTeam.abbreviation} vs ${game.homeTeam.abbreviation} Matchup">
           <div class="ticker-card-top">
             <span class="ticker-status ${statusBadgeClass}">${game.status.detail}</span>
             <span class="ticker-broadcast">${game.broadcast || 'NFL'}</span>
