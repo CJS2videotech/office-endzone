@@ -29,6 +29,17 @@
     }
   }
 
+  // 🛡️ Sentinel: Escape HTML to prevent XSS vulnerabilities
+  function escapeHTML(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   function getArizonaDateString() {
     try {
       return arizonaTimeFormatter.format(new Date()) + ' MST';
@@ -1128,37 +1139,37 @@
 
         return `
           <div class="ticker-card ${hasOfficeMember ? 'office-game-card' : ''}" 
-               data-away="${game.away}" 
-               data-home="${game.home}"
-               data-away-member="${awayMemberId || ''}"
-               data-home-member="${homeMemberId || ''}"
+               data-away="${escapeHTML(game.away)}"
+               data-home="${escapeHTML(game.home)}"
+               data-away-member="${escapeHTML(awayMemberId || '')}"
+               data-home-member="${escapeHTML(homeMemberId || '')}"
                role="button"
                tabindex="0"
                title="${hasOfficeMember ? 'Click to open staff member card' : 'NFL Matchup • Click to view Box Score'}">
             
             <div class="ticker-game-meta">
-              <span class="ticker-status-tag ${statusClass}">${game.status}</span>
+              <span class="ticker-status-tag ${statusClass}">${escapeHTML(game.status)}</span>
               ${hasOfficeMember ? `<span class="ticker-office-tag">🏈 OFFICE GAME</span>` : ''}
             </div>
 
             <!-- Away Team Row -->
-            <div class="ticker-team-row ${awayMember ? 'has-member' : ''}" data-member-id="${awayMemberId || ''}">
+            <div class="ticker-team-row ${awayMember ? 'has-member' : ''}" data-member-id="${escapeHTML(awayMemberId || '')}">
               <div class="ticker-team-info">
-                <img src="${awayTeam.logo}" class="ticker-team-logo" alt="${game.away}" onerror="this.src='https://ui-avatars.com/api/?name=${game.away}&background=0b0f19&color=fff'">
-                <span class="ticker-team-name">${game.away}</span>
-                ${awayMember ? `<span class="ticker-member-pill" title="Office: ${awayMember.name}"><img src="${awayMember.image}" class="ticker-avatar-mini" alt="${awayMember.name}">${awayMember.name}</span>` : ''}
+                <img src="${awayTeam.logo}" class="ticker-team-logo" alt="${escapeHTML(game.away)}" onerror="this.src='https://ui-avatars.com/api/?name=${escapeHTML(game.away)}&background=0b0f19&color=fff'">
+                <span class="ticker-team-name">${escapeHTML(game.away)}</span>
+                ${awayMember ? `<span class="ticker-member-pill" title="Office: ${escapeHTML(awayMember.name)}"><img src="${awayMember.image}" class="ticker-avatar-mini" alt="${escapeHTML(awayMember.name)}">${escapeHTML(awayMember.name)}</span>` : ''}
               </div>
-              <span class="ticker-team-score ${awayNum > homeNum ? 'winning' : ''}">${game.awayScore}</span>
+              <span class="ticker-team-score ${awayNum > homeNum ? 'winning' : ''}">${escapeHTML(game.awayScore)}</span>
             </div>
 
             <!-- Home Team Row -->
-            <div class="ticker-team-row ${homeMember ? 'has-member' : ''}" data-member-id="${homeMemberId || ''}">
+            <div class="ticker-team-row ${homeMember ? 'has-member' : ''}" data-member-id="${escapeHTML(homeMemberId || '')}">
               <div class="ticker-team-info">
-                <img src="${homeTeam.logo}" class="ticker-team-logo" alt="${game.home}" onerror="this.src='https://ui-avatars.com/api/?name=${game.home}&background=0b0f19&color=fff'">
-                <span class="ticker-team-name">${game.home}</span>
-                ${homeMember ? `<span class="ticker-member-pill" title="Office: ${homeMember.name}"><img src="${homeMember.image}" class="ticker-avatar-mini" alt="${homeMember.name}">${homeMember.name}</span>` : ''}
+                <img src="${homeTeam.logo}" class="ticker-team-logo" alt="${escapeHTML(game.home)}" onerror="this.src='https://ui-avatars.com/api/?name=${escapeHTML(game.home)}&background=0b0f19&color=fff'">
+                <span class="ticker-team-name">${escapeHTML(game.home)}</span>
+                ${homeMember ? `<span class="ticker-member-pill" title="Office: ${escapeHTML(homeMember.name)}"><img src="${homeMember.image}" class="ticker-avatar-mini" alt="${escapeHTML(homeMember.name)}">${escapeHTML(homeMember.name)}</span>` : ''}
               </div>
-              <span class="ticker-team-score ${homeNum > awayNum ? 'winning' : ''}">${game.homeScore}</span>
+              <span class="ticker-team-score ${homeNum > awayNum ? 'winning' : ''}">${escapeHTML(game.homeScore)}</span>
             </div>
           </div>
         `;
