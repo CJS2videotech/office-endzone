@@ -38,6 +38,12 @@
   box-sizing: border-box;
 }
 
+/* Keyboard Accessibility - Focus States */
+:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
 /* Stadium Floodlights Glow */
 .stadium-floodlights {
   position: fixed;
