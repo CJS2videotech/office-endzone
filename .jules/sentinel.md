@@ -1,0 +1,4 @@
+## 2026-08-23 - Prevent Cross-Site Scripting (XSS) in DOM Injections
+**Vulnerability:** User-controlled data (like logs and external ESPN API payloads) was being directly interpolated into strings and assigned to `innerHTML` without prior sanitization, leading to a Cross-Site Scripting (XSS) vulnerability.
+**Learning:** In vanilla JavaScript apps that use string interpolation for DOM generation, every user-facing input or external API payload needs to be strictly HTML-escaped. `innerHTML` is inherently unsafe unless all variables are sanitized.
+**Prevention:** Introduced an `escapeHTML` utility function to encode special characters (`&`, `<`, `>`, `"`, `'`) and applied it to variables injected into `innerHTML`, notably in event logs (`app.js`, `js/app.js`) and the ticker rendering (`js/app.bundle.js`). Going forward, always use `escapeHTML` on dynamic data before concatenating it into `innerHTML` strings, or use `textContent` where applicable.

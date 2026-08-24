@@ -4,6 +4,17 @@
 import { GameState } from './gameState.js';
 import { CharacterController } from './characterController.js';
 
+// 🛡️ Sentinel: Escape HTML to prevent XSS vulnerabilities
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Initialize State and Controller
   const gameState = new GameState();
@@ -69,10 +80,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     history.forEach(item => {
       const row = document.createElement('div');
-      row.className = `event-item ${item.type}`;
+      row.className = `event-item ${escapeHTML(item.type)}`;
       row.innerHTML = `
-        <span class="event-text">${item.text}</span>
-        <span class="event-time">${item.timestamp}</span>
+        <span class="event-text">${escapeHTML(item.text)}</span>
+        <span class="event-time">${escapeHTML(item.timestamp)}</span>
       `;
       eventLogListEl.appendChild(row);
     });

@@ -8,6 +8,17 @@ import { CharacterController } from './characterController.js';
 import { EspnService } from './espnService.js';
 import { CompetitionsController } from './competitionsController.js';
 
+// 🛡️ Sentinel: Escape HTML to prevent XSS vulnerabilities
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 class OfficeEndzoneApp {
   constructor() {
     this.gameState = new GameState();
@@ -437,10 +448,10 @@ class OfficeEndzoneApp {
     this.dom.eventLogList.innerHTML = '';
     history.forEach(item => {
       const row = document.createElement('div');
-      row.className = `event-item ${item.type}`;
+      row.className = `event-item ${escapeHTML(item.type)}`;
       row.innerHTML = `
-        <span class="event-text">${item.text}</span>
-        <span class="event-time">${item.timestamp}</span>
+        <span class="event-text">${escapeHTML(item.text)}</span>
+        <span class="event-time">${escapeHTML(item.timestamp)}</span>
       `;
       this.dom.eventLogList.appendChild(row);
     });
