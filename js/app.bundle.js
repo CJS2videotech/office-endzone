@@ -1134,6 +1134,7 @@
                data-home-member="${homeMemberId || ''}"
                role="button"
                tabindex="0"
+               aria-label="${game.away} vs ${game.home} Matchup"
                title="${hasOfficeMember ? 'Click to open staff member card' : 'NFL Matchup • Click to view Box Score'}">
             
             <div class="ticker-game-meta">
@@ -1470,6 +1471,10 @@
           } else if (this.dom.modalOverlay?.classList.contains('open')) {
             this.closeModal();
           }
+        }
+        if ((e.key === 'Enter' || e.key === ' ') && e.target.getAttribute('role') === 'button') {
+          e.preventDefault();
+          e.target.click();
         }
       });
     }
