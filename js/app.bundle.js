@@ -2849,7 +2849,13 @@
           if (liveList.length > 0) {
             TODAY_TICKER_GAMES.length = 0;
             TODAY_TICKER_GAMES.push(...liveList);
-            if (this.currentTickerMode === 'TODAY') {
+
+            // ⚡ Bolt: Prevent redundant DOM tearing/rebuilding on polling by checking if data actually changed
+            const newDataStr = JSON.stringify(TODAY_TICKER_GAMES);
+            const dataChanged = this._lastTickerData !== newDataStr;
+            this._lastTickerData = newDataStr;
+
+            if (dataChanged && this.currentTickerMode === 'TODAY') {
               this.renderTicker();
             }
           }
