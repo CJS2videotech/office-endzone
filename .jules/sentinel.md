@@ -1,0 +1,4 @@
+## 2026-08-24 - Cross-Site Scripting (XSS) via innerHTML in UI components
+**Vulnerability:** Use of `innerHTML` with unsanitized dynamic user/system inputs (such as event texts, titles, and subtitles) inside `app.js` and `characterController.js`.
+**Learning:** Even internal logs and UI notifications can be vectors for XSS if they display unsanitized text or content that might originate externally. Modifying DOM directly using template literals without sanitization breaks fundamental defense-in-depth security principles.
+**Prevention:** Consistently use safe DOM creation methods such as `document.createElement()` and assign values specifically using `textContent` instead of `innerHTML` when handling any dynamic content to guarantee proper encoding.

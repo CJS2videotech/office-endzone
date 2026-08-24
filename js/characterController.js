@@ -97,10 +97,19 @@ export class CharacterController {
   showEventBanner(title, subtitle, typeClass) {
     if (!this.banner) return;
     this.banner.className = `event-banner show ${typeClass}`;
-    this.banner.innerHTML = `
-      <div class="banner-title">${title}</div>
-      <div class="banner-sub">${subtitle}</div>
-    `;
+    // Security fix: Use textContent to safely render dynamic text
+    this.banner.innerHTML = '';
+
+    const titleDiv = document.createElement('div');
+    titleDiv.className = 'banner-title';
+    titleDiv.textContent = title;
+
+    const subDiv = document.createElement('div');
+    subDiv.className = 'banner-sub';
+    subDiv.textContent = subtitle;
+
+    this.banner.appendChild(titleDiv);
+    this.banner.appendChild(subDiv);
 
     setTimeout(() => {
       this.banner.classList.remove('show');
