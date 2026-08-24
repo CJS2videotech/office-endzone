@@ -299,6 +299,15 @@ body {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 12px rgba(56, 189, 248, 0.15);
 }
 
+/* Focus visibility styles for accessibility */
+.ticker-card:focus-visible,
+.roster-member-card:focus-visible,
+.bracket-matchup-node:focus-visible,
+.quick-nav-btn:focus-visible {
+  outline: 2px solid var(--accent-orange);
+  outline-offset: 2px;
+}
+
 .ticker-card.office-game-card {
   border-color: rgba(250, 204, 21, 0.35);
   background: linear-gradient(180deg, rgba(17, 32, 40, 0.95) 0%, rgba(12, 23, 29, 0.98) 100%);

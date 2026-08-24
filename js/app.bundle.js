@@ -1380,6 +1380,16 @@
         }
       });
 
+      this.dom.rosterGrid?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const card = e.target.closest('.roster-member-card');
+          if (card) {
+            e.preventDefault();
+            this.openMemberModal(card.dataset.id);
+          }
+        }
+      });
+
       // Modal close events
       this.dom.modalCloseBtn?.addEventListener('click', () => this.closeModal());
       this.dom.modalOverlay?.addEventListener('click', (e) => {
@@ -1458,6 +1468,33 @@
       this.dom.boxScoreModalOverlay?.addEventListener('click', (e) => {
         if (e.target === this.dom.boxScoreModalOverlay) {
           this.closeBoxScoreModal();
+        }
+      });
+
+      this.dom.tickerGrid?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const teamRow = e.target.closest('.ticker-team-row');
+          if (teamRow && teamRow.dataset.memberId) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.openMemberModal(teamRow.dataset.memberId);
+            return;
+          }
+
+          const card = e.target.closest('.ticker-card');
+          if (card) {
+            e.preventDefault();
+            const awayMemberId = card.dataset.awayMember;
+            const homeMemberId = card.dataset.homeMember;
+            const away = card.dataset.away;
+            const home = card.dataset.home;
+
+            if (awayMemberId || homeMemberId) {
+              this.openShowdownModal(away, home);
+            } else {
+              this.openBoxScoreModal(away, home);
+            }
+          }
         }
       });
 
@@ -1547,6 +1584,19 @@
           });
         });
 
+        document.querySelectorAll('.btn-reveal-showdown, .bracket-matchup-node').forEach(elem => {
+          elem.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              if (e.target.closest('.btn-bracket-pick')) return;
+              e.preventDefault();
+              const matchId = elem.dataset.matchId;
+              if (matchId) {
+                this.openShowdownModal(matchId);
+              }
+            }
+          });
+        });
+
         document.querySelectorAll('.btn-bracket-pick').forEach(btn => {
           btn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -1565,6 +1615,17 @@
             const matchId = elem.dataset.matchId;
             if (matchId) {
               this.openShowdownModal(matchId);
+            }
+          });
+
+          elem.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              if (e.target.closest('.btn-season-pick') || e.target.closest('.btn-reset-season-picks')) return;
+              e.preventDefault();
+              const matchId = elem.dataset.matchId;
+              if (matchId) {
+                this.openShowdownModal(matchId);
+              }
             }
           });
         });
