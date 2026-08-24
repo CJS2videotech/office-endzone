@@ -1,0 +1,6 @@
+## 2024-08-21 - Replaced O(N) Array Lookups with O(1) Maps in React-like Map Iterations
+**Learning:** Found a specific performance bottleneck where \`renderTicker\` mapped over live games and ran \`this.teams.find\` (32 items) and \`this.roster.find\` (7+ items) multiple times per iteration (inside a string literal loop). With a potential 16 games and intervals firing every 45s, this O(N) array search inside a loop scales poorly (O(G * T) where G=games, T=teams).
+**Action:** Created Maps (like \`teamByAbbrMap\`) in the main App constructor to cache the array data into Hash Maps for O(1) retrieval, replacing \`.find\` with \`.get\`. This significantly cuts down the operations needed inside the \`games.map\` iterations when calculating the UI strings.
+## 2024-08-21 - Added Map Lookup for Manual Events in secondary controllers
+**Learning:** Found that `js/app.js` also performs `this.teams.find` lookups repeatedly on manual team changes. While not firing every 45 seconds like the live feed, these O(N) loops still cause unnecessary iteration.
+**Action:** Initialized `teamByIdMap` after fetching `teams.json` to allow for O(1) lookups during manual team changes and Cardinals HQ mock game button triggers.

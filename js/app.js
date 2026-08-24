@@ -129,6 +129,13 @@ class OfficeEndzoneApp {
       this.roster = await rosterRes.json();
     } catch (err) {
       console.warn('Fallback to local memory data.');
+    } finally {
+      // ⚡ BOLT OPTIMIZATION: Cache teams into a Hash Map for O(1) lookups during manual events,
+      // preventing repeated O(N) array .find() iterations.
+      this.teamByIdMap = new Map();
+      if (this.teams) {
+        this.teams.forEach(t => this.teamByIdMap.set((t.id || '').toUpperCase(), t));
+      }
     }
   }
 
@@ -281,8 +288,8 @@ class OfficeEndzoneApp {
     const homeId = this.dom.homeTeamSelect.value;
     const awayId = this.dom.awayTeamSelect.value;
 
-    const homeTeam = this.teams.find(t => t.id === homeId) || this.teams[0];
-    const awayTeam = this.teams.find(t => t.id === awayId) || this.teams[1];
+    const homeTeam = (this.teamByIdMap && this.teamByIdMap.get((homeId || '').toUpperCase())) || this.teams[0];
+    const awayTeam = (this.teamByIdMap && this.teamByIdMap.get((awayId || '').toUpperCase())) || this.teams[1];
 
     this.gameState.setManualTeams(homeTeam, awayTeam);
   }
@@ -307,8 +314,8 @@ class OfficeEndzoneApp {
 
   bindCardinalsHQEvents() {
     this.dom.btnLoadCardinalsGame?.addEventListener('click', () => {
-      const ariTeam = this.teams.find(t => t.id === 'ARI') || { id: 'ARI', city: 'Arizona', name: 'Cardinals', displayName: 'Arizona Cardinals', logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/ari.png', officeDept: 'Desert Division HQ' };
-      const sfTeam = this.teams.find(t => t.id === 'SF') || { id: 'SF', city: 'San Francisco', name: '49ers', displayName: 'San Francisco 49ers', logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/sf.png', officeDept: 'Legal & Compliance (Saul)' };
+      const ariTeam = (this.teamByIdMap && this.teamByIdMap.get('ARI')) || { id: 'ARI', city: 'Arizona', name: 'Cardinals', displayName: 'Arizona Cardinals', logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/ari.png', officeDept: 'Desert Division HQ' };
+      const sfTeam = (this.teamByIdMap && this.teamByIdMap.get('SF')) || { id: 'SF', city: 'San Francisco', name: '49ers', displayName: 'San Francisco 49ers', logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/sf.png', officeDept: 'Legal & Compliance (Saul)' };
 
       this.gameState.setManualTeams(ariTeam, sfTeam);
       this.characterController.selectCharacter('char_cardinals');
@@ -332,8 +339,8 @@ class OfficeEndzoneApp {
         const awayId = btn.dataset.away;
         const homeId = btn.dataset.home;
 
-        const homeTeam = this.teams.find(t => t.id === homeId) || this.teams[0];
-        const awayTeam = this.teams.find(t => t.id === awayId) || this.teams[1];
+        const homeTeam = (this.teamByIdMap && this.teamByIdMap.get((homeId || '').toUpperCase())) || this.teams[0];
+        const awayTeam = (this.teamByIdMap && this.teamByIdMap.get((awayId || '').toUpperCase())) || this.teams[1];
 
         this.gameState.setManualTeams(homeTeam, awayTeam);
         document.getElementById('tab-btn-stadium')?.click();

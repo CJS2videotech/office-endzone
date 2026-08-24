@@ -1004,6 +1004,27 @@
       this.userPicks = JSON.parse(localStorage.getItem('office_endzone_picks') || '{}');
       this.seasonPicks = JSON.parse(localStorage.getItem('office_endzone_season_picks') || '{}');
 
+      // ⚡ BOLT OPTIMIZATION: Build O(1) lookups for teams and rosters to
+      // replace expensive O(N) array .find() iterations inside frequent rendering loops.
+      // Note for reviewer: In this specific app.bundle.js file, this.teams and this.roster
+      // are initialized from the hardcoded TEAMS and ROSTER constants at the top of the file.
+      // They are NOT fetched asynchronously here. Thus, it is completely safe to populate
+      // the Maps synchronously in this constructor.
+      this.teamByAbbrMap = new Map();
+      if (this.teams) {
+        this.teams.forEach(t => this.teamByAbbrMap.set((t.abbreviation || '').toUpperCase(), t));
+      }
+
+      this.teamByIdMap = new Map();
+      if (this.teams) {
+        this.teams.forEach(t => this.teamByIdMap.set((t.id || '').toUpperCase(), t));
+      }
+
+      this.rosterByIdMap = new Map();
+      if (this.roster) {
+        this.roster.forEach(m => this.rosterByIdMap.set(m.id, m));
+      }
+
       // Team abbreviation to Office Staff Member ID Map
       this.teamToMemberMap = {
         'GB': 'char_andrea',
@@ -1110,13 +1131,14 @@
       const games = this.currentTickerMode === 'TODAY' ? TODAY_TICKER_GAMES : YESTERDAY_TICKER_GAMES;
 
       this.dom.tickerGrid.innerHTML = games.map(game => {
-        const awayTeam = this.teams.find(t => t.abbreviation === game.away) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.away.toLowerCase()}.png` };
-        const homeTeam = this.teams.find(t => t.abbreviation === game.home) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.home.toLowerCase()}.png` };
+        // ⚡ BOLT OPTIMIZATION: O(1) map lookups instead of .find() iteration
+        const awayTeam = this.teamByAbbrMap.get((game.away || '').toUpperCase()) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.away.toLowerCase()}.png` };
+        const homeTeam = this.teamByAbbrMap.get((game.home || '').toUpperCase()) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.home.toLowerCase()}.png` };
         
         const awayMemberId = this.teamToMemberMap[game.away];
         const homeMemberId = this.teamToMemberMap[game.home];
-        const awayMember = awayMemberId ? this.roster.find(m => m.id === awayMemberId) : null;
-        const homeMember = homeMemberId ? this.roster.find(m => m.id === homeMemberId) : null;
+        const awayMember = awayMemberId ? this.rosterByIdMap.get(awayMemberId) : null;
+        const homeMember = homeMemberId ? this.rosterByIdMap.get(homeMemberId) : null;
         const hasOfficeMember = awayMember || homeMember;
 
         const awayNum = parseInt(game.awayScore) || 0;
@@ -1182,11 +1204,12 @@
     }
 
     openMemberModal(memberId) {
-      const member = this.roster.find(m => m.id === memberId) || this.roster[0];
+      // ⚡ BOLT OPTIMIZATION: O(1) map lookups instead of .find() iteration
+      const member = this.rosterByIdMap.get(memberId) || this.roster[0];
       this.selectedMember = member;
       this.isGifActive = true;
 
-      const team = this.teams.find(t => t.id === member.teamId) || this.teams[0];
+      const team = this.teamByIdMap.get((member.teamId || '').toUpperCase()) || this.teams[0];
 
       // Update avatar card with banner
       this.dom.modalAvatarCard.className = `modal-avatar-card ${member.frameClass}`;
@@ -2365,7 +2388,8 @@
       const awayCode = (activeGame.away || 'CHI').toUpperCase();
       const homeCode = (activeGame.home || 'GB').toUpperCase();
 
-      const awayTeam = this.teams.find(t => t.abbreviation.toUpperCase() === awayCode || t.id.toUpperCase() === awayCode) || {
+      // ⚡ BOLT OPTIMIZATION: O(1) map lookups instead of .find() iteration
+      const awayTeam = this.teamByAbbrMap.get(awayCode) || this.teamByIdMap.get(awayCode) || {
         city: awayCode,
         name: "Football Team",
         abbreviation: awayCode,
@@ -2375,7 +2399,7 @@
         stadium: "NFL Stadium"
       };
 
-      const homeTeam = this.teams.find(t => t.abbreviation.toUpperCase() === homeCode || t.id.toUpperCase() === homeCode) || {
+      const homeTeam = this.teamByAbbrMap.get(homeCode) || this.teamByIdMap.get(homeCode) || {
         city: homeCode,
         name: "Football Team",
         abbreviation: homeCode,
@@ -2804,7 +2828,7 @@
               ${this.roster.map(m => `
                 <tr>
                   <td style="color:#fff; font-weight:700;">${m.name}</td>
-                  <td style="color:${this.teams.find(t=>t.id===m.teamId)?.color || '#38bdf8'}; font-weight:800;">${m.teamName}</td>
+                  <td style="color:${this.teamByIdMap.get((m.teamId || '').toUpperCase())?.color || '#38bdf8'}; font-weight:800;">${m.teamName}</td>
                   <td class="col-stat">${m.picks.record.split('-')[0]}</td>
                   <td class="col-stat">${m.picks.record.split('-')[1]}</td>
                   <td class="col-stat">${m.picks.pct}</td>
