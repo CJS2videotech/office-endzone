@@ -2631,3 +2631,16 @@ body {
   margin-left: 12px;
   font-family: 'JetBrains Mono', monospace;
 }
+
+/* Keyboard Accessibility Focus */
+.roster-member-card:focus-visible,
+.ticker-card:focus-visible,
+.bracket-matchup-node:focus-visible,
+.btn-reveal-showdown:focus-visible,
+.btn-bracket-pick:focus-visible,
+.btn-season-pick:focus-visible,
+.btn-reset-season-picks:focus-visible {
+  outline: 2px solid var(--accent-orange);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(255, 87, 34, 0.2);
+}

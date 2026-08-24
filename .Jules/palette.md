@@ -1,0 +1,3 @@
+## 2024-05-18 - Keyboard accessibility applied for Interactive Grid Elements
+**Learning:** Found elements (`.ticker-card`, `.roster-member-card`, `.bracket-matchup-node`) with `role="button"` and `tabindex="0"` that were lacking `keydown` event listeners and proper focus outlines, preventing keyboard users from accessing core modal features like box scores and player stats. Also, when extending event handlers, it is critical to verify standard parameters format (like objects vs separate arguments) to not break existing caller/modal logic (like `openBoxScoreModal`).
+**Action:** Always map both `click` and `keydown` (`Enter`/`Space`) explicitly for `role="button"` grid elements and ensure `:focus-visible` styling is uniform with standard design tokens (`--accent-orange`).

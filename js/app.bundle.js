@@ -1357,6 +1357,38 @@
         }
       });
 
+      this.dom.tickerGrid?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const teamRow = e.target.closest('.ticker-team-row');
+          if (teamRow && teamRow.dataset.memberId) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.openMemberModal(teamRow.dataset.memberId);
+            return;
+          }
+
+          const card = e.target.closest('.ticker-card');
+          if (!card) return;
+
+          e.preventDefault();
+          const awayMemberId = card.dataset.awayMember;
+          const homeMemberId = card.dataset.homeMember;
+          const away = card.dataset.away;
+          const home = card.dataset.home;
+
+          if (awayMemberId && !homeMemberId) {
+            this.openMemberModal(awayMemberId);
+          } else if (homeMemberId && !awayMemberId) {
+            this.openMemberModal(homeMemberId);
+          } else if (awayMemberId && homeMemberId) {
+            this.openMemberModal(homeMemberId);
+          } else {
+            // Open box score for this marquee game!
+            this.openBoxScoreModal({ away: { code: away }, home: { code: home } }, this.currentTickerMode === 'YESTERDAY' ? 'LAST_WEEK' : 'CURRENT');
+          }
+        }
+      });
+
       // Ticker tab toggles (Week vs Last Week)
       this.dom.tabTodayTicker?.addEventListener('click', () => {
         this.currentTickerMode = 'TODAY';
@@ -1377,6 +1409,16 @@
         const card = e.target.closest('.roster-member-card');
         if (card) {
           this.openMemberModal(card.dataset.id);
+        }
+      });
+
+      this.dom.rosterGrid?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const card = e.target.closest('.roster-member-card');
+          if (card) {
+            e.preventDefault();
+            this.openMemberModal(card.dataset.id);
+          }
         }
       });
 
@@ -1543,6 +1585,16 @@
             const matchId = elem.dataset.matchId;
             if (matchId) {
               this.openShowdownModal(matchId);
+            }
+          });
+          elem.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              if (e.target.closest('.btn-bracket-pick')) return;
+              e.preventDefault();
+              const matchId = elem.dataset.matchId;
+              if (matchId) {
+                this.openShowdownModal(matchId);
+              }
             }
           });
         });
