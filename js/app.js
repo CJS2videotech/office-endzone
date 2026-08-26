@@ -133,22 +133,25 @@ class OfficeEndzoneApp {
   }
 
   async fetchEspnScoreboard(isBackground = false) {
-    if (!isBackground && this.dom.espnStatusText) {
-      this.dom.espnStatusText.textContent = 'CONNECTING TO ESPN (MST)...';
-    }
+    // ⚡ Bolt: Pause polling when tab is hidden to save resources, but allow initial load
+    if (!document.hidden || !isBackground) {
+      if (!isBackground && this.dom.espnStatusText) {
+        this.dom.espnStatusText.textContent = 'CONNECTING TO ESPN (MST)...';
+      }
 
-    const result = await this.espnService.getScoreboard();
-    this.liveGames = result.games || [];
+      const result = await this.espnService.getScoreboard();
+      this.liveGames = result.games || [];
 
-    if (this.dom.espnStatusBadge && this.dom.espnStatusText) {
-      this.dom.espnStatusBadge.className = 'header-status-pill live';
-      this.dom.espnStatusText.textContent = `ESPN LIVE • ARIZONA TIME (MST)`;
-    }
+      if (this.dom.espnStatusBadge && this.dom.espnStatusText) {
+        this.dom.espnStatusBadge.className = 'header-status-pill live';
+        this.dom.espnStatusText.textContent = `ESPN LIVE • ARIZONA TIME (MST)`;
+      }
 
-    this.renderTickerCarousel();
+      this.renderTickerCarousel();
 
-    if (!this.activeGameId && this.liveGames.length > 0) {
-      this.selectGame(this.liveGames[0].id);
+      if (!this.activeGameId && this.liveGames.length > 0) {
+        this.selectGame(this.liveGames[0].id);
+      }
     }
   }
 
