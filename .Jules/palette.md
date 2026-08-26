@@ -1,0 +1,4 @@
+
+## 2024-05-18 - Keyboard accessibility for custom roles
+**Learning:** When adding global event listeners to make custom UI elements (like `role="button"`) keyboard accessible (firing click on Enter/Space), it's critical to ensure the event listener doesn't accidentally interfere with native interactive elements (like `<button>`, `<a>`, `<input>`) that might happen to also have those roles assigned or inherited. Default browser behavior for native elements varies (e.g., Space on a button fires on `keyup`, not `keydown`), and intercepting them can break usability.
+**Action:** When writing global `keydown` accessibility polyfills for custom elements, explicitly check `tagName.toUpperCase()` and exclude native interactive elements (e.g., `BUTTON`, `A`, `INPUT`, `SUMMARY`) from manual `preventDefault()` and `.click()` execution.

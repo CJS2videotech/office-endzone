@@ -451,3 +451,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const app = new OfficeEndzoneApp();
   app.init();
 });
+
+// Global keyboard accessibility for custom elements with roles button/tab
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && document.activeElement) {
+    const role = document.activeElement.getAttribute('role');
+    if (role === 'button' || role === 'tab') {
+      const tagName = document.activeElement.tagName.toUpperCase();
+      // Do not override native interactive elements
+      if (tagName !== 'BUTTON' && tagName !== 'A' && tagName !== 'INPUT' && tagName !== 'SUMMARY') {
+        e.preventDefault();
+        document.activeElement.click();
+      }
+    }
+  }
+});
