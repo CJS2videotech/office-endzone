@@ -1470,6 +1470,15 @@
           } else if (this.dom.modalOverlay?.classList.contains('open')) {
             this.closeModal();
           }
+        } else if (e.key === 'Enter' || e.key === ' ') {
+          const target = e.target;
+          if (target && (target.getAttribute('role') === 'button' || target.getAttribute('role') === 'tab')) {
+            const tag = target.tagName;
+            if (tag !== 'BUTTON' && tag !== 'A' && tag !== 'INPUT' && tag !== 'SELECT' && tag !== 'TEXTAREA' && tag !== 'SUMMARY') {
+              e.preventDefault();
+              target.click();
+            }
+          }
         }
       });
     }
