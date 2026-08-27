@@ -55,10 +55,10 @@ class OfficeEndzoneApp {
     this.renderCompetitionsViews();
 
     // Fetch ESPN NFL Live Feed
-    await this.fetchEspnScoreboard();
+    await this.fetchEspnScoreboard(false, true);
 
     // Auto-refresh ESPN feed every 45 seconds
-    setInterval(() => this.fetchEspnScoreboard(true), 45000);
+    setInterval(() => this.fetchEspnScoreboard(true, false), 45000);
   }
 
   cacheDom() {
@@ -132,7 +132,9 @@ class OfficeEndzoneApp {
     }
   }
 
-  async fetchEspnScoreboard(isBackground = false) {
+  async fetchEspnScoreboard(isBackground = false, isInitial = false) {
+    if (document.hidden && !isInitial) return;
+
     if (!isBackground && this.dom.espnStatusText) {
       this.dom.espnStatusText.textContent = 'CONNECTING TO ESPN (MST)...';
     }
