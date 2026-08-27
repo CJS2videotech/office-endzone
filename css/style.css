@@ -502,6 +502,12 @@ body {
   transform: translateY(-4px);
 }
 
+.roster-member-card:focus-visible .avatar-frame {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
 .avatar-frame {
   width: 100%;
   aspect-ratio: 1 / 1.12;
