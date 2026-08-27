@@ -1,0 +1,4 @@
+## 2025-01-08 - Fix DOM-based XSS in event history rendering
+**Vulnerability:** The application was vulnerable to DOM-based Cross-Site Scripting (XSS) because it used `innerHTML` to render unescaped user-controlled or dynamically generated text (`item.text`) in the play-by-play event log feed (`app.js` and `js/app.js`).
+**Learning:** Even internal event feeds or simulated game logs can be a vector for XSS if the data source is eventually influenced by user input or external API data (like team names or player names) without proper sanitization. The use of template literals with `innerHTML` is inherently unsafe for dynamic text content.
+**Prevention:** Always use safe DOM APIs like `document.createElement` combined with `textContent` (or `innerText`) when rendering dynamic text data into the DOM to prevent arbitrary script execution. Avoid `innerHTML` unless rendering explicitly trusted and sanitized HTML.
