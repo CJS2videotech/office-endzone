@@ -1091,8 +1091,8 @@
       this.renderTicker();
       this.renderRosterGrid();
       this.bindEvents();
-      this.fetchLiveEspnFeed();
-      setInterval(() => this.fetchLiveEspnFeed(), 45000);
+      this.fetchLiveEspnFeed(true);
+      setInterval(() => this.fetchLiveEspnFeed(false), 45000);
     }
 
     startClock() {
@@ -2833,9 +2833,10 @@
       }
     }
 
-    async fetchLiveEspnFeed() {
+    async fetchLiveEspnFeed(isInitial = false) {
+      if (document.hidden && !isInitial) return;
       try {
-        const res = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard');
+        const res = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard', { cache: 'no-cache' });
         if (!res.ok) return;
         const data = await res.json();
         if (data && data.events && data.events.length > 0) {
