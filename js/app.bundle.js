@@ -1380,6 +1380,18 @@
         }
       });
 
+      // Roster item keyboard accessibility
+      this.dom.rosterGrid?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          const card = e.target.closest('.roster-member-card');
+          // Only trigger if focus is on the card itself (not inner elements like buttons)
+          if (card && e.target === card) {
+            e.preventDefault();
+            this.openMemberModal(card.dataset.id);
+          }
+        }
+      });
+
       // Modal close events
       this.dom.modalCloseBtn?.addEventListener('click', () => this.closeModal());
       this.dom.modalOverlay?.addEventListener('click', (e) => {
