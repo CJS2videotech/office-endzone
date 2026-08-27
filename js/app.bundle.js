@@ -1092,7 +1092,7 @@
       this.renderRosterGrid();
       this.bindEvents();
       this.fetchLiveEspnFeed();
-      setInterval(() => this.fetchLiveEspnFeed(), 45000);
+      setInterval(() => this.fetchLiveEspnFeed(true), 45000);
     }
 
     startClock() {
@@ -2824,38 +2824,43 @@
       }
     }
 
-    async fetchLiveEspnFeed() {
-      try {
-        const res = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard');
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data && data.events && data.events.length > 0) {
-          const liveList = data.events.map(ev => {
-            const comp = ev.competitions[0];
-            const away = comp.competitors.find(c => c.homeAway === 'away');
-            const home = comp.competitors.find(c => c.homeAway === 'home');
-            const status = ev.status.type.completed ? 'FINAL' : (ev.status.type.state === 'in' ? ev.status.type.shortDetail : formatArizonaTime(ev.date));
+    async fetchLiveEspnFeed(isBackground = false) {
+      // ⚡ Bolt: Pause API polling when tab is hidden to save battery and network,
+      // but allow initial fetch (!isBackground) to proceed. Avoid early returns.
+      if (!isBackground || !document.hidden) {
+        try {
+          const res = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard');
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.events && data.events.length > 0) {
+              const liveList = data.events.map(ev => {
+                const comp = ev.competitions[0];
+                const away = comp.competitors.find(c => c.homeAway === 'away');
+                const home = comp.competitors.find(c => c.homeAway === 'home');
+                const status = ev.status.type.completed ? 'FINAL' : (ev.status.type.state === 'in' ? ev.status.type.shortDetail : formatArizonaTime(ev.date));
 
-            return {
-              away: away.team.abbreviation,
-              awayScore: away.score || '0',
-              home: home.team.abbreviation,
-              homeScore: home.score || '0',
-              status: status,
-              isLive: ev.status.type.state === 'in'
-            };
-          });
+                return {
+                  away: away.team.abbreviation,
+                  awayScore: away.score || '0',
+                  home: home.team.abbreviation,
+                  homeScore: home.score || '0',
+                  status: status,
+                  isLive: ev.status.type.state === 'in'
+                };
+              });
 
-          if (liveList.length > 0) {
-            TODAY_TICKER_GAMES.length = 0;
-            TODAY_TICKER_GAMES.push(...liveList);
-            if (this.currentTickerMode === 'TODAY') {
-              this.renderTicker();
+              if (liveList.length > 0) {
+                TODAY_TICKER_GAMES.length = 0;
+                TODAY_TICKER_GAMES.push(...liveList);
+                if (this.currentTickerMode === 'TODAY') {
+                  this.renderTicker();
+                }
+              }
             }
           }
+        } catch (err) {
+          console.log('Using built-in live ticker schedule.');
         }
-      } catch (err) {
-        console.log('Using built-in live ticker schedule.');
       }
     }
   }

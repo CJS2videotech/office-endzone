@@ -1,3 +1,6 @@
 ## 2024-08-23 - Caching Intl.DateTimeFormat for setInterval updates
 **Learning:** Instantiating `Intl.DateTimeFormat` objects (e.g., via `toLocaleTimeString` with options) inside a `setInterval` loop (like for a live clock or polling feed) introduces significant overhead and triggers frequent garbage collection. In this codebase, creating the formatter per-tick was ~20x slower than reusing a cached instance.
 **Action:** Always cache `Intl.*` formatter instances globally or in an outer scope when formatting strings in high-frequency loops or recurring intervals.
+## 2024-05-19 - Pausing API Polling vs Early Returns
+**Learning:** When adding logic to pause API polling (e.g., checking `document.hidden`), using an early return inside the interval or fetch function can inadvertently bypass critical subsequent code, such as initial state rendering or unrelated UI updates. In this codebase, avoiding early returns and wrapping the targeted network fetch inside an `if (!isBackground || !document.hidden)` block successfully avoids these side-effects.
+**Action:** When conditionally skipping operations, prefer wrapping the specific expensive code block in an `if` condition instead of adding a new early return that might unintentionally halt the rest of the execution context.
