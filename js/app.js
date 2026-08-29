@@ -384,8 +384,21 @@ class OfficeEndzoneApp {
     if (this.dom.logoHome && homeTeam.logo) this.dom.logoHome.src = homeTeam.logo;
     if (this.dom.logoAway && awayTeam.logo) this.dom.logoAway.src = awayTeam.logo;
 
-    if (this.dom.deptHome) this.dom.deptHome.innerHTML = `${homeTeam.officeDept || 'Executive Strategy'} • <span id="team-record-home">${homeTeam.record || '10-5'}</span>`;
-    if (this.dom.deptAway) this.dom.deptAway.innerHTML = `${awayTeam.officeDept || 'Operations'} • <span id="team-record-away">${awayTeam.record || '11-4'}</span>`;
+    // 🛡️ Sentinel: Mitigate DOM-based XSS by using safe text content and element creation instead of innerHTML
+    if (this.dom.deptHome) {
+      this.dom.deptHome.textContent = `${homeTeam.officeDept || 'Executive Strategy'} • `;
+      const recordSpanHome = document.createElement('span');
+      recordSpanHome.id = 'team-record-home';
+      recordSpanHome.textContent = homeTeam.record || '10-5';
+      this.dom.deptHome.appendChild(recordSpanHome);
+    }
+    if (this.dom.deptAway) {
+      this.dom.deptAway.textContent = `${awayTeam.officeDept || 'Operations'} • `;
+      const recordSpanAway = document.createElement('span');
+      recordSpanAway.id = 'team-record-away';
+      recordSpanAway.textContent = awayTeam.record || '11-4';
+      this.dom.deptAway.appendChild(recordSpanAway);
+    }
 
     if (this.dom.quarterBadge) this.dom.quarterBadge.textContent = `Q${state.quarter}`;
     if (this.dom.gameClock) this.dom.gameClock.textContent = state.timeRemaining;
