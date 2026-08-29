@@ -1001,6 +1001,7 @@
       this.selectedWeekIndex = 0; // Week 1 (Active Starting Gate)
       this.selectedContenderFilter = 'ALL';
       this.selectedDayFilter = 'ALL';
+      this.lastTickerRenderHash = '';
       this.userPicks = JSON.parse(localStorage.getItem('office_endzone_picks') || '{}');
       this.seasonPicks = JSON.parse(localStorage.getItem('office_endzone_season_picks') || '{}');
 
@@ -2860,7 +2861,12 @@
             TODAY_TICKER_GAMES.length = 0;
             TODAY_TICKER_GAMES.push(...liveList);
             if (this.currentTickerMode === 'TODAY') {
-              this.renderTicker();
+              // Performance optimization: prevent unnecessary DOM repaints on polling
+              const currentHash = JSON.stringify(liveList);
+              if (currentHash !== this.lastTickerRenderHash) {
+                this.renderTicker();
+                this.lastTickerRenderHash = currentHash;
+              }
             }
           }
         }

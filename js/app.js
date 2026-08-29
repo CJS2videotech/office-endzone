@@ -28,6 +28,7 @@ class OfficeEndzoneApp {
     this.roster = [];
     this.liveGames = [];
     this.activeGameId = null;
+    this.lastTickerRenderHash = '';
   }
 
   async init() {
@@ -147,7 +148,13 @@ class OfficeEndzoneApp {
       this.dom.espnStatusText.textContent = `ESPN LIVE • ARIZONA TIME (MST)`;
     }
 
-    this.renderTickerCarousel();
+    // Performance optimization: prevent unnecessary DOM repaints on polling
+    // by checking if scoreboard data hash has changed
+    const currentHash = JSON.stringify(this.liveGames.map(g => `${g.id}:${g.status.detail}:${g.homeTeam.score}:${g.awayTeam.score}`));
+    if (currentHash !== this.lastTickerRenderHash) {
+      this.renderTickerCarousel();
+      this.lastTickerRenderHash = currentHash;
+    }
 
     if (!this.activeGameId && this.liveGames.length > 0) {
       this.selectGame(this.liveGames[0].id);
