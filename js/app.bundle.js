@@ -1004,6 +1004,9 @@
       this.userPicks = JSON.parse(localStorage.getItem('office_endzone_picks') || '{}');
       this.seasonPicks = JSON.parse(localStorage.getItem('office_endzone_season_picks') || '{}');
 
+      // ⚡ Bolt: Cache to prevent unnecessary DOM re-renders on every poll
+      this.lastTickerRenderHash = null;
+
       // Team abbreviation to Office Staff Member ID Map
       this.teamToMemberMap = {
         'GB': 'char_andrea',
@@ -2860,7 +2863,12 @@
             TODAY_TICKER_GAMES.length = 0;
             TODAY_TICKER_GAMES.push(...liveList);
             if (this.currentTickerMode === 'TODAY') {
-              this.renderTicker();
+              // ⚡ Bolt: Prevent unnecessary DOM layout thrashing if data hasn't changed
+              const newDataHash = JSON.stringify(liveList);
+              if (this.lastTickerRenderHash !== newDataHash) {
+                this.lastTickerRenderHash = newDataHash;
+                this.renderTicker();
+              }
             }
           }
         }
