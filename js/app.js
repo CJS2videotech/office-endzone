@@ -157,6 +157,10 @@ class OfficeEndzoneApp {
   renderTickerCarousel() {
     if (!this.dom.tickerCarousel) return;
 
+    const currentHash = JSON.stringify(this.liveGames);
+    if (this.lastTickerRenderHash === currentHash) return;
+    this.lastTickerRenderHash = currentHash;
+
     if (this.liveGames.length === 0) {
       this.dom.tickerCarousel.innerHTML = '<div class="ticker-loading">No NFL games scheduled currently.</div>';
       return;
