@@ -2860,7 +2860,12 @@
             TODAY_TICKER_GAMES.length = 0;
             TODAY_TICKER_GAMES.push(...liveList);
             if (this.currentTickerMode === 'TODAY') {
-              this.renderTicker();
+              // ⚡ Bolt: Prevent unnecessary DOM thrashing on polling by checking if data actually changed
+              const newHash = JSON.stringify(liveList);
+              if (newHash !== this.lastGridHash) {
+                this.lastGridHash = newHash;
+                this.renderTicker();
+              }
             }
           }
         }
