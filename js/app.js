@@ -157,6 +157,12 @@ class OfficeEndzoneApp {
   renderTickerCarousel() {
     if (!this.dom.tickerCarousel) return;
 
+    // ⚡ Bolt: Prevent unnecessary DOM thrashing on ticker updates.
+    // By checking if the data hash has changed, we avoid redundant DOM manipulations during API polling.
+    const currentTickerRenderHash = JSON.stringify({ games: this.liveGames, active: this.activeGameId });
+    if (this.lastTickerRenderHash === currentTickerRenderHash) return;
+    this.lastTickerRenderHash = currentTickerRenderHash;
+
     if (this.liveGames.length === 0) {
       this.dom.tickerCarousel.innerHTML = '<div class="ticker-loading">No NFL games scheduled currently.</div>';
       return;
