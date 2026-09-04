@@ -1471,8 +1471,8 @@
             this.closeModal();
           }
         } else if (e.key === 'Enter' || e.key === ' ') {
-          const target = e.target;
-          if (target && (target.getAttribute('role') === 'button' || target.getAttribute('role') === 'tab')) {
+          const target = e.target.closest('[role="button"], [role="tab"]');
+          if (target && e.target === target) {
             const tag = target.tagName;
             if (tag !== 'BUTTON' && tag !== 'A' && tag !== 'INPUT' && tag !== 'SELECT' && tag !== 'TEXTAREA' && tag !== 'SUMMARY') {
               e.preventDefault();
