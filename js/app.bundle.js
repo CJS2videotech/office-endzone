@@ -1109,6 +1109,12 @@
       if (!this.dom.tickerGrid) return;
       const games = this.currentTickerMode === 'TODAY' ? TODAY_TICKER_GAMES : YESTERDAY_TICKER_GAMES;
 
+      // ⚡ Bolt: Hash check to prevent unnecessary DOM thrashing on polling.
+      // Rebuilding the innerHTML on every poll causes heavy reflows. We only update if the data changed.
+      const currentHash = JSON.stringify(games) + this.currentTickerMode;
+      if (this.lastGridHash === currentHash) return;
+      this.lastGridHash = currentHash;
+
       this.dom.tickerGrid.innerHTML = games.map(game => {
         const awayTeam = this.teams.find(t => t.abbreviation === game.away) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.away.toLowerCase()}.png` };
         const homeTeam = this.teams.find(t => t.abbreviation === game.home) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.home.toLowerCase()}.png` };
