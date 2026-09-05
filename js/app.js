@@ -168,12 +168,12 @@ class OfficeEndzoneApp {
       const statusBadgeClass = isLive ? 'badge-live' : (game.status.completed ? 'badge-final' : 'badge-pre');
 
       return `
-        <div class="ticker-game-card ${isSelected ? 'selected' : ''}" data-game-id="${game.id}">
-          <div class="ticker-card-top">
+        <div class="ticker-game-card ${isSelected ? 'selected' : ''}" data-game-id="${game.id}" role="button" tabindex="0" aria-label="${game.awayTeam.abbreviation} ${game.awayTeam.score} vs ${game.homeTeam.abbreviation} ${game.homeTeam.score}, ${game.status.detail}, Broadcast: ${game.broadcast || 'NFL'}">
+          <div class="ticker-card-top" aria-hidden="true">
             <span class="ticker-status ${statusBadgeClass}">${game.status.detail}</span>
             <span class="ticker-broadcast">${game.broadcast || 'NFL'}</span>
           </div>
-          <div class="ticker-matchup-row">
+          <div class="ticker-matchup-row" aria-hidden="true">
             <div class="ticker-team">
               <img src="${game.awayTeam.logo}" class="ticker-logo" alt="${game.awayTeam.abbreviation}" onerror="this.src='https://a.espncdn.com/i/teamlogos/nfl/500/${game.awayTeam.abbreviation.toLowerCase()}.png'">
               <span class="ticker-abbr">${game.awayTeam.abbreviation}</span>
