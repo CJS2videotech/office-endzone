@@ -2860,7 +2860,13 @@
             TODAY_TICKER_GAMES.length = 0;
             TODAY_TICKER_GAMES.push(...liveList);
             if (this.currentTickerMode === 'TODAY') {
-              this.renderTicker();
+              // ⚡ Bolt: Cache data hash to prevent unnecessary DOM re-renders on every poll
+              // no build system, strict parity required
+              const currentHash = JSON.stringify(liveList);
+              if (this.lastGridHash !== currentHash) {
+                this.lastGridHash = currentHash;
+                this.renderTicker();
+              }
             }
           }
         }
