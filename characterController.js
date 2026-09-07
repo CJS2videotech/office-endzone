@@ -33,10 +33,18 @@ export class CharacterController {
     if (!this.banner) return;
     
     this.banner.className = `event-banner show ${typeClass}`;
-    this.banner.innerHTML = `
-      <div class="banner-title">${title}</div>
-      <div class="banner-sub">${subtitle}</div>
-    `;
+    this.banner.innerHTML = '';
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'banner-title';
+    titleEl.textContent = title;
+
+    const subtitleEl = document.createElement('div');
+    subtitleEl.className = 'banner-sub';
+    subtitleEl.textContent = subtitle;
+
+    this.banner.appendChild(titleEl);
+    this.banner.appendChild(subtitleEl);
 
     setTimeout(() => {
       this.banner.classList.remove('show');
