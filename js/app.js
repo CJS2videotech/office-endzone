@@ -147,7 +147,11 @@ class OfficeEndzoneApp {
       this.dom.espnStatusText.textContent = `ESPN LIVE • ARIZONA TIME (MST)`;
     }
 
-    this.renderTickerCarousel();
+    const currentHash = JSON.stringify(this.liveGames);
+    if (currentHash !== this.lastCarouselHash) {
+      this.lastCarouselHash = currentHash;
+      this.renderTickerCarousel();
+    }
 
     if (!this.activeGameId && this.liveGames.length > 0) {
       this.selectGame(this.liveGames[0].id);

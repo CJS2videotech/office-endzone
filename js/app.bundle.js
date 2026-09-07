@@ -2860,7 +2860,11 @@
             TODAY_TICKER_GAMES.length = 0;
             TODAY_TICKER_GAMES.push(...liveList);
             if (this.currentTickerMode === 'TODAY') {
-              this.renderTicker();
+              const currentHash = JSON.stringify(liveList);
+              if (currentHash !== this.lastGridHash) {
+                this.lastGridHash = currentHash;
+                this.renderTicker();
+              }
             }
           }
         }
