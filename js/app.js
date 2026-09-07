@@ -167,20 +167,21 @@ class OfficeEndzoneApp {
       const isLive = game.status.state === 'in';
       const statusBadgeClass = isLive ? 'badge-live' : (game.status.completed ? 'badge-final' : 'badge-pre');
 
+      const ariaLabel = `${game.awayTeam.abbreviation} ${game.awayTeam.score} versus ${game.homeTeam.abbreviation} ${game.homeTeam.score}. ${game.status.detail}. Broadcast: ${game.broadcast || 'NFL'}.`;
       return `
-        <div class="ticker-game-card ${isSelected ? 'selected' : ''}" data-game-id="${game.id}">
-          <div class="ticker-card-top">
+        <div class="ticker-game-card ${isSelected ? 'selected' : ''}" data-game-id="${game.id}" role="button" tabindex="0" aria-label="${ariaLabel}">
+          <div class="ticker-card-top" aria-hidden="true">
             <span class="ticker-status ${statusBadgeClass}">${game.status.detail}</span>
             <span class="ticker-broadcast">${game.broadcast || 'NFL'}</span>
           </div>
-          <div class="ticker-matchup-row">
+          <div class="ticker-matchup-row" aria-hidden="true">
             <div class="ticker-team">
-              <img src="${game.awayTeam.logo}" class="ticker-logo" alt="${game.awayTeam.abbreviation}" onerror="this.src='https://a.espncdn.com/i/teamlogos/nfl/500/${game.awayTeam.abbreviation.toLowerCase()}.png'">
+              <img src="${game.awayTeam.logo}" class="ticker-logo" alt="" onerror="this.src='https://a.espncdn.com/i/teamlogos/nfl/500/${game.awayTeam.abbreviation.toLowerCase()}.png'">
               <span class="ticker-abbr">${game.awayTeam.abbreviation}</span>
               <span class="ticker-score">${game.awayTeam.score}</span>
             </div>
             <div class="ticker-team">
-              <img src="${game.homeTeam.logo}" class="ticker-logo" alt="${game.homeTeam.abbreviation}" onerror="this.src='https://a.espncdn.com/i/teamlogos/nfl/500/${game.homeTeam.abbreviation.toLowerCase()}.png'">
+              <img src="${game.homeTeam.logo}" class="ticker-logo" alt="" onerror="this.src='https://a.espncdn.com/i/teamlogos/nfl/500/${game.homeTeam.abbreviation.toLowerCase()}.png'">
               <span class="ticker-abbr">${game.homeTeam.abbreviation}</span>
               <span class="ticker-score">${game.homeTeam.score}</span>
             </div>
@@ -459,8 +460,8 @@ class OfficeEndzoneApp {
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || e.key === ' ') {
-    const target = e.target;
-    if (target && (target.getAttribute('role') === 'button' || target.getAttribute('role') === 'tab')) {
+    const target = e.target.closest('[role="button"], [role="tab"]');
+    if (target) {
       const tag = target.tagName;
       if (tag !== 'BUTTON' && tag !== 'A' && tag !== 'INPUT' && tag !== 'SELECT' && tag !== 'TEXTAREA' && tag !== 'SUMMARY') {
         e.preventDefault();
