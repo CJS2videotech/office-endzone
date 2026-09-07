@@ -1126,6 +1126,7 @@
         if (game.status.includes('FINAL')) statusClass = 'final';
         else if (game.isLive || game.status.includes('QTR')) statusClass = 'live';
 
+        const ariaLabel = `${game.away} ${game.awayScore} versus ${game.home} ${game.homeScore}. ${game.status}. ${hasOfficeMember ? 'Office game. Click to open staff member card.' : 'NFL Matchup. Click to view Box Score.'}`;
         return `
           <div class="ticker-card ${hasOfficeMember ? 'office-game-card' : ''}" 
                data-away="${game.away}" 
@@ -1134,29 +1135,30 @@
                data-home-member="${homeMemberId || ''}"
                role="button"
                tabindex="0"
-               title="${hasOfficeMember ? 'Click to open staff member card' : 'NFL Matchup • Click to view Box Score'}">
+               title="${hasOfficeMember ? 'Click to open staff member card' : 'NFL Matchup • Click to view Box Score'}"
+               aria-label="${ariaLabel}">
             
-            <div class="ticker-game-meta">
+            <div class="ticker-game-meta" aria-hidden="true">
               <span class="ticker-status-tag ${statusClass}">${game.status}</span>
               ${hasOfficeMember ? `<span class="ticker-office-tag">🏈 OFFICE GAME</span>` : ''}
             </div>
 
             <!-- Away Team Row -->
-            <div class="ticker-team-row ${awayMember ? 'has-member' : ''}" data-member-id="${awayMemberId || ''}">
+            <div class="ticker-team-row ${awayMember ? 'has-member' : ''}" data-member-id="${awayMemberId || ''}" aria-hidden="true">
               <div class="ticker-team-info">
-                <img src="${awayTeam.logo}" class="ticker-team-logo" alt="${game.away}" onerror="this.src='https://ui-avatars.com/api/?name=${game.away}&background=0b0f19&color=fff'">
+                <img src="${awayTeam.logo}" class="ticker-team-logo" alt="" onerror="this.src='https://ui-avatars.com/api/?name=${game.away}&background=0b0f19&color=fff'">
                 <span class="ticker-team-name">${game.away}</span>
-                ${awayMember ? `<span class="ticker-member-pill" title="Office: ${awayMember.name}"><img src="${awayMember.image}" class="ticker-avatar-mini" alt="${awayMember.name}">${awayMember.name}</span>` : ''}
+                ${awayMember ? `<span class="ticker-member-pill" title="Office: ${awayMember.name}"><img src="${awayMember.image}" class="ticker-avatar-mini" alt="">${awayMember.name}</span>` : ''}
               </div>
               <span class="ticker-team-score ${awayNum > homeNum ? 'winning' : ''}">${game.awayScore}</span>
             </div>
 
             <!-- Home Team Row -->
-            <div class="ticker-team-row ${homeMember ? 'has-member' : ''}" data-member-id="${homeMemberId || ''}">
+            <div class="ticker-team-row ${homeMember ? 'has-member' : ''}" data-member-id="${homeMemberId || ''}" aria-hidden="true">
               <div class="ticker-team-info">
-                <img src="${homeTeam.logo}" class="ticker-team-logo" alt="${game.home}" onerror="this.src='https://ui-avatars.com/api/?name=${game.home}&background=0b0f19&color=fff'">
+                <img src="${homeTeam.logo}" class="ticker-team-logo" alt="" onerror="this.src='https://ui-avatars.com/api/?name=${game.home}&background=0b0f19&color=fff'">
                 <span class="ticker-team-name">${game.home}</span>
-                ${homeMember ? `<span class="ticker-member-pill" title="Office: ${homeMember.name}"><img src="${homeMember.image}" class="ticker-avatar-mini" alt="${homeMember.name}">${homeMember.name}</span>` : ''}
+                ${homeMember ? `<span class="ticker-member-pill" title="Office: ${homeMember.name}"><img src="${homeMember.image}" class="ticker-avatar-mini" alt="">${homeMember.name}</span>` : ''}
               </div>
               <span class="ticker-team-score ${homeNum > awayNum ? 'winning' : ''}">${game.homeScore}</span>
             </div>
