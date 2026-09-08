@@ -1,3 +1,7 @@
 ## 2024-05-24 - Interactive Component A11y
 **Learning:** When making complex div structures into accessible buttons (e.g., ticker cards), wrapping inner content with `aria-hidden="true"` and applying a unified `aria-label` to the parent prevents screen readers from redundantly announcing disjointed child text nodes. Also, global keyboard delegation must use `e.target.closest` to catch enter/space events properly when a user interacts with a child element inside the custom button.
 **Action:** Consolidate screen reader context on the parent container with `aria-label` and `aria-hidden="true"` on children for complex custom buttons, and always use `.closest()` in delegated keyboard event handlers.
+
+## 2024-05-25 - Robust Keyboard Support for Nested Elements
+**Learning:** When custom elements have a `role="button"` or `role="tab"` and contain child elements, checking `e.target.getAttribute('role')` in a global `keydown` event listener is unreliable because `e.target` might be the child element that received focus or the event. Furthermore, directly substituting `e.target.closest` while checking the `closest` element's tag for being an `INPUT` etc. can break default keyboard behavior if a natively focusable child (like an input) is nested inside the custom element.
+**Action:** Always check the *original* `e.target`'s tag name to ensure we do not prevent default behavior on native interactive elements *before* looking up the DOM tree with `.closest()` to handle the custom element interaction.
