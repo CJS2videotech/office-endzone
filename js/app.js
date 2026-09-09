@@ -147,19 +147,22 @@ class OfficeEndzoneApp {
       this.dom.espnStatusText.textContent = `ESPN LIVE • ARIZONA TIME (MST)`;
     }
 
-    const currentHash = JSON.stringify(this.liveGames);
-    if (currentHash !== this.lastCarouselHash) {
-      this.lastCarouselHash = currentHash;
-      this.renderTickerCarousel();
-    }
+    this.renderTickerCarousel();
 
     if (!this.activeGameId && this.liveGames.length > 0) {
       this.selectGame(this.liveGames[0].id);
     }
   }
 
+  // ⚡ Bolt: Include internal UI state (activeGameId) in the cache hash.
+  // This prevents regressions where the ticker fails to re-render when a user selects
+  // a new game but the external liveGames data hasn't changed.
   renderTickerCarousel() {
     if (!this.dom.tickerCarousel) return;
+
+    const currentHash = JSON.stringify({ games: this.liveGames, activeId: this.activeGameId });
+    if (currentHash === this.lastCarouselHash) return;
+    this.lastCarouselHash = currentHash;
 
     if (this.liveGames.length === 0) {
       this.dom.tickerCarousel.innerHTML = '<div class="ticker-loading">No NFL games scheduled currently.</div>';
