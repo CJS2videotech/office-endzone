@@ -166,39 +166,97 @@ class OfficeEndzoneApp {
       return;
     }
 
-    this.dom.tickerCarousel.innerHTML = this.liveGames.map(game => {
+    this.dom.tickerCarousel.innerHTML = '';
+
+    this.liveGames.forEach(game => {
       const isSelected = game.id === this.activeGameId;
       const isLive = game.status.state === 'in';
       const statusBadgeClass = isLive ? 'badge-live' : (game.status.completed ? 'badge-final' : 'badge-pre');
 
       const ariaLabel = `${game.awayTeam.abbreviation} ${game.awayTeam.score} versus ${game.homeTeam.abbreviation} ${game.homeTeam.score}. ${game.status.detail}. Broadcast: ${game.broadcast || 'NFL'}.`;
-      return `
-        <div class="ticker-game-card ${isSelected ? 'selected' : ''}" data-game-id="${game.id}" role="button" tabindex="0" aria-label="${ariaLabel}">
-          <div class="ticker-card-top" aria-hidden="true">
-            <span class="ticker-status ${statusBadgeClass}">${game.status.detail}</span>
-            <span class="ticker-broadcast">${game.broadcast || 'NFL'}</span>
-          </div>
-          <div class="ticker-matchup-row" aria-hidden="true">
-            <div class="ticker-team">
-              <img src="${game.awayTeam.logo}" class="ticker-logo" alt="" onerror="this.src='https://a.espncdn.com/i/teamlogos/nfl/500/${game.awayTeam.abbreviation.toLowerCase()}.png'">
-              <span class="ticker-abbr">${game.awayTeam.abbreviation}</span>
-              <span class="ticker-score">${game.awayTeam.score}</span>
-            </div>
-            <div class="ticker-team">
-              <img src="${game.homeTeam.logo}" class="ticker-logo" alt="" onerror="this.src='https://a.espncdn.com/i/teamlogos/nfl/500/${game.homeTeam.abbreviation.toLowerCase()}.png'">
-              <span class="ticker-abbr">${game.homeTeam.abbreviation}</span>
-              <span class="ticker-score">${game.homeTeam.score}</span>
-            </div>
-          </div>
-        </div>
-      `;
-    }).join('');
 
-    this.dom.tickerCarousel.querySelectorAll('.ticker-game-card').forEach(card => {
+      const card = document.createElement('div');
+      card.className = `ticker-game-card ${isSelected ? 'selected' : ''}`;
+      card.dataset.gameId = game.id;
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('aria-label', ariaLabel);
+
+      const topDiv = document.createElement('div');
+      topDiv.className = 'ticker-card-top';
+      topDiv.setAttribute('aria-hidden', 'true');
+
+      const statusSpan = document.createElement('span');
+      statusSpan.className = `ticker-status ${statusBadgeClass}`;
+      statusSpan.textContent = game.status.detail;
+
+      const broadcastSpan = document.createElement('span');
+      broadcastSpan.className = 'ticker-broadcast';
+      broadcastSpan.textContent = game.broadcast || 'NFL';
+
+      topDiv.appendChild(statusSpan);
+      topDiv.appendChild(broadcastSpan);
+
+      const matchupRow = document.createElement('div');
+      matchupRow.className = 'ticker-matchup-row';
+      matchupRow.setAttribute('aria-hidden', 'true');
+
+      // Away Team
+      const awayTeamDiv = document.createElement('div');
+      awayTeamDiv.className = 'ticker-team';
+
+      const awayImg = document.createElement('img');
+      awayImg.src = game.awayTeam.logo;
+      awayImg.className = 'ticker-logo';
+      awayImg.alt = '';
+      awayImg.onerror = () => { awayImg.src = `https://a.espncdn.com/i/teamlogos/nfl/500/${game.awayTeam.abbreviation.toLowerCase()}.png`; };
+
+      const awayAbbr = document.createElement('span');
+      awayAbbr.className = 'ticker-abbr';
+      awayAbbr.textContent = game.awayTeam.abbreviation;
+
+      const awayScore = document.createElement('span');
+      awayScore.className = 'ticker-score';
+      awayScore.textContent = game.awayTeam.score;
+
+      awayTeamDiv.appendChild(awayImg);
+      awayTeamDiv.appendChild(awayAbbr);
+      awayTeamDiv.appendChild(awayScore);
+
+      // Home Team
+      const homeTeamDiv = document.createElement('div');
+      homeTeamDiv.className = 'ticker-team';
+
+      const homeImg = document.createElement('img');
+      homeImg.src = game.homeTeam.logo;
+      homeImg.className = 'ticker-logo';
+      homeImg.alt = '';
+      homeImg.onerror = () => { homeImg.src = `https://a.espncdn.com/i/teamlogos/nfl/500/${game.homeTeam.abbreviation.toLowerCase()}.png`; };
+
+      const homeAbbr = document.createElement('span');
+      homeAbbr.className = 'ticker-abbr';
+      homeAbbr.textContent = game.homeTeam.abbreviation;
+
+      const homeScore = document.createElement('span');
+      homeScore.className = 'ticker-score';
+      homeScore.textContent = game.homeTeam.score;
+
+      homeTeamDiv.appendChild(homeImg);
+      homeTeamDiv.appendChild(homeAbbr);
+      homeTeamDiv.appendChild(homeScore);
+
+      matchupRow.appendChild(awayTeamDiv);
+      matchupRow.appendChild(homeTeamDiv);
+
+      card.appendChild(topDiv);
+      card.appendChild(matchupRow);
+
       card.addEventListener('click', () => {
         const gameId = card.dataset.gameId;
         this.selectGame(gameId);
       });
+
+      this.dom.tickerCarousel.appendChild(card);
     });
   }
 
