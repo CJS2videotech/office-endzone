@@ -1109,7 +1109,8 @@
       if (!this.dom.tickerGrid) return;
       const games = this.currentTickerMode === 'TODAY' ? TODAY_TICKER_GAMES : YESTERDAY_TICKER_GAMES;
 
-      this.dom.tickerGrid.innerHTML = games.map(game => {
+      this.dom.tickerGrid.innerHTML = '';
+      games.forEach(game => {
         const awayTeam = this.teams.find(t => t.abbreviation === game.away) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.away.toLowerCase()}.png` };
         const homeTeam = this.teams.find(t => t.abbreviation === game.home) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.home.toLowerCase()}.png` };
         
@@ -1127,44 +1128,89 @@
         else if (game.isLive || game.status.includes('QTR')) statusClass = 'live';
 
         const ariaLabel = `${game.away} ${game.awayScore} versus ${game.home} ${game.homeScore}. ${game.status}. ${hasOfficeMember ? 'Office game. Click to open staff member card.' : 'NFL Matchup. Click to view Box Score.'}`;
-        return `
-          <div class="ticker-card ${hasOfficeMember ? 'office-game-card' : ''}" 
-               data-away="${game.away}" 
-               data-home="${game.home}"
-               data-away-member="${awayMemberId || ''}"
-               data-home-member="${homeMemberId || ''}"
-               role="button"
-               tabindex="0"
-               title="${hasOfficeMember ? 'Click to open staff member card' : 'NFL Matchup • Click to view Box Score'}"
-               aria-label="${ariaLabel}">
-            
-            <div class="ticker-game-meta" aria-hidden="true">
-              <span class="ticker-status-tag ${statusClass}">${game.status}</span>
-              ${hasOfficeMember ? `<span class="ticker-office-tag">🏈 OFFICE GAME</span>` : ''}
-            </div>
 
-            <!-- Away Team Row -->
-            <div class="ticker-team-row ${awayMember ? 'has-member' : ''}" data-member-id="${awayMemberId || ''}" aria-hidden="true">
-              <div class="ticker-team-info">
-                <img src="${awayTeam.logo}" class="ticker-team-logo" alt="" onerror="this.src='https://ui-avatars.com/api/?name=${game.away}&background=0b0f19&color=fff'">
-                <span class="ticker-team-name">${game.away}</span>
-                ${awayMember ? `<span class="ticker-member-pill" title="Office: ${awayMember.name}"><img src="${awayMember.image}" class="ticker-avatar-mini" alt="">${awayMember.name}</span>` : ''}
-              </div>
-              <span class="ticker-team-score ${awayNum > homeNum ? 'winning' : ''}">${game.awayScore}</span>
-            </div>
+        const card = document.createElement('div');
+        card.className = `ticker-card ${hasOfficeMember ? 'office-game-card' : ''}`;
+        card.dataset.away = game.away;
+        card.dataset.home = game.home;
+        if (awayMemberId) card.dataset.awayMember = awayMemberId;
+        if (homeMemberId) card.dataset.homeMember = homeMemberId;
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.title = hasOfficeMember ? 'Click to open staff member card' : 'NFL Matchup • Click to view Box Score';
+        card.setAttribute('aria-label', ariaLabel);
 
-            <!-- Home Team Row -->
-            <div class="ticker-team-row ${homeMember ? 'has-member' : ''}" data-member-id="${homeMemberId || ''}" aria-hidden="true">
-              <div class="ticker-team-info">
-                <img src="${homeTeam.logo}" class="ticker-team-logo" alt="" onerror="this.src='https://ui-avatars.com/api/?name=${game.home}&background=0b0f19&color=fff'">
-                <span class="ticker-team-name">${game.home}</span>
-                ${homeMember ? `<span class="ticker-member-pill" title="Office: ${homeMember.name}"><img src="${homeMember.image}" class="ticker-avatar-mini" alt="">${homeMember.name}</span>` : ''}
-              </div>
-              <span class="ticker-team-score ${homeNum > awayNum ? 'winning' : ''}">${game.homeScore}</span>
-            </div>
-          </div>
-        `;
-      }).join('');
+        const metaDiv = document.createElement('div');
+        metaDiv.className = 'ticker-game-meta';
+        metaDiv.setAttribute('aria-hidden', 'true');
+
+        const statusSpan = document.createElement('span');
+        statusSpan.className = `ticker-status-tag ${statusClass}`;
+        statusSpan.textContent = game.status;
+        metaDiv.appendChild(statusSpan);
+
+        if (hasOfficeMember) {
+          const officeTag = document.createElement('span');
+          officeTag.className = 'ticker-office-tag';
+          officeTag.textContent = '🏈 OFFICE GAME';
+          metaDiv.appendChild(officeTag);
+        }
+
+        const createTeamRow = (teamCode, teamInfo, member, memberId, score, isWinning) => {
+          const rowDiv = document.createElement('div');
+          rowDiv.className = `ticker-team-row ${member ? 'has-member' : ''}`;
+          if (memberId) rowDiv.dataset.memberId = memberId;
+          rowDiv.setAttribute('aria-hidden', 'true');
+
+          const infoDiv = document.createElement('div');
+          infoDiv.className = 'ticker-team-info';
+
+          const img = document.createElement('img');
+          img.src = teamInfo.logo;
+          img.className = 'ticker-team-logo';
+          img.alt = '';
+          img.onerror = () => { img.src = `https://ui-avatars.com/api/?name=${teamCode}&background=0b0f19&color=fff`; };
+
+          const nameSpan = document.createElement('span');
+          nameSpan.className = 'ticker-team-name';
+          nameSpan.textContent = teamCode;
+
+          infoDiv.appendChild(img);
+          infoDiv.appendChild(nameSpan);
+
+          if (member) {
+            const pillSpan = document.createElement('span');
+            pillSpan.className = 'ticker-member-pill';
+            pillSpan.title = `Office: ${member.name}`;
+
+            const memberImg = document.createElement('img');
+            memberImg.src = member.image;
+            memberImg.className = 'ticker-avatar-mini';
+            memberImg.alt = '';
+
+            pillSpan.appendChild(memberImg);
+            pillSpan.appendChild(document.createTextNode(member.name));
+            infoDiv.appendChild(pillSpan);
+          }
+
+          const scoreSpan = document.createElement('span');
+          scoreSpan.className = `ticker-team-score ${isWinning ? 'winning' : ''}`;
+          scoreSpan.textContent = score;
+
+          rowDiv.appendChild(infoDiv);
+          rowDiv.appendChild(scoreSpan);
+          return rowDiv;
+        };
+
+        const awayRow = createTeamRow(game.away, awayTeam, awayMember, awayMemberId, game.awayScore, awayNum > homeNum);
+        const homeRow = createTeamRow(game.home, homeTeam, homeMember, homeMemberId, game.homeScore, homeNum > awayNum);
+
+        card.appendChild(metaDiv);
+        card.appendChild(awayRow);
+        card.appendChild(homeRow);
+
+        this.dom.tickerGrid.appendChild(card);
+      });
     }
 
     renderRosterGrid() {
