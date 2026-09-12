@@ -4,3 +4,6 @@
 ## 2024-05-25 - Accessibility: Nested Interactive Elements
 **Learning:** Adding `role="button"` and `tabindex="0"` to both a parent container and its child creates an accessibility anti-pattern. Keyboard users must tab twice, and screen readers announce a "button inside a button".
 **Action:** Apply interactive roles and tab index only to the outer logical container. Use `aria-hidden="true"` on inner decorative/text elements.
+## 2024-05-26 - Accessibility: Global Keyboard Handlers and Nested Elements
+**Learning:** Global keydown handlers for accessibility (e.g., intercepting 'Enter' or 'Space' for `role="button"`) fail when users interact with nested elements (like text or badges) inside a custom button. If checking only `e.target`, the event is ignored, forcing keyboard users to interact with the exact outer edge of the button.
+**Action:** Use `e.target.closest('[role="button"], [role="tab"]')` in global keydown event delegation to ensure events bubble correctly and trigger regardless of which child element received the focus/interaction.
