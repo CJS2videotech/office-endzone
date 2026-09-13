@@ -1172,12 +1172,12 @@
       this.dom.rosterGrid.innerHTML = this.roster.map(member => {
         return `
           <div class="roster-member-card" data-id="${member.id}" role="button" tabindex="0" aria-label="Open ${member.name} Details">
-            <div class="avatar-frame ${member.frameClass}">
+            <div class="avatar-frame ${member.frameClass}" aria-hidden="true">
               <div class="avatar-inner-img-wrap">
                 <img src="${member.image}" alt="${member.name}" class="roster-avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=${member.name}&background=0b1322&color=fff'">
               </div>
             </div>
-            <div class="roster-member-name ${member.nameClass}">${member.name}</div>
+            <div class="roster-member-name ${member.nameClass}" aria-hidden="true">${member.name}</div>
           </div>
         `;
       }).join('');
@@ -1463,6 +1463,7 @@
         }
       });
 
+      // Handle Enter and Space for custom interactive elements
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           if (this.dom.boxScoreModalOverlay?.classList.contains('open')) {
@@ -1473,8 +1474,8 @@
             this.closeModal();
           }
         } else if (e.key === 'Enter' || e.key === ' ') {
-          const target = e.target;
-          if (target && (target.getAttribute('role') === 'button' || target.getAttribute('role') === 'tab')) {
+          const target = e.target.closest('[role="button"], [role="tab"]');
+          if (target) {
             const tag = target.tagName;
             if (tag !== 'BUTTON' && tag !== 'A' && tag !== 'INPUT' && tag !== 'SELECT' && tag !== 'TEXTAREA' && tag !== 'SUMMARY') {
               e.preventDefault();

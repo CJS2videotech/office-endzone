@@ -462,6 +462,7 @@ class OfficeEndzoneApp {
   }
 }
 
+// Handle Enter and Space for custom interactive elements
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || e.key === ' ') {
     const target = e.target.closest('[role="button"], [role="tab"]');
