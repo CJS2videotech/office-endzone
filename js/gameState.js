@@ -3,6 +3,10 @@
  * Synchronizes with real ESPN NFL game feeds or runs local tactical simulations.
  */
 
+// ⚡ Bolt: Cache Intl.DateTimeFormat instance to avoid garbage collection overhead
+// during frequent event logging operations.
+const timeFormatter = new Intl.DateTimeFormat(undefined, { timeStyle: 'medium' });
+
 export class GameState {
   constructor() {
     this.listeners = [];
@@ -58,7 +62,7 @@ export class GameState {
       lastEventCategory: 'info',
       eventHistory: [
         {
-          timestamp: new Date().toLocaleTimeString(),
+          timestamp: timeFormatter.format(new Date()),
           text: '⚡ Welcome to Office Endzone! Live football simulation ready.',
           type: 'info'
         }
@@ -86,7 +90,7 @@ export class GameState {
 
   logEvent(text, type = 'info') {
     const entry = {
-      timestamp: new Date().toLocaleTimeString(),
+      timestamp: timeFormatter.format(new Date()),
       text,
       type
     };
