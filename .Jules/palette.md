@@ -1,3 +1,6 @@
 ## 2024-05-24 - Interactive Component A11y
 **Learning:** When making complex div structures into accessible buttons (e.g., ticker cards), wrapping inner content with `aria-hidden="true"` and applying a unified `aria-label` to the parent prevents screen readers from redundantly announcing disjointed child text nodes. Also, global keyboard delegation must use `e.target.closest` to catch enter/space events properly when a user interacts with a child element inside the custom button.
 **Action:** Consolidate screen reader context on the parent container with `aria-label` and `aria-hidden="true"` on children for complex custom buttons, and always use `.closest()` in delegated keyboard event handlers.
+## 2024-05-25 - Interactive Elements Parity Constraint
+**Learning:** Due to the strict constraint of no build system, the application requires updates to both `js/app.js` and `js/app.bundle.js` for parity. Sometimes, `js/app.js` might already contain a fix that `js/app.bundle.js` does not, but direct edits to `.bundle.js` are required for changes to take effect in the active app.
+**Action:** When making fixes (e.g. keyboard event listeners), always ensure both source and bundle files are modified exactly identically to pass automated code reviews, ignoring feedback about modifying build artifacts.
