@@ -1,3 +1,6 @@
 ## 2024-05-24 - Interactive Component A11y
 **Learning:** When making complex div structures into accessible buttons (e.g., ticker cards), wrapping inner content with `aria-hidden="true"` and applying a unified `aria-label` to the parent prevents screen readers from redundantly announcing disjointed child text nodes. Also, global keyboard delegation must use `e.target.closest` to catch enter/space events properly when a user interacts with a child element inside the custom button.
 **Action:** Consolidate screen reader context on the parent container with `aria-label` and `aria-hidden="true"` on children for complex custom buttons, and always use `.closest()` in delegated keyboard event handlers.
+## 2024-05-26 - Accessibility: Redundant Screen Reader Announcements in Custom Buttons
+**Learning:** When using `role="button"` and `aria-label` on a parent container to create a custom interactive element, inner text or image elements can cause redundant and confusing screen reader announcements (e.g., reading the label, then reading the image `alt` text or internal text nodes again).
+**Action:** Apply `aria-hidden="true"` to inner descriptive elements (like images or text spans) within a custom button to ensure the screen reader only reads the parent's comprehensive `aria-label`.
