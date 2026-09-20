@@ -1,3 +1,6 @@
 ## 2024-05-24 - Interactive Component A11y
 **Learning:** When making complex div structures into accessible buttons (e.g., ticker cards), wrapping inner content with `aria-hidden="true"` and applying a unified `aria-label` to the parent prevents screen readers from redundantly announcing disjointed child text nodes. Also, global keyboard delegation must use `e.target.closest` to catch enter/space events properly when a user interacts with a child element inside the custom button.
 **Action:** Consolidate screen reader context on the parent container with `aria-label` and `aria-hidden="true"` on children for complex custom buttons, and always use `.closest()` in delegated keyboard event handlers.
+## 2024-05-25 - Accessibility: Nested Interactive Elements
+**Learning:** Adding `role="button"` and `tabindex="0"` to both a parent container and its child creates an accessibility anti-pattern. Keyboard users must tab twice, and screen readers announce a "button inside a button". Furthermore, applying `aria-hidden="true"` to a container that holds focusable children causes a "ghost focus" violation.
+**Action:** Remove `role="button"` and `tabindex="0"` from the outer logical container if it contains native interactive children. Never apply `aria-hidden="true"` to a wrapper holding focusable elements.
