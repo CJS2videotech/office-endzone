@@ -175,7 +175,7 @@ export class CompetitionsController {
             </div>
           </div>
           <div class="staff-score-box">${m.staff1.score}</div>
-          <button class="bracket-pick-btn ${userPick === m.staff1.name ? 'active' : ''}" data-match-id="${m.id}" data-staff="${m.staff1.name}">
+          <button class="bracket-pick-btn ${userPick === m.staff1.name ? 'active' : ''}" data-match-id="${m.id}" data-staff="${m.staff1.name}" aria-pressed="${userPick === m.staff1.name ? 'true' : 'false'}" aria-label="Pick ${m.staff1.name}">
             ${userPick === m.staff1.name ? '✓ Picked' : 'Pick'}
           </button>
         </div>
@@ -190,7 +190,7 @@ export class CompetitionsController {
             </div>
           </div>
           <div class="staff-score-box">${m.staff2.score}</div>
-          <button class="bracket-pick-btn ${userPick === m.staff2.name ? 'active' : ''}" data-match-id="${m.id}" data-staff="${m.staff2.name}">
+          <button class="bracket-pick-btn ${userPick === m.staff2.name ? 'active' : ''}" data-match-id="${m.id}" data-staff="${m.staff2.name}" aria-pressed="${userPick === m.staff2.name ? 'true' : 'false'}" aria-label="Pick ${m.staff2.name}">
             ${userPick === m.staff2.name ? '✓ Picked' : 'Pick'}
           </button>
         </div>

@@ -1707,7 +1707,7 @@
                 </div>
                 <div class="contestant-score-action">
                   <span class="contestant-score-num">${m.staff1.score ? m.staff1.score + ' PTS' : (isUpcoming ? 'PROJ: ' + m.spread.split('•')[0] : '0 PTS')}</span>
-                  <button class="btn-bracket-pick ${userPick === m.staff1.name ? 'active' : ''}" data-match-id="${m.id}" data-staff="${m.staff1.name}">
+                  <button class="btn-bracket-pick ${userPick === m.staff1.name ? 'active' : ''}" data-match-id="${m.id}" data-staff="${m.staff1.name}" aria-pressed="${userPick === m.staff1.name ? 'true' : 'false'}" aria-label="Pick ${m.staff1.name}">
                     ${userPick === m.staff1.name ? '✓ Picked' : 'Pick'}
                   </button>
                 </div>
@@ -1724,7 +1724,7 @@
                 </div>
                 <div class="contestant-score-action">
                   <span class="contestant-score-num">${m.staff2.score ? m.staff2.score + ' PTS' : (isUpcoming ? 'PROJ: ' + (m.spread.split('•')[1] || '20 PTS') : '0 PTS')}</span>
-                  <button class="btn-bracket-pick ${userPick === m.staff2.name ? 'active' : ''}" data-match-id="${m.id}" data-staff="${m.staff2.name}">
+                  <button class="btn-bracket-pick ${userPick === m.staff2.name ? 'active' : ''}" data-match-id="${m.id}" data-staff="${m.staff2.name}" aria-pressed="${userPick === m.staff2.name ? 'true' : 'false'}" aria-label="Pick ${m.staff2.name}">
                     ${userPick === m.staff2.name ? '✓ Picked' : 'Pick'}
                   </button>
                 </div>
@@ -2224,7 +2224,7 @@
                 </div>
                 <div class="contestant-score-action">
                   ${canPick1 ? `
-                    <button class="btn-season-pick btn-bracket-pick ${userPick === c1.name ? 'active' : ''}" data-match-id="${matchId}" data-staff="${c1.name}">
+                    <button class="btn-season-pick btn-bracket-pick ${userPick === c1.name ? 'active' : ''}" data-match-id="${matchId}" data-staff="${c1.name}" aria-pressed="${userPick === c1.name ? 'true' : 'false'}" aria-label="Pick ${c1.name}">
                       ${userPick === c1.name ? '✓ Picked' : 'Pick'}
                     </button>
                   ` : `<span class="contestant-score-num" style="color:#64748b; font-size:0.68rem;">TBD</span>`}
@@ -2242,7 +2242,7 @@
                 </div>
                 <div class="contestant-score-action">
                   ${canPick2 ? `
-                    <button class="btn-season-pick btn-bracket-pick ${userPick === c2.name ? 'active' : ''}" data-match-id="${matchId}" data-staff="${c2.name}">
+                    <button class="btn-season-pick btn-bracket-pick ${userPick === c2.name ? 'active' : ''}" data-match-id="${matchId}" data-staff="${c2.name}" aria-pressed="${userPick === c2.name ? 'true' : 'false'}" aria-label="Pick ${c2.name}">
                       ${userPick === c2.name ? '✓ Picked' : 'Pick'}
                     </button>
                   ` : `<span class="contestant-score-num" style="color:#64748b; font-size:0.68rem;">TBD</span>`}
