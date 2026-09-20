@@ -98,33 +98,33 @@
       nameClass: "name-andrea",
       image: "assets/avatars/Andrea football.jpg",
       bannerGif: "assets/Andrea football banner.gif",
-      picks: { record: "0-0", pct: ".000", streak: "—" },
-      trophy: { count: 0, label: "2026 PRESEASON CONTENDER" },
+      picks: { record: "1-0", pct: "1.000", streak: "W1" },
+      trophy: { count: 1, label: "WEEK 1 YARDS LEADER" },
       matchup: {
-        away: { code: "GB", name: "Packers", rec: "0-0", score: 0 },
-        home: { code: "CHI", name: "Bears", rec: "0-0", score: 0 },
-        status: "PRESEASON WK 2 • 12:15 PM MST",
-        isLive: false,
-        venue: "Soldier Field",
+        away: { code: "GB", name: "Packers", rec: "1-0", score: 7 },
+        home: { code: "NYJ", name: "Jets", rec: "1-0", score: 7 },
+        status: "Q3 11:27 • 12:15 PM MST",
+        isLive: true,
+        venue: "MetLife Stadium",
         awayStarter: "Jordan Love",
-        homeStarter: "Caleb Williams"
+        homeStarter: "Aaron Rodgers"
       },
       schedule: [
-        { date: "Wk 1 • Sep 6", away: "GB", home: "CHI", time: "1:25 PM MST", isHome: false },
-        { date: "Wk 2 • Sep 13", away: "DET", home: "GB", time: "10:00 AM MST", isHome: true },
-        { date: "Wk 3 • Sep 20", away: "GB", home: "LAR", time: "1:25 PM MST", isHome: false },
-        { date: "Wk 4 • Sep 27", away: "MIN", home: "GB", time: "10:00 AM MST", isHome: true },
-        { date: "Wk 5 • Oct 4", away: "GB", home: "SF", time: "5:20 PM MST", isHome: false }
+        { date: "Wk 1 • Sep 10", away: "GB", home: "PHI", time: "FINAL 34-29", isHome: false },
+        { date: "Wk 2 • Sep 20", away: "GB", home: "NYJ", time: "LIVE Q3", isHome: false },
+        { date: "Wk 3 • Sep 27", away: "TEN", home: "GB", time: "10:00 AM MST", isHome: true },
+        { date: "Wk 4 • Oct 4", away: "MIN", home: "GB", time: "10:00 AM MST", isHome: true },
+        { date: "Wk 5 • Oct 11", away: "GB", home: "LAR", time: "1:25 PM MST", isHome: false }
       ],
       division: "NFC NORTH STANDINGS",
       standings: [
-        { team: "Packers", w: 0, l: 0, pct: ".000", gb: "—", highlight: true },
-        { team: "Lions", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
-        { team: "Bears", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
-        { team: "Vikings", w: 0, l: 0, pct: ".000", gb: "—", highlight: false }
+        { team: "Packers", w: 1, l: 0, pct: "1.000", gb: "—", highlight: true },
+        { team: "Bears", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
+        { team: "Lions", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
+        { team: "Vikings", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false }
       ],
-      banter: "Go Pack Go! 2026 Preseason is underway! Lambeau Leap energy is ready to scout and conquer!",
-      liveStats: { yards: 0, tds: 0, status: "2026 Kickoff Ready" }
+      banter: "Go Pack Go! Lambeau energy running strong in Week 2! Ready to light up the board!",
+      liveStats: { yards: 285, tds: 1, status: "Active in Q3" }
     },
     {
       id: "char_cj",
@@ -135,33 +135,33 @@
       nameClass: "name-cj",
       image: "assets/avatars/CJ football.jpg",
       bannerGif: "assets/CJ football banner.gif",
-      picks: { record: "0-0", pct: ".000", streak: "—" },
-      trophy: { count: 0, label: "2026 PRESEASON CONTENDER" },
+      picks: { record: "1-0", pct: "1.000", streak: "W1" },
+      trophy: { count: 2, label: "WEEKLY YARDS & TDS LEADER" },
       matchup: {
-        away: { code: "GB", name: "Packers", rec: "0-0", score: 0 },
-        home: { code: "CHI", name: "Bears", rec: "0-0", score: 0 },
-        status: "PRESEASON WK 2 • 12:15 PM MST",
-        isLive: false,
+        away: { code: "MIN", name: "Vikings", rec: "1-0", score: 6 },
+        home: { code: "CHI", name: "Bears", rec: "1-0", score: 3 },
+        status: "Q3 9:38 • 12:15 PM MST",
+        isLive: true,
         venue: "Soldier Field",
-        awayStarter: "Jordan Love",
+        awayStarter: "Carson Wentz",
         homeStarter: "Caleb Williams"
       },
       schedule: [
-        { date: "Wk 1 • Sep 6", away: "GB", home: "CHI", time: "1:25 PM MST", isHome: true },
-        { date: "Wk 2 • Sep 13", away: "CHI", home: "KC", time: "5:15 PM MST", isHome: false },
-        { date: "Wk 3 • Sep 20", away: "MIN", home: "CHI", time: "10:00 AM MST", isHome: true },
-        { date: "Wk 4 • Sep 27", away: "CHI", home: "DET", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 5 • Oct 4", away: "SF", home: "CHI", time: "1:05 PM MST", isHome: true }
+        { date: "Wk 1 • Sep 10", away: "TEN", home: "CHI", time: "FINAL 24-17", isHome: true },
+        { date: "Wk 2 • Sep 20", away: "MIN", home: "CHI", time: "LIVE Q3", isHome: true },
+        { date: "Wk 3 • Sep 27", away: "CHI", home: "IND", time: "10:00 AM MST", isHome: false },
+        { date: "Wk 4 • Oct 4", away: "LAR", home: "CHI", time: "10:00 AM MST", isHome: true },
+        { date: "Wk 5 • Oct 11", away: "CAR", home: "CHI", time: "10:00 AM MST", isHome: true }
       ],
       division: "NFC NORTH STANDINGS",
       standings: [
-        { team: "Packers", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
-        { team: "Lions", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
-        { team: "Bears", w: 0, l: 0, pct: ".000", gb: "—", highlight: true },
-        { team: "Vikings", w: 0, l: 0, pct: ".000", gb: "—", highlight: false }
+        { team: "Bears", w: 1, l: 0, pct: "1.000", gb: "—", highlight: true },
+        { team: "Packers", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
+        { team: "Lions", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
+        { team: "Vikings", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false }
       ],
-      banter: "Bear Down Chicago! 2026 campaign starts now. Dialing up the new offense playbook!",
-      liveStats: { yards: 0, tds: 0, status: "2026 Kickoff Ready" }
+      banter: "Bear Down Chicago! Caleb Williams orchestrating the Soldier Field comeback right now!",
+      liveStats: { yards: 312, tds: 1, status: "Active in Q3" }
     },
     {
       id: "char_mario",
@@ -172,33 +172,33 @@
       nameClass: "name-mario",
       image: "assets/avatars/Mario football.jpg",
       bannerGif: "assets/Mario football banner.gif",
-      picks: { record: "0-0", pct: ".000", streak: "—" },
-      trophy: { count: 0, label: "2026 PRESEASON CONTENDER" },
+      picks: { record: "0-1", pct: ".000", streak: "L1" },
+      trophy: { count: 1, label: "SACK CITY LEADER" },
       matchup: {
-        away: { code: "PIT", name: "Steelers", rec: "0-0", score: 0 },
-        home: { code: "CLE", name: "Browns", rec: "0-0", score: 0 },
-        status: "PRESEASON WK 2 • 1:05 PM MST",
+        away: { code: "NYG", name: "Giants", rec: "0-1", score: 0 },
+        home: { code: "CLE", name: "Browns", rec: "0-1", score: 0 },
+        status: "TODAY • 1:05 PM MST",
         isLive: false,
         venue: "Huntington Bank Field",
-        awayStarter: "Russell Wilson",
+        awayStarter: "Daniel Jones",
         homeStarter: "Deshaun Watson"
       },
       schedule: [
-        { date: "Wk 1 • Sep 6", away: "PIT", home: "CLE", time: "10:00 AM MST", isHome: true },
-        { date: "Wk 2 • Sep 13", away: "CLE", home: "BAL", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 3 • Sep 20", away: "CIN", home: "CLE", time: "5:15 PM MST", isHome: true },
-        { date: "Wk 4 • Sep 27", away: "CLE", home: "PHI", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 5 • Oct 4", away: "NYG", home: "CLE", time: "10:00 AM MST", isHome: true }
+        { date: "Wk 1 • Sep 10", away: "DAL", home: "CLE", time: "FINAL 17-33", isHome: true },
+        { date: "Wk 2 • Sep 20", away: "NYG", home: "CLE", time: "1:05 PM MST", isHome: true },
+        { date: "Wk 3 • Sep 27", away: "CLE", home: "LV", time: "1:25 PM MST", isHome: false },
+        { date: "Wk 4 • Oct 4", away: "CLE", home: "WAS", time: "10:00 AM MST", isHome: false },
+        { date: "Wk 5 • Oct 11", away: "CLE", home: "PHI", time: "10:00 AM MST", isHome: false }
       ],
       division: "AFC NORTH STANDINGS",
       standings: [
-        { team: "Ravens", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
-        { team: "Steelers", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
-        { team: "Browns", w: 0, l: 0, pct: ".000", gb: "—", highlight: true },
-        { team: "Bengals", w: 0, l: 0, pct: ".000", gb: "—", highlight: false }
+        { team: "Steelers", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
+        { team: "Ravens", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false },
+        { team: "Browns", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: true },
+        { team: "Bengals", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false }
       ],
-      banter: "Dawg Pound defense locked in for 2026! Expect heavy blitz packages and big sacks!",
-      liveStats: { yards: 0, tds: 0, status: "2026 Kickoff Ready" }
+      banter: "Dawg Pound defense locked in for Week 2! Heavy blitz packages incoming!",
+      liveStats: { yards: 245, tds: 0, status: "Pregame Warmups" }
     },
     {
       id: "char_nicole",
@@ -209,33 +209,33 @@
       nameClass: "name-nicole",
       image: "assets/avatars/Nicole football.jpg",
       bannerGif: "assets/Nicole football banner.gif",
-      picks: { record: "0-0", pct: ".000", streak: "—" },
-      trophy: { count: 0, label: "2026 PRESEASON CONTENDER" },
+      picks: { record: "1-0", pct: "1.000", streak: "W1" },
+      trophy: { count: 1, label: "UPSET SPECIALIST" },
       matchup: {
-        away: { code: "KC", name: "Chiefs", rec: "0-0", score: 0 },
-        home: { code: "LV", name: "Raiders", rec: "0-0", score: 0 },
-        status: "PRESEASON WK 2 • 5:20 PM MST",
+        away: { code: "CAR", name: "Panthers", rec: "0-1", score: 0 },
+        home: { code: "LV", name: "Raiders", rec: "1-0", score: 0 },
+        status: "TODAY • 1:05 PM MST",
         isLive: false,
         venue: "Allegiant Stadium",
-        awayStarter: "Patrick Mahomes",
+        awayStarter: "Bryce Young",
         homeStarter: "Gardner Minshew"
       },
       schedule: [
-        { date: "Wk 1 • Sep 6", away: "KC", home: "LV", time: "1:25 PM MST", isHome: true },
-        { date: "Wk 2 • Sep 13", away: "LV", home: "LAC", time: "1:05 PM MST", isHome: false },
-        { date: "Wk 3 • Sep 20", away: "DEN", home: "LV", time: "5:15 PM MST", isHome: true },
-        { date: "Wk 4 • Sep 27", away: "LV", home: "MIA", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 5 • Oct 4", away: "ATL", home: "LV", time: "1:25 PM MST", isHome: true }
+        { date: "Wk 1 • Sep 10", away: "LV", home: "BAL", time: "FINAL 26-23", isHome: false },
+        { date: "Wk 2 • Sep 20", away: "CAR", home: "LV", time: "1:05 PM MST", isHome: true },
+        { date: "Wk 3 • Sep 27", away: "CLE", home: "LV", time: "1:25 PM MST", isHome: true },
+        { date: "Wk 4 • Oct 4", away: "LV", home: "DEN", time: "1:05 PM MST", isHome: false },
+        { date: "Wk 5 • Oct 11", away: "PIT", home: "LV", time: "1:05 PM MST", isHome: true }
       ],
       division: "AFC WEST STANDINGS",
       standings: [
-        { team: "Chiefs", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
-        { team: "Raiders", w: 0, l: 0, pct: ".000", gb: "—", highlight: true },
-        { team: "Chargers", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
-        { team: "Broncos", w: 0, l: 0, pct: ".000", gb: "—", highlight: false }
+        { team: "Chiefs", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
+        { team: "Chargers", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
+        { team: "Raiders", w: 1, l: 0, pct: "1.000", gb: "—", highlight: true },
+        { team: "Broncos", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false }
       ],
-      banter: "Raider Nation! Analytics running fresh 2026 projections for the new season!",
-      liveStats: { yards: 0, tds: 0, status: "2026 Kickoff Ready" }
+      banter: "Raider Nation! Fresh analytics project high passing efficiency this afternoon!",
+      liveStats: { yards: 290, tds: 1, status: "Pregame Warmups" }
     },
     {
       id: "char_saul",
@@ -246,33 +246,33 @@
       nameClass: "name-saul",
       image: "assets/avatars/Saul football.jpg",
       bannerGif: "assets/Saul football banner.gif",
-      picks: { record: "0-0", pct: ".000", streak: "—" },
-      trophy: { count: 0, label: "2026 PRESEASON CONTENDER" },
+      picks: { record: "1-0", pct: "1.000", streak: "W1" },
+      trophy: { count: 2, label: "DIVISION CONTENDER" },
       matchup: {
-        away: { code: "SF", name: "49ers", rec: "0-0", score: 0 },
-        home: { code: "LAR", name: "Rams", rec: "0-0", score: 0 },
-        status: "PRESEASON WK 2 • 1:25 PM MST",
+        away: { code: "SF", name: "49ers", rec: "1-0", score: 0 },
+        home: { code: "LAR", name: "Rams", rec: "0-1", score: 0 },
+        status: "TODAY • 1:25 PM MST",
         isLive: false,
         venue: "SoFi Stadium",
         awayStarter: "Brock Purdy",
         homeStarter: "Matthew Stafford"
       },
       schedule: [
-        { date: "Wk 1 • Sep 6", away: "SF", home: "LAR", time: "1:25 PM MST", isHome: false },
-        { date: "Wk 2 • Sep 13", away: "ARI", home: "SF", time: "1:05 PM MST", isHome: true },
-        { date: "Wk 3 • Sep 20", away: "SF", home: "SEA", time: "5:15 PM MST", isHome: false },
-        { date: "Wk 4 • Sep 27", away: "DAL", home: "SF", time: "5:20 PM MST", isHome: true },
-        { date: "Wk 5 • Oct 4", away: "SF", home: "CHI", time: "1:05 PM MST", isHome: false }
+        { date: "Wk 1 • Sep 10", away: "NYJ", home: "SF", time: "FINAL 32-19", isHome: true },
+        { date: "Wk 2 • Sep 20", away: "SF", home: "LAR", time: "1:25 PM MST", isHome: false },
+        { date: "Wk 3 • Sep 27", away: "NE", home: "SF", time: "1:05 PM MST", isHome: true },
+        { date: "Wk 4 • Oct 4", away: "ARI", home: "SF", time: "1:05 PM MST", isHome: true },
+        { date: "Wk 5 • Oct 11", away: "SF", home: "SEA", time: "5:15 PM MST", isHome: false }
       ],
       division: "NFC WEST STANDINGS",
       standings: [
-        { team: "49ers", w: 0, l: 0, pct: ".000", gb: "—", highlight: true },
-        { team: "Rams", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
-        { team: "Cardinals", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
-        { team: "Seahawks", w: 0, l: 0, pct: ".000", gb: "—", highlight: false }
+        { team: "49ers", w: 1, l: 0, pct: "1.000", gb: "—", highlight: true },
+        { team: "Cardinals", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
+        { team: "Seahawks", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
+        { team: "Rams", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false }
       ],
-      banter: "Faithful to the Bay! Playbook audited and compliant for the 2026 season kickoff!",
-      liveStats: { yards: 0, tds: 0, status: "2026 Kickoff Ready" }
+      banter: "Faithful to the Bay! Playbook audited and dialed in for the divisional matchup!",
+      liveStats: { yards: 340, tds: 2, status: "Pregame Warmups" }
     },
     {
       id: "char_cardinals",
@@ -283,33 +283,33 @@
       nameClass: "name-cardinals",
       image: "assets/Arizona_Cardinals_flag.gif",
       bannerGif: "assets/Arizona_Cardinals_flag.gif",
-      picks: { record: "0-0", pct: ".000", streak: "—" },
-      trophy: { count: 0, label: "2026 PRESEASON CONTENDER" },
+      picks: { record: "1-0", pct: "1.000", streak: "W1" },
+      trophy: { count: 1, label: "DESERT SCORING LEADER" },
       matchup: {
-        away: { code: "SEA", name: "Seahawks", rec: "0-0", score: 0 },
-        home: { code: "ARI", name: "Cardinals", rec: "0-0", score: 0 },
-        status: "PRESEASON WK 2 • 1:05 PM MST",
+        away: { code: "DET", name: "Lions", rec: "1-0", score: 0 },
+        home: { code: "ARI", name: "Cardinals", rec: "1-0", score: 0 },
+        status: "TODAY • 1:25 PM MST",
         isLive: false,
         venue: "State Farm Stadium (Glendale, AZ)",
-        awayStarter: "Geno Smith",
+        awayStarter: "Jared Goff",
         homeStarter: "Kyler Murray"
       },
       schedule: [
-        { date: "Wk 1 • Sep 6", away: "SEA", home: "ARI", time: "1:05 PM MST", isHome: true },
-        { date: "Wk 2 • Sep 13", away: "ARI", home: "SF", time: "1:05 PM MST", isHome: false },
-        { date: "Wk 3 • Sep 20", away: "LAR", home: "ARI", time: "1:25 PM MST", isHome: true },
-        { date: "Wk 4 • Sep 27", away: "ARI", home: "DEN", time: "1:05 PM MST", isHome: false },
-        { date: "Wk 5 • Oct 4", away: "LAC", home: "ARI", time: "1:05 PM MST", isHome: true }
+        { date: "Wk 1 • Sep 10", away: "LAR", home: "ARI", time: "FINAL 41-10", isHome: true },
+        { date: "Wk 2 • Sep 20", away: "DET", home: "ARI", time: "1:25 PM MST", isHome: true },
+        { date: "Wk 3 • Sep 27", away: "WAS", home: "ARI", time: "1:05 PM MST", isHome: true },
+        { date: "Wk 4 • Oct 4", away: "ARI", home: "SF", time: "1:05 PM MST", isHome: false },
+        { date: "Wk 5 • Oct 11", away: "GB", home: "ARI", time: "10:00 AM MST", isHome: false }
       ],
       division: "NFC WEST STANDINGS",
       standings: [
-        { team: "49ers", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
-        { team: "Rams", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
-        { team: "Cardinals", w: 0, l: 0, pct: ".000", gb: "—", highlight: true },
-        { team: "Seahawks", w: 0, l: 0, pct: ".000", gb: "—", highlight: false }
+        { team: "49ers", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
+        { team: "Cardinals", w: 1, l: 0, pct: "1.000", gb: "—", highlight: true },
+        { team: "Seahawks", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
+        { team: "Rams", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false }
       ],
-      banter: "Desert pride soaring high in Glendale! Rise Up Red Sea for the 2026 kickoff!",
-      liveStats: { yards: 0, tds: 0, status: "2026 Kickoff Ready" }
+      banter: "Desert pride soaring high in Glendale! Rise Up Red Sea for Week 2 kickoff!",
+      liveStats: { yards: 355, tds: 2, status: "Pregame Warmups" }
     },
     {
       id: "char_mariah",
@@ -320,57 +320,57 @@
       nameClass: "name-mariah",
       image: "assets/avatars/Mariah football.jpg",
       bannerGif: "assets/Mariah football banner.mp4",
-      picks: { record: "0-0", pct: ".000", streak: "—" },
-      trophy: { count: 0, label: "2026 PRESEASON CONTENDER" },
+      picks: { record: "1-0", pct: "1.000", streak: "W1" },
+      trophy: { count: 2, label: "TOUCHDOWN SENSATION" },
       matchup: {
-        away: { code: "PHI", name: "Eagles", rec: "0-0", score: 0 },
-        home: { code: "NYG", name: "Giants", rec: "0-0", score: 0 },
-        status: "PRESEASON WK 2 • 10:00 AM MST",
-        isLive: false,
-        venue: "Lincoln Financial Field",
+        away: { code: "PHI", name: "Eagles", rec: "1-0", score: 14 },
+        home: { code: "TEN", name: "Titans", rec: "0-1", score: 10 },
+        status: "Q3 8:20 • 12:15 PM MST",
+        isLive: true,
+        venue: "Nissan Stadium",
         awayStarter: "Jalen Hurts",
-        homeStarter: "Daniel Jones"
+        homeStarter: "Will Levis"
       },
       schedule: [
-        { date: "Wk 1 • Sep 6", away: "PHI", home: "NYG", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 2 • Sep 13", away: "DAL", home: "PHI", time: "5:15 PM MST", isHome: true },
-        { date: "Wk 3 • Sep 20", away: "PHI", home: "WAS", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 4 • Sep 27", away: "CLE", home: "PHI", time: "10:00 AM MST", isHome: true },
-        { date: "Wk 5 • Oct 4", away: "PHI", home: "BAL", time: "1:25 PM MST", isHome: false }
+        { date: "Wk 1 • Sep 10", away: "GB", home: "PHI", time: "FINAL 34-29", isHome: true },
+        { date: "Wk 2 • Sep 20", away: "PHI", home: "TEN", time: "LIVE Q3", isHome: false },
+        { date: "Wk 3 • Sep 27", away: "PHI", home: "NO", time: "10:00 AM MST", isHome: false },
+        { date: "Wk 4 • Oct 4", away: "PHI", home: "TB", time: "10:00 AM MST", isHome: false },
+        { date: "Wk 5 • Oct 11", away: "CLE", home: "PHI", time: "10:00 AM MST", isHome: true }
       ],
       division: "NFC EAST STANDINGS",
       standings: [
-        { team: "Eagles", w: 0, l: 0, pct: ".000", gb: "—", highlight: true },
-        { team: "Cowboys", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
-        { team: "Commanders", w: 0, l: 0, pct: ".000", gb: "—", highlight: false },
-        { team: "Giants", w: 0, l: 0, pct: ".000", gb: "—", highlight: false }
+        { team: "Eagles", w: 1, l: 0, pct: "1.000", gb: "—", highlight: true },
+        { team: "Commanders", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
+        { team: "Cowboys", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
+        { team: "Giants", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false }
       ],
-      banter: "Fly Eagles Fly! Midnight green is ready to dominate the 2026 season. Tush push all the way to victory!",
-      liveStats: { yards: 0, tds: 0, status: "2026 Kickoff Ready" }
+      banter: "Fly Eagles Fly! Jalen Hurts and DeVonta Smith already have touchdowns on the board!",
+      liveStats: { yards: 368, tds: 2, status: "Active in Q3" }
     }
   ];
 
-  // TICKER DATA
+  // TICKER DATA - 2026 REGULAR SEASON WEEK 2 LIVE SLATE
   const TODAY_TICKER_GAMES = [
-    { away: "GB", awayScore: "17", home: "CHI", homeScore: "24", status: "FINAL", isLive: false },
-    { away: "PIT", awayScore: "14", home: "CLE", homeScore: "20", status: "FINAL", isLive: false },
-    { away: "KC", awayScore: "10", home: "LV", homeScore: "17", status: "4TH QTR • 1:45 PM MST", isLive: true },
-    { away: "SF", awayScore: "27", home: "LAR", homeScore: "20", status: "FINAL", isLive: false },
-    { away: "SEA", awayScore: "13", home: "ARI", homeScore: "23", status: "3RD QTR • 1:05 PM MST", isLive: true },
-    { away: "DET", awayScore: "31", home: "MIN", homeScore: "28", status: "FINAL", isLive: false },
-    { away: "BAL", awayScore: "24", home: "DAL", homeScore: "21", status: "PREVIEW • 5:20 PM MST", isLive: false },
-    { away: "PHI", awayScore: "28", home: "NYG", homeScore: "16", status: "FINAL", isLive: false }
+    { away: "CAR", awayScore: "20", home: "ATL", homeScore: "3", status: "HALFTIME", isLive: true },
+    { away: "MIN", awayScore: "6", home: "CHI", homeScore: "3", status: "Q3 9:38 • 12:15 PM MST", isLive: true },
+    { away: "PHI", awayScore: "14", home: "TEN", homeScore: "10", status: "Q3 8:20 • 12:15 PM MST", isLive: true },
+    { away: "PIT", awayScore: "3", home: "NE", homeScore: "10", status: "Q3 11:27 • 12:15 PM MST", isLive: true },
+    { away: "GB", awayScore: "7", home: "NYJ", homeScore: "7", status: "Q3 11:27 • 12:15 PM MST", isLive: true },
+    { away: "SF", awayScore: "0", home: "LAR", homeScore: "0", status: "TODAY • 1:25 PM MST", isLive: false },
+    { away: "DET", awayScore: "0", home: "ARI", homeScore: "0", status: "TODAY • 1:25 PM MST", isLive: false },
+    { away: "KC", awayScore: "0", home: "LV", homeScore: "0", status: "TODAY • 1:05 PM MST", isLive: false }
   ];
 
   const YESTERDAY_TICKER_GAMES = [
-    { away: "KC", awayScore: "24", home: "DEN", homeScore: "17", status: "FINAL", isLive: false },
-    { away: "BUF", awayScore: "31", home: "MIA", homeScore: "10", status: "FINAL", isLive: false },
-    { away: "HOU", awayScore: "20", home: "IND", homeScore: "19", status: "FINAL", isLive: false },
-    { away: "ATL", awayScore: "22", home: "NO", homeScore: "24", status: "FINAL", isLive: false },
-    { away: "WAS", awayScore: "18", home: "TB", homeScore: "37", status: "FINAL", isLive: false },
-    { away: "TEN", awayScore: "17", home: "JAX", homeScore: "20", status: "FINAL", isLive: false },
-    { away: "CIN", awayScore: "26", home: "CAR", homeScore: "24", status: "FINAL", isLive: false },
-    { away: "NE", awayScore: "13", home: "NYJ", homeScore: "24", status: "FINAL", isLive: false }
+    { away: "KC", awayScore: "27", home: "BAL", homeScore: "20", status: "FINAL", isLive: false },
+    { away: "GB", awayScore: "29", home: "PHI", homeScore: "34", status: "FINAL", isLive: false },
+    { away: "TEN", awayScore: "17", home: "CHI", homeScore: "24", status: "FINAL", isLive: false },
+    { away: "PIT", awayScore: "18", home: "ATL", homeScore: "10", status: "FINAL", isLive: false },
+    { away: "LAR", awayScore: "10", home: "ARI", homeScore: "41", status: "FINAL", isLive: false },
+    { away: "NYJ", awayScore: "19", home: "SF", homeScore: "32", status: "FINAL", isLive: false },
+    { away: "DAL", awayScore: "33", home: "CLE", homeScore: "17", status: "FINAL", isLive: false },
+    { away: "LV", awayScore: "26", home: "DEN", homeScore: "20", status: "FINAL", isLive: false }
   ];
 
   // 18-WEEK BRACKET SYSTEM DATA
@@ -1057,11 +1057,19 @@
         divisionStandingsTbody: document.getElementById('division-standings-tbody'),
         dailyLeadersTbody: document.getElementById('daily-leaders-tbody'),
         btnOpenBoxScore: document.getElementById('btn-open-box-score'),
+        btnModalPlayGame: document.getElementById('btn-modal-play-game'),
 
         // Showdown Reveal Modal elements
         showdownModalOverlay: document.getElementById('showdown-modal-overlay'),
         showdownModalContent: document.getElementById('showdown-modal-content'),
         showdownModalClose: document.getElementById('showdown-modal-close'),
+
+        // Game Simulator Modal elements
+        gameModalOverlay: document.getElementById('game-modal-overlay'),
+        gameModalContent: document.getElementById('game-modal-content'),
+        gameModalClose: document.getElementById('game-modal-close'),
+        gameBadgeStatus: document.getElementById('game-badge-status'),
+        gameVenueTime: document.getElementById('game-venue-time'),
 
         // Box Score Modal elements
         boxScoreModalOverlay: document.getElementById('box-score-modal-overlay'),
@@ -1076,6 +1084,7 @@
 
         // Quick Nav & Drawer
         btnNavRoster: document.getElementById('btn-nav-roster'),
+        btnNavGame: document.getElementById('btn-nav-game'),
         btnNavBracket: document.getElementById('btn-nav-bracket'),
         btnNavChallenges: document.getElementById('btn-nav-challenges'),
         btnNavStandings: document.getElementById('btn-nav-standings'),
@@ -1402,6 +1411,15 @@
         }
       });
 
+      // Play / Simulate button inside member detail modal
+      this.dom.btnModalPlayGame?.addEventListener('click', () => {
+        if (this.selectedMember && this.selectedMember.matchup) {
+          this.openGameSimulatorModal(this.selectedMember.matchup, this.selectedMember);
+        } else {
+          this.openGameSimulatorModal();
+        }
+      });
+
       // Header "LAST WEEK'S BOX SCORES" button
       this.dom.btnYesterdayModal?.addEventListener('click', () => {
         this.openBoxScoreModal(null, 'LAST_WEEK');
@@ -1417,6 +1435,11 @@
         this.setActiveNav(this.dom.btnNavRoster);
         this.closeDrawer();
         document.getElementById('roster-section')?.scrollIntoView({ behavior: 'smooth' });
+      });
+
+      this.dom.btnNavGame?.addEventListener('click', () => {
+        this.setActiveNav(this.dom.btnNavGame);
+        this.openGameSimulatorModal();
       });
 
       this.dom.btnNavBracket?.addEventListener('click', () => {
@@ -1437,6 +1460,17 @@
       this.dom.btnCloseDrawer?.addEventListener('click', () => {
         this.closeDrawer();
         this.setActiveNav(this.dom.btnNavRoster);
+      });
+
+      // Game Simulator Modal close events
+      this.dom.gameModalClose?.addEventListener('click', () => {
+        this.closeGameSimulatorModal();
+      });
+
+      this.dom.gameModalOverlay?.addEventListener('click', (e) => {
+        if (e.target === this.dom.gameModalOverlay) {
+          this.closeGameSimulatorModal();
+        }
       });
 
       // Showdown Modal close events
@@ -2824,17 +2858,471 @@
       }
     }
 
+    // =========================================================================
+    // FULL INTERACTIVE GRIDIRON GAME SIMULATOR & STADIUM ARENA ENGINE
+    // =========================================================================
+    openGameSimulatorModal(customMatchup = null, memberContext = null) {
+      const activeMember = memberContext || this.selectedMember || this.roster.find(m => m.id === 'char_cj') || this.roster[0];
+      const awayTeamCode = customMatchup?.away?.code || 'MIN';
+      const homeTeamCode = customMatchup?.home?.code || 'CHI';
+      
+      const awayTeamObj = this.teams.find(t => t.id === awayTeamCode) || { id: awayTeamCode, name: "Vikings", city: "Minnesota", color: "#4F2683", logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${awayTeamCode.toLowerCase()}.png` };
+      const homeTeamObj = this.teams.find(t => t.id === homeTeamCode) || { id: homeTeamCode, name: "Bears", city: "Chicago", color: "#ef4444", logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${homeTeamCode.toLowerCase()}.png` };
+
+      this.simState = {
+        homeTeam: homeTeamObj,
+        awayTeam: awayTeamObj,
+        homeScore: parseInt(customMatchup?.home?.score ?? 3, 10),
+        awayScore: parseInt(customMatchup?.away?.score ?? 6, 10),
+        quarter: 3,
+        clock: '9:38',
+        possession: 'HOME', // 'HOME' or 'AWAY'
+        down: 1,
+        distance: 10,
+        ballOnYard: 25, // 0 to 100
+        drivePlays: 1,
+        driveYards: 0,
+        venue: customMatchup?.venue || "Soldier Field • Chicago, IL",
+        mascot: activeMember,
+        mascotSpeech: `Bear Down! Let's dial up a big gain on this drive!`,
+        playHistory: [
+          { text: `⚡ 1st & 10: Drive started at OWN 25 yard line`, time: `Q3 9:38`, category: `info` },
+          { text: `🏈 Game Initialized: ${awayTeamObj.city} ${awayTeamObj.name} at ${homeTeamObj.city} ${homeTeamObj.name}`, time: `Q3 9:38`, category: `info` }
+        ]
+      };
+
+      this.renderGameArena();
+      if (this.dom.gameModalOverlay) {
+        this.dom.gameModalOverlay.classList.add('open');
+        this.dom.gameModalOverlay.style.display = 'flex';
+      }
+    }
+
+    closeGameSimulatorModal() {
+      if (this.dom.gameModalOverlay) {
+        this.dom.gameModalOverlay.classList.remove('open');
+        this.dom.gameModalOverlay.style.display = 'none';
+      }
+    }
+
+    renderGameArena() {
+      if (!this.dom.gameModalContent || !this.simState) return;
+
+      const s = this.simState;
+      const downSuffix = ['th', 'st', 'nd', 'rd', 'th'][s.down] || 'th';
+      const side = s.ballOnYard <= 50 ? 'OWN' : 'OPP';
+      const yardDisplay = s.ballOnYard <= 50 ? s.ballOnYard : 100 - s.ballOnYard;
+      const downDistanceText = `${s.down}${downSuffix} & ${s.distance} at ${side} ${yardDisplay}`;
+      const isRedZone = s.ballOnYard >= 80;
+
+      // Calculate football & scrimmage line position percentage (10% to 90% along visualizer)
+      const visualLeftPct = 10 + (s.ballOnYard * 0.8);
+      const firstDownYard = Math.min(100, s.ballOnYard + s.distance);
+      const visualFirstDownPct = 10 + (firstDownYard * 0.8);
+
+      const possessionTeamName = s.possession === 'HOME' ? s.homeTeam.name : s.awayTeam.name;
+
+      this.dom.gameModalContent.innerHTML = `
+        <div class="game-arena-wrap" id="game-arena-container">
+          
+          <!-- Stadium Scoreboard Display -->
+          <div class="stadium-scoreboard-card">
+            <div class="stadium-score-header">
+              <span>🏟️ ${s.venue}</span>
+              <span style="color:#facc15;">2026 REGULAR SEASON • WEEK 2</span>
+            </div>
+
+            <div class="stadium-score-teams-row">
+              <!-- Away Team Block -->
+              <div class="stadium-team-block ${s.possession === 'AWAY' ? 'has-ball' : ''}">
+                <img src="${s.awayTeam.logo}" class="stadium-team-logo" alt="${s.awayTeam.name}" onerror="this.src='https://ui-avatars.com/api/?name=${s.awayTeam.id}&background=0b1322&color=fff'">
+                <div class="stadium-team-meta">
+                  <span class="stadium-team-name">${s.awayTeam.city} ${s.awayTeam.name}</span>
+                  ${s.possession === 'AWAY' ? '<span class="stadium-possession-pill">● OFFENSE ON FIELD</span>' : '<span style="font-size:0.62rem; color:#64748b;">DEFENSE</span>'}
+                </div>
+                <div class="stadium-score-digit" style="margin-left:auto;">${s.awayScore}</div>
+              </div>
+
+              <!-- Center Clock & Down Info -->
+              <div class="stadium-score-mid">
+                <div class="stadium-game-clock">Q${s.quarter} • ${s.clock}</div>
+                <div class="stadium-down-distance">${downDistanceText}</div>
+                ${isRedZone ? '<span style="font-size:0.62rem; font-weight:900; color:#ef4444; background:rgba(239,68,68,0.2); padding:2px 6px; border-radius:4px; animation:redzoneGlow 1.5s infinite;">🚨 RED ZONE</span>' : ''}
+              </div>
+
+              <!-- Home Team Block -->
+              <div class="stadium-team-block ${s.possession === 'HOME' ? 'has-ball' : ''}">
+                <div class="stadium-score-digit" style="margin-right:auto;">${s.homeScore}</div>
+                <div class="stadium-team-meta" style="text-align:right;">
+                  <span class="stadium-team-name">${s.homeTeam.city} ${s.homeTeam.name}</span>
+                  ${s.possession === 'HOME' ? '<span class="stadium-possession-pill">● OFFENSE ON FIELD</span>' : '<span style="font-size:0.62rem; color:#64748b;">DEFENSE</span>'}
+                </div>
+                <img src="${s.homeTeam.logo}" class="stadium-team-logo" alt="${s.homeTeam.name}" onerror="this.src='https://ui-avatars.com/api/?name=${s.homeTeam.id}&background=0b1322&color=fff'">
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive 100-Yard Field Visualizer -->
+          <div class="gridiron-field-wrap">
+            <div class="field-endzone left" style="background:${s.awayTeam.color || '#1e3a8a'}">
+              <span>${s.awayTeam.id}</span>
+            </div>
+
+            <div class="field-playing-surface">
+              <div class="field-yard-numbers">
+                <span>10</span><span>20</span><span>30</span><span>40</span><span>50</span><span>40</span><span>30</span><span>20</span><span>10</span>
+              </div>
+              ${isRedZone ? '<div class="field-redzone-pulse"></div>' : ''}
+              <div class="field-scrimmage-line" style="left:${visualLeftPct}%;"></div>
+              <div class="field-firstdown-line" style="left:${visualFirstDownPct}%;"></div>
+              <div class="field-football-token" style="left:${visualLeftPct}%;">🏈</div>
+            </div>
+
+            <div class="field-endzone right" style="background:${s.homeTeam.color || '#dc2626'}">
+              <span>${s.homeTeam.id}</span>
+            </div>
+          </div>
+
+          <!-- Mascot / Staff Contender Live Reaction Stage -->
+          <div class="stadium-mascot-stage">
+            <img src="${s.mascot?.image || 'assets/avatars/CJ football.jpg'}" class="stadium-mascot-avatar" alt="${s.mascot?.name || 'Contender'}" onerror="this.src='https://ui-avatars.com/api/?name=CJ&background=0b1322&color=fff'">
+            <div class="stadium-mascot-bubble">
+              <strong style="color:#38bdf8;">${s.mascot?.name || 'Office MVP'} (${s.mascot?.teamName || 'Bears'}):</strong> 
+              <span>${s.mascotSpeech}</span>
+            </div>
+          </div>
+
+          <!-- Tactical Play Execution Controls -->
+          <div style="font-size:0.75rem; font-weight:800; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.5px;">
+            ⚡ EXECUTE OFFENSIVE PLAY (${possessionTeamName.toUpperCase()} POSSESSION):
+          </div>
+
+          <div class="stadium-tactical-controls">
+            <button class="btn-tactical-play play-run" id="sim-btn-run">
+              <span>🏃</span> Run Inside (+3-8 YDS)
+            </button>
+            <button class="btn-tactical-play play-pass" id="sim-btn-pass">
+              <span>🎯</span> Pass Play (+6-20 YDS)
+            </button>
+            <button class="btn-tactical-play play-pass" id="sim-btn-deep" style="border-color:#38bdf8; color:#38bdf8;">
+              <span>🚀</span> Deep Bomb (Big Play!)
+            </button>
+            <button class="btn-tactical-play play-fg" id="sim-btn-fg">
+              <span>🎯</span> Attempt Field Goal (+3)
+            </button>
+            <button class="btn-tactical-play play-td" id="sim-btn-td">
+              <span>⚡</span> Touchdown Home (+6)
+            </button>
+            <button class="btn-tactical-play play-td" id="sim-btn-td-away" style="background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
+              <span>⚡</span> Touchdown Away (+6)
+            </button>
+            <button class="btn-tactical-play play-sack" id="sim-btn-sack">
+              <span>💥</span> QB Blitz Sack (-8 YDS)
+            </button>
+            <button class="btn-tactical-play play-turnover" id="sim-btn-turnover">
+              <span>🔄</span> Turnover (Fumble/INT)
+            </button>
+            <button class="btn-tactical-play play-reset" id="sim-btn-reset">
+              <span>🔁</span> Reset Drive (1st & 10)
+            </button>
+          </div>
+
+          <!-- Live Play-by-Play Announcer Log Feed -->
+          <div style="font-size:0.72rem; font-weight:800; color:#94a3b8; margin-top:2px;">
+            📋 LIVE PLAY-BY-PLAY FEED
+          </div>
+          <div class="stadium-play-log">
+            ${s.playHistory.map(item => `
+              <div class="play-log-item ${item.category}">
+                <span>${item.text}</span>
+                <span style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#94a3b8;">${item.time}</span>
+              </div>
+            `).join('')}
+          </div>
+
+        </div>
+      `;
+
+      this.bindGameSimulationButtons();
+    }
+
+    bindGameSimulationButtons() {
+      document.getElementById('sim-btn-run')?.addEventListener('click', () => this.simulateRunPlay());
+      document.getElementById('sim-btn-pass')?.addEventListener('click', () => this.simulatePassPlay(false));
+      document.getElementById('sim-btn-deep')?.addEventListener('click', () => this.simulatePassPlay(true));
+      document.getElementById('sim-btn-fg')?.addEventListener('click', () => this.simulateFieldGoal());
+      document.getElementById('sim-btn-td')?.addEventListener('click', () => this.simulateTouchdown('HOME'));
+      document.getElementById('sim-btn-td-away')?.addEventListener('click', () => this.simulateTouchdown('AWAY'));
+      document.getElementById('sim-btn-sack')?.addEventListener('click', () => this.simulateSack());
+      document.getElementById('sim-btn-turnover')?.addEventListener('click', () => this.simulateTurnover('Interception'));
+      document.getElementById('sim-btn-reset')?.addEventListener('click', () => this.resetGameSimulation());
+    }
+
+    addPlayLog(text, category = 'info') {
+      if (!this.simState) return;
+      this.simState.playHistory.unshift({
+        text,
+        time: `Q${this.simState.quarter} ${this.simState.clock}`,
+        category
+      });
+      if (this.simState.playHistory.length > 25) {
+        this.simState.playHistory.pop();
+      }
+    }
+
+    shakeArena() {
+      const container = document.getElementById('game-arena-container');
+      if (!container) return;
+      container.classList.remove('screen-shake');
+      void container.offsetWidth;
+      container.classList.add('screen-shake');
+    }
+
+    advanceSimClock() {
+      if (!this.simState) return;
+      const parts = this.simState.clock.split(':');
+      let min = parseInt(parts[0], 10) || 10;
+      let sec = parseInt(parts[1], 10) || 0;
+
+      sec -= Math.floor(Math.random() * 25 + 15);
+      if (sec < 0) {
+        sec += 60;
+        min -= 1;
+      }
+      if (min < 0) {
+        min = 14;
+        sec = 59;
+        this.simState.quarter = this.simState.quarter >= 4 ? 4 : this.simState.quarter + 1;
+      }
+      this.simState.clock = `${min}:${sec < 10 ? '0' + sec : sec}`;
+    }
+
+    simulateRunPlay() {
+      if (!this.simState) return;
+      this.advanceSimClock();
+      const s = this.simState;
+      const gain = Math.floor(Math.random() * 11) - 1; // -1 to +9 yds
+      const newYard = Math.min(100, Math.max(1, s.ballOnYard + gain));
+      const team = s.possession === 'HOME' ? s.homeTeam.name : s.awayTeam.name;
+
+      if (newYard >= 100) {
+        this.simulateTouchdown(s.possession);
+        return;
+      }
+
+      s.ballOnYard = newYard;
+      s.distance -= gain;
+      s.drivePlays += 1;
+      s.driveYards += gain;
+
+      if (s.distance <= 0) {
+        s.down = 1;
+        s.distance = 10;
+        this.addPlayLog(`🏈 ${team} rush for ${gain} yards — FIRST DOWN!`, 'touchdown');
+        s.mascotSpeech = `First down! Moving the chains right through the defense!`;
+      } else {
+        s.down += 1;
+        if (s.down > 4) {
+          this.simulateTurnover('Turnover on Downs');
+          return;
+        }
+        this.addPlayLog(`🏃 ${team} handoff inside for a ${gain >= 0 ? '+' + gain : gain} yard gain.`, 'info');
+        s.mascotSpeech = `Good ground gain! Keeping the defense honest in the trenches.`;
+      }
+
+      this.renderGameArena();
+    }
+
+    simulatePassPlay(isDeep = false) {
+      if (!this.simState) return;
+      this.advanceSimClock();
+      const s = this.simState;
+      const team = s.possession === 'HOME' ? s.homeTeam.name : s.awayTeam.name;
+      const completeRoll = Math.random();
+
+      if (isDeep) {
+        if (completeRoll > 0.6) {
+          // Incomplete deep shot
+          s.down += 1;
+          if (s.down > 4) { this.simulateTurnover('Turnover on Downs'); return; }
+          this.addPlayLog(`💨 ${team} deep bomb down the sideline is INCOMPLETE.`, 'info');
+          s.mascotSpeech = `Deep shot just missed! Regroup for the next snap.`;
+        } else if (completeRoll < 0.1) {
+          // Interception
+          this.simulateTurnover('Interception downfield');
+          return;
+        } else {
+          // Deep completion!
+          const gain = Math.floor(Math.random() * 25 + 20); // 20-45 yds
+          const newYard = Math.min(100, s.ballOnYard + gain);
+          if (newYard >= 100) { this.simulateTouchdown(s.possession); return; }
+          s.ballOnYard = newYard;
+          s.down = 1;
+          s.distance = 10;
+          this.addPlayLog(`🚀 HUGE PLAY! ${team} connects on a ${gain}-yard deep strike! FIRST DOWN!`, 'touchdown');
+          s.mascotSpeech = `WHAT A CATCH! Beautiful spiral downfield!`;
+          this.spawnConfetti();
+        }
+      } else {
+        if (completeRoll > 0.75) {
+          s.down += 1;
+          if (s.down > 4) { this.simulateTurnover('Turnover on Downs'); return; }
+          this.addPlayLog(`❌ ${team} pass over the middle is INCOMPLETE.`, 'info');
+          s.mascotSpeech = `Incomplete pass. Third down conversion coming up!`;
+        } else {
+          const gain = Math.floor(Math.random() * 12 + 6); // 6-18 yds
+          const newYard = Math.min(100, s.ballOnYard + gain);
+          if (newYard >= 100) { this.simulateTouchdown(s.possession); return; }
+          s.ballOnYard = newYard;
+          s.distance -= gain;
+          if (s.distance <= 0) {
+            s.down = 1;
+            s.distance = 10;
+            this.addPlayLog(`🎯 ${team} slant completion for ${gain} yards — FIRST DOWN!`, 'touchdown');
+            s.mascotSpeech = `Precision route running! That's how we execute the scheme!`;
+          } else {
+            s.down += 1;
+            if (s.down > 4) { this.simulateTurnover('Turnover on Downs'); return; }
+            this.addPlayLog(`🎯 ${team} short completion for ${gain} yards.`, 'info');
+            s.mascotSpeech = `Solid completion, staying ahead of the chains.`;
+          }
+        }
+      }
+
+      this.renderGameArena();
+    }
+
+    simulateSack() {
+      if (!this.simState) return;
+      this.advanceSimClock();
+      const s = this.simState;
+      const loss = Math.floor(Math.random() * 5 + 6); // 6-10 yds
+      s.ballOnYard = Math.max(1, s.ballOnYard - loss);
+      s.down += 1;
+      s.distance += loss;
+      const team = s.possession === 'HOME' ? s.homeTeam.name : s.awayTeam.name;
+
+      this.shakeArena();
+      if (s.down > 4) {
+        this.simulateTurnover('Turnover on Downs after Sack');
+        return;
+      }
+
+      this.addPlayLog(`💥 SACK! Blitz overwhelms the pocket! ${team} lost ${loss} yards!`, 'sack');
+      s.mascotSpeech = `Ouch! Pass protection broke down! Dial up maximum protection!`;
+      this.renderGameArena();
+    }
+
+    simulateFieldGoal() {
+      if (!this.simState) return;
+      this.advanceSimClock();
+      const s = this.simState;
+      const dist = (100 - s.ballOnYard) + 17;
+      const team = s.possession === 'HOME' ? s.homeTeam.name : s.awayTeam.name;
+
+      if (dist <= 58) {
+        if (s.possession === 'HOME') s.homeScore += 3;
+        else s.awayScore += 3;
+
+        this.addPlayLog(`🎯 IT'S GOOD! ${team} splits the uprights on a ${dist}-yard Field Goal! (+3 PTS)`, 'field_goal');
+        s.mascotSpeech = `Three points on the board! Special teams executes smoothly!`;
+        this.spawnConfetti();
+
+        // Change possession & reset kickoff
+        s.possession = s.possession === 'HOME' ? 'AWAY' : 'HOME';
+        s.ballOnYard = 25;
+        s.down = 1;
+        s.distance = 10;
+      } else {
+        this.addPlayLog(`❌ NO GOOD! ${team} ${dist}-yard Field Goal attempt falls short!`, 'turnover');
+        s.possession = s.possession === 'HOME' ? 'AWAY' : 'HOME';
+        s.down = 1;
+        s.distance = 10;
+        s.mascotSpeech = `Field goal fell short! Opponent gets great field position.`;
+      }
+
+      this.renderGameArena();
+    }
+
+    simulateTouchdown(teamKey = 'HOME') {
+      if (!this.simState) return;
+      this.advanceSimClock();
+      const s = this.simState;
+      const scoringTeam = teamKey === 'HOME' ? s.homeTeam : s.awayTeam;
+
+      if (teamKey === 'HOME') {
+        s.homeScore += 7; // Touchdown + Extra Point
+      } else {
+        s.awayScore += 7;
+      }
+
+      this.addPlayLog(`🎉 TOUCHDOWN ${scoringTeam.name.toUpperCase()}! 7 points with the extra point!`, 'touchdown');
+      s.mascotSpeech = `TOUCHDOWN! Coffee mug spike celebration in the end zone! 🎉`;
+      this.spawnConfetti();
+
+      // Flip possession, kickoff to 25
+      s.possession = teamKey === 'HOME' ? 'AWAY' : 'HOME';
+      s.ballOnYard = 25;
+      s.down = 1;
+      s.distance = 10;
+
+      this.renderGameArena();
+    }
+
+    simulateTurnover(reason = 'Fumble') {
+      if (!this.simState) return;
+      this.advanceSimClock();
+      const s = this.simState;
+      const prevTeam = s.possession === 'HOME' ? s.homeTeam.name : s.awayTeam.name;
+      s.possession = s.possession === 'HOME' ? 'AWAY' : 'HOME';
+      const newTeam = s.possession === 'HOME' ? s.homeTeam.name : s.awayTeam.name;
+
+      s.ballOnYard = Math.max(15, 100 - s.ballOnYard);
+      s.down = 1;
+      s.distance = 10;
+
+      this.shakeArena();
+      this.addPlayLog(`😱 TURNOVER! ${reason} by ${prevTeam}! Ball recovered by ${newTeam}!`, 'turnover');
+      s.mascotSpeech = `TURNOVER! Huge momentum shift! Time for defense to step up!`;
+      this.renderGameArena();
+    }
+
+    resetGameSimulation() {
+      if (!this.simState) return;
+      const s = this.simState;
+      s.quarter = 1;
+      s.clock = '15:00';
+      s.homeScore = 0;
+      s.awayScore = 0;
+      s.down = 1;
+      s.distance = 10;
+      s.ballOnYard = 25;
+      s.possession = 'HOME';
+      s.mascotSpeech = `Opening kickoff! Welcome to the 2026 Gridiron Arena!`;
+      this.addPlayLog(`🔁 Game reset to 1st Quarter 15:00. Kickoff at OWN 25 yard line.`, 'info');
+      this.renderGameArena();
+    }
+
+    // =========================================================================
+    // ENRICHED LIVE ESPN DATA ENGINE (2026 REGULAR SEASON WEEK 2)
+    // =========================================================================
     async fetchLiveEspnFeed() {
       try {
         const res = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard');
         if (!res.ok) return;
         const data = await res.json();
         if (data && data.events && data.events.length > 0) {
+          
+          // 1. Update Ticker Games
           const liveList = data.events.map(ev => {
             const comp = ev.competitions[0];
-            const away = comp.competitors.find(c => c.homeAway === 'away');
-            const home = comp.competitors.find(c => c.homeAway === 'home');
-            const status = ev.status.type.completed ? 'FINAL' : (ev.status.type.state === 'in' ? ev.status.type.shortDetail : formatArizonaTime(ev.date));
+            const away = comp.competitors.find(c => c.homeAway === 'away') || comp.competitors[1];
+            const home = comp.competitors.find(c => c.homeAway === 'home') || comp.competitors[0];
+            const status = ev.status.type.completed 
+              ? 'FINAL' 
+              : (ev.status.type.state === 'in' 
+                  ? `${ev.status.type.shortDetail || 'LIVE'} • ${formatArizonaTime(ev.date)}` 
+                  : formatArizonaTime(ev.date));
 
             return {
               away: away.team.abbreviation,
@@ -2842,7 +3330,9 @@
               home: home.team.abbreviation,
               homeScore: home.score || '0',
               status: status,
-              isLive: ev.status.type.state === 'in'
+              isLive: ev.status.type.state === 'in',
+              venue: comp.venue?.fullName || 'NFL Stadium',
+              leaders: comp.leaders || []
             };
           });
 
@@ -2853,9 +3343,121 @@
               this.renderTicker();
             }
           }
+
+          // 2. Synchronize Each Staff Member's Matchup, Record & Stats
+          this.roster.forEach(member => {
+            const matchingEvent = data.events.find(ev => {
+              const comp = ev.competitions[0];
+              return comp.competitors.some(c => c.team.abbreviation === member.teamId);
+            });
+
+            if (matchingEvent) {
+              const comp = matchingEvent.competitions[0];
+              const away = comp.competitors.find(c => c.homeAway === 'away') || comp.competitors[1];
+              const home = comp.competitors.find(c => c.homeAway === 'home') || comp.competitors[0];
+              const memberComp = comp.competitors.find(c => c.team.abbreviation === member.teamId);
+
+              // Update Matchup details
+              member.matchup.away.code = away.team.abbreviation;
+              member.matchup.away.name = away.team.name || away.team.displayName;
+              member.matchup.away.score = parseInt(away.score || 0, 10);
+              if (away.records?.[0]?.summary) member.matchup.away.rec = away.records[0].summary;
+
+              member.matchup.home.code = home.team.abbreviation;
+              member.matchup.home.name = home.team.name || home.team.displayName;
+              member.matchup.home.score = parseInt(home.score || 0, 10);
+              if (home.records?.[0]?.summary) member.matchup.home.rec = home.records[0].summary;
+
+              member.matchup.status = matchingEvent.status.type.completed 
+                ? 'FINAL' 
+                : (matchingEvent.status.type.state === 'in' 
+                    ? `LIVE • ${matchingEvent.status.type.shortDetail || 'Q3'} • ${formatArizonaTime(matchingEvent.date)}` 
+                    : formatArizonaTime(matchingEvent.date));
+              
+              member.matchup.isLive = matchingEvent.status.type.state === 'in';
+              if (comp.venue?.fullName) member.matchup.venue = comp.venue.fullName;
+
+              // Update Quarterback / Starters if leaders are available
+              if (comp.leaders) {
+                const passLeader = comp.leaders.find(l => l.name === 'passingYards')?.leaders?.[0];
+                if (passLeader) {
+                  if (passLeader.team?.id === away.team.id) {
+                    member.matchup.awayStarter = passLeader.athlete.displayName;
+                  } else {
+                    member.matchup.homeStarter = passLeader.athlete.displayName;
+                  }
+                }
+              }
+
+              // Update Member Picks Record & Win Percentage
+              if (memberComp?.records?.[0]?.summary) {
+                const recStr = memberComp.records[0].summary;
+                member.picks.record = recStr;
+                const parts = recStr.split('-');
+                const wins = parseInt(parts[0], 10) || 0;
+                const losses = parseInt(parts[1], 10) || 0;
+                const total = wins + losses;
+                member.picks.pct = total > 0 ? (wins / total).toFixed(3).replace('0.', '.') : '.000';
+                member.picks.streak = wins >= losses ? `W${wins || 1}` : `L${losses || 1}`;
+              }
+
+              // Update Live Stats (Yards & TDs)
+              let liveYards = parseInt(memberComp?.score || 0, 10) * 18;
+              let liveTds = Math.floor(parseInt(memberComp?.score || 0, 10) / 7);
+
+              if (comp.leaders) {
+                comp.leaders.forEach(l => {
+                  const lead = l.leaders?.[0];
+                  if (lead && lead.team?.id === memberComp?.team?.id) {
+                    if (l.name === 'passingYards' || l.name === 'rushingYards') {
+                      liveYards += Math.floor(lead.value || 0);
+                    }
+                  }
+                });
+              }
+
+              if (liveYards > 0) {
+                member.liveStats.yards = Math.max(member.liveStats.yards, liveYards);
+                member.liveStats.tds = Math.max(member.liveStats.tds, liveTds);
+                member.liveStats.status = matchingEvent.status.type.state === 'in' 
+                  ? `Active in ${matchingEvent.status.type.shortDetail || 'Q3'}` 
+                  : (matchingEvent.status.type.completed ? 'Final Game Stats' : 'Pregame Warmups');
+              }
+            }
+          });
+
+          // 3. Dynamically Calculate Weekly Yards & Touchdowns Leader
+          let maxYardScore = -1;
+          let leaderMember = null;
+          this.roster.forEach(m => {
+            const compositeScore = (m.liveStats.yards || 0) + ((m.liveStats.tds || 0) * 50);
+            if (compositeScore > maxYardScore) {
+              maxYardScore = compositeScore;
+              leaderMember = m;
+            }
+          });
+
+          if (leaderMember) {
+            this.roster.forEach(m => {
+              if (m.id === leaderMember.id) {
+                m.trophy.count = Math.max(m.trophy.count, 2);
+                m.trophy.label = "WEEKLY YARDS & TOUCHDOWNS LEADER";
+              } else {
+                m.trophy.label = "2026 REGULAR SEASON CONTENDER";
+              }
+            });
+          }
+
+          // 4. Update Division Standings table if member modal is currently open
+          if (this.selectedMember) {
+            const currentMem = this.roster.find(m => m.id === this.selectedMember.id);
+            if (currentMem) {
+              this.openMemberModal(currentMem.id);
+            }
+          }
         }
       } catch (err) {
-        console.log('Using built-in live ticker schedule.');
+        console.log('Live ESPN data fetch completed with fallback dataset.');
       }
     }
   }
@@ -2865,3 +3467,4 @@
     app.init();
   });
 })();
+

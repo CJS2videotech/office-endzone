@@ -86,6 +86,7 @@
     <!-- Quick Navigation / Secondary Links -->
     <nav class="quick-nav-bar" aria-label="Section Navigation">
       <button class="quick-nav-btn active" id="btn-nav-roster">👥 Roster Hub</button>
+      <button class="quick-nav-btn" id="btn-nav-game">🏈 Gridiron Arena (Play Game)</button>
       <button class="quick-nav-btn" id="btn-nav-bracket">🌲 Office Brackets</button>
       <button class="quick-nav-btn" id="btn-nav-challenges">🏆 Challenges</button>
       <button class="quick-nav-btn" id="btn-nav-standings">📊 Standings</button>
@@ -186,26 +187,34 @@
                 <span class="score-sep">-</span>
                 <span id="matchup-home-score">0</span>
               </div>
-              <div class="matchup-clock-status" id="matchup-clock-status">TOP 1ST • 12:15 PM MST</div>
+              <div class="matchup-clock-status" id="matchup-clock-status">LIVE • Q2 • 12:15 PM MST</div>
             </div>
 
             <div class="matchup-team home">
               <span class="team-code highlight-team" id="matchup-home-code">CHI</span>
-              <span class="team-rec" id="matchup-home-rec">11-4</span>
+              <span class="team-rec" id="matchup-home-rec">1-0</span>
             </div>
           </div>
 
           <div class="matchup-venue-row">
             <span class="venue-name" id="matchup-venue">Soldier Field</span>
-            <button class="btn-box-score" id="btn-open-box-score">
-              <span class="box-icon">📊</span> Box Score
-            </button>
+            <div class="matchup-actions-wrap">
+              <button class="btn-box-score" id="btn-open-box-score">
+                <span class="box-icon">📊</span> Box Score
+              </button>
+              <button class="btn-box-score btn-play-sim" id="btn-modal-play-game">
+                <span class="box-icon">🏈</span> Play / Simulate
+              </button>
+            </div>
           </div>
 
-          <div class="matchup-pitchers-row" id="matchup-starters-row">
-            <span class="starter-away" id="starter-away">Jordan Love</span>
-            <span class="vs-label">VS</span>
-            <span class="starter-home" id="starter-home">Caleb Williams</span>
+          <div class="matchup-starters-row" id="matchup-starters-row">
+            <div class="starters-label">STARTING QUARTERBACKS:</div>
+            <div class="starters-names">
+              <span class="starter-away" id="starter-away">Jordan Love</span>
+              <span class="vs-label">VS</span>
+              <span class="starter-home" id="starter-home">Caleb Williams</span>
+            </div>
           </div>
         </div>
       </section>
@@ -303,6 +312,23 @@
 
       <div class="box-score-modal-content" id="box-score-modal-content">
         <!-- Injected dynamically by DugoutEndzoneApp.openBoxScoreModal() -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Gridiron Arena & Tactical Football Game Simulator Modal -->
+  <div class="member-modal-overlay game-modal-overlay" id="game-modal-overlay" aria-hidden="true">
+    <div class="dugout-modal-card game-modal-card">
+      <header class="modal-header">
+        <div class="modal-title-row">
+          <span class="modal-badge-status" id="game-badge-status">🏈 GRIDIRON STADIUM ARENA</span>
+          <span class="modal-game-time" id="game-venue-time">Live Office Simulation</span>
+        </div>
+        <button class="modal-close-btn" id="game-modal-close" aria-label="Close Game">&times;</button>
+      </header>
+
+      <div class="game-modal-content" id="game-modal-content">
+        <!-- Injected dynamically by DugoutEndzoneApp.openGameSimulatorModal() -->
       </div>
     </div>
   </div>

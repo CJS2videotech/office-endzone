@@ -2631,3 +2631,495 @@ body {
   margin-left: 12px;
   font-family: 'JetBrains Mono', monospace;
 }
+
+/* ==========================================================================
+   INTERACTIVE GRIDIRON ARENA & STADIUM GAME SIMULATOR
+   ========================================================================== */
+.matchup-actions-wrap {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-play-sim {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4) !important;
+}
+
+.btn-play-sim:hover {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.6) !important;
+}
+
+.matchup-starters-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(11, 22, 38, 0.6);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.starters-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #38bdf8;
+  letter-spacing: 0.5px;
+}
+
+.starters-names {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+/* Game Simulator Modal Window */
+.game-modal-card {
+  max-width: 680px;
+  background: #08111e;
+  border: 1.5px solid rgba(56, 189, 248, 0.25);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(16, 185, 129, 0.15);
+}
+
+.game-arena-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px;
+}
+
+/* Stadium Scoreboard Display */
+.stadium-scoreboard-card {
+  background: linear-gradient(180deg, #0f1c2e 0%, #081220 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.stadium-score-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+}
+
+.stadium-score-teams-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.stadium-team-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.stadium-team-block.has-ball {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.5);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+}
+
+.stadium-team-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.stadium-team-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.stadium-team-name {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #fff;
+}
+
+.stadium-possession-pill {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #10b981;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stadium-score-digit {
+  font-family: 'Graduate', 'Outfit', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #facc15;
+  text-shadow: 0 2px 10px rgba(250, 204, 21, 0.3);
+}
+
+.stadium-score-mid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 90px;
+}
+
+.stadium-game-clock {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #38bdf8;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.stadium-down-distance {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #f8fafc;
+  text-align: center;
+}
+
+/* Interactive 100-Yard Field Visualizer */
+.gridiron-field-wrap {
+  position: relative;
+  background: #14532d;
+  background-image: 
+    repeating-linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 9.9%,
+      rgba(255, 255, 255, 0.18) 10%,
+      transparent 10.1%
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.15) 0px,
+      rgba(0, 0, 0, 0.15) 8px,
+      transparent 8px,
+      transparent 16px
+    );
+  border: 3px solid #f8fafc;
+  border-radius: 12px;
+  height: 120px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 0 25px rgba(0, 0, 0, 0.4);
+}
+
+.field-endzone {
+  width: 10%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Graduate', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  z-index: 1;
+}
+
+.field-endzone.left {
+  background: linear-gradient(90deg, #1e3a8a 0%, #1e40af 100%);
+  border-right: 2px solid #fff;
+}
+
+.field-endzone.right {
+  background: linear-gradient(270deg, #b91c1c 0%, #dc2626 100%);
+  border-left: 2px solid #fff;
+  transform: none;
+}
+
+.field-playing-surface {
+  position: relative;
+  width: 80%;
+  height: 100%;
+}
+
+.field-yard-numbers {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 4%;
+  font-family: 'Graduate', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+}
+
+.field-scrimmage-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #38bdf8;
+  box-shadow: 0 0 12px #38bdf8, 0 0 20px #0284c7;
+  transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 2;
+}
+
+.field-firstdown-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #facc15;
+  box-shadow: 0 0 12px #facc15, 0 0 20px #eab308;
+  transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 2;
+}
+
+.field-football-token {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.4rem;
+  transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+  z-index: 3;
+}
+
+.field-redzone-pulse {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 20%;
+  background: rgba(239, 68, 68, 0.18);
+  border-left: 2px dashed rgba(239, 68, 68, 0.6);
+  pointer-events: none;
+  animation: redzoneGlow 2s infinite ease-in-out;
+}
+
+@keyframes redzoneGlow {
+  0%, 100% { background: rgba(239, 68, 68, 0.12); }
+  50% { background: rgba(239, 68, 68, 0.28); }
+}
+
+/* Tactical Play Controls Grid */
+.stadium-tactical-controls {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 480px) {
+  .stadium-tactical-controls {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.btn-tactical-play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.85);
+  color: #fff;
+  transition: all 0.2s ease;
+}
+
+.btn-tactical-play:hover {
+  transform: translateY(-2px);
+}
+
+.btn-tactical-play.play-run {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.btn-tactical-play.play-run:hover {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.4);
+}
+
+.btn-tactical-play.play-pass {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-color: #a855f7;
+  color: #c084fc;
+}
+
+.btn-tactical-play.play-pass:hover {
+  background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.4);
+}
+
+.btn-tactical-play.play-sack {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-color: #f97316;
+  color: #fb923c;
+}
+
+.btn-tactical-play.play-sack:hover {
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.4);
+}
+
+.btn-tactical-play.play-fg {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border-color: #facc15;
+  color: #facc15;
+}
+
+.btn-tactical-play.play-fg:hover {
+  background: linear-gradient(135deg, #ca8a04 0%, #a16207 100%);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(250, 204, 21, 0.4);
+}
+
+.btn-tactical-play.play-td {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  border-color: #10b981;
+  color: #fff;
+}
+
+.btn-tactical-play.play-td:hover {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.5);
+}
+
+.btn-tactical-play.play-turnover {
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  border-color: #ef4444;
+  color: #fff;
+}
+
+.btn-tactical-play.play-turnover:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.5);
+}
+
+.btn-tactical-play.play-reset {
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #94a3b8;
+}
+
+/* Mascot / Staff Reaction Stage */
+.stadium-mascot-stage {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(11, 20, 34, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.stadium-mascot-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #38bdf8;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.stadium-mascot-bubble {
+  flex: 1;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  color: #e2e8f0;
+  line-height: 1.4;
+  position: relative;
+}
+
+.stadium-mascot-bubble::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px 6px 6px 0;
+  border-style: solid;
+  border-color: transparent rgba(56, 189, 248, 0.3) transparent transparent;
+}
+
+/* Screen Shake Animation */
+.screen-shake {
+  animation: stadiumShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes stadiumShake {
+  10%, 90% { transform: translate3d(-2px, 0, 0); }
+  20%, 80% { transform: translate3d(3px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* Play-by-Play Log Feed */
+.stadium-play-log {
+  max-height: 140px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(6, 11, 20, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.play-log-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 3px solid #38bdf8;
+}
+
+.play-log-item.touchdown { border-left-color: #10b981; background: rgba(16, 185, 129, 0.08); font-weight: 700; color: #34d399; }
+.play-log-item.sack { border-left-color: #f97316; background: rgba(249, 115, 22, 0.08); color: #fb923c; }
+.play-log-item.turnover { border-left-color: #ef4444; background: rgba(239, 68, 68, 0.08); color: #f87171; }
+.play-log-item.field_goal { border-left-color: #facc15; background: rgba(250, 204, 21, 0.08); color: #fde047; }
+
