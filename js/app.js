@@ -389,8 +389,25 @@ class OfficeEndzoneApp {
     if (this.dom.logoHome && homeTeam.logo) this.dom.logoHome.src = homeTeam.logo;
     if (this.dom.logoAway && awayTeam.logo) this.dom.logoAway.src = awayTeam.logo;
 
-    if (this.dom.deptHome) this.dom.deptHome.innerHTML = `${homeTeam.officeDept || 'Executive Strategy'} • <span id="team-record-home">${homeTeam.record || '10-5'}</span>`;
-    if (this.dom.deptAway) this.dom.deptAway.innerHTML = `${awayTeam.officeDept || 'Operations'} • <span id="team-record-away">${awayTeam.record || '11-4'}</span>`;
+    if (this.dom.deptHome) {
+      this.dom.deptHome.textContent = '';
+      const textNode = document.createTextNode(`${homeTeam.officeDept || 'Executive Strategy'} • `);
+      const recordSpan = document.createElement('span');
+      recordSpan.id = 'team-record-home';
+      recordSpan.textContent = homeTeam.record || '10-5';
+      this.dom.deptHome.appendChild(textNode);
+      this.dom.deptHome.appendChild(recordSpan);
+    }
+
+    if (this.dom.deptAway) {
+      this.dom.deptAway.textContent = '';
+      const textNode = document.createTextNode(`${awayTeam.officeDept || 'Operations'} • `);
+      const recordSpan = document.createElement('span');
+      recordSpan.id = 'team-record-away';
+      recordSpan.textContent = awayTeam.record || '11-4';
+      this.dom.deptAway.appendChild(textNode);
+      this.dom.deptAway.appendChild(recordSpan);
+    }
 
     if (this.dom.quarterBadge) this.dom.quarterBadge.textContent = `Q${state.quarter}`;
     if (this.dom.gameClock) this.dom.gameClock.textContent = state.timeRemaining;
