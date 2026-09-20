@@ -98,27 +98,27 @@
         "id": "match_1",
         "round": "2026 Regular Season Week 2",
         "staff1": { "name": "CJ", "team": "CHI", "pick": "CHI Bears", "spread": "-3.0", "avatar": "assets/avatars/CJ football.jpg", "score": 3 },
-        "staff2": { "name": "Mario", "team": "CLE", "pick": "CLE Browns", "spread": "+3.0", "avatar": "assets/avatars/Mario football.jpg", "score": 0 },
+        "staff2": { "name": "Mario", "team": "CLE", "pick": "CLE Browns", "spread": "+3.0", "avatar": "assets/avatars/Mario football.jpg", "score": 10 },
         "status": "LIVE",
-        "leader": "CJ (CHI)",
+        "leader": "Mario (CLE)",
         "matchupLabel": "CHI Bears vs CLE Browns"
       },
       {
         "id": "match_2",
         "round": "2026 Regular Season Week 2",
-        "staff1": { "name": "Nicole", "team": "LV", "pick": "LV Raiders", "spread": "-2.5", "avatar": "assets/avatars/Nicole football.jpg", "score": 0 },
+        "staff1": { "name": "Nicole", "team": "LV", "pick": "LV Raiders", "spread": "-2.5", "avatar": "assets/avatars/Nicole football.jpg", "score": 13 },
         "staff2": { "name": "Andrea", "team": "GB", "pick": "GB Packers", "spread": "+2.5", "avatar": "assets/avatars/Andrea football.jpg", "score": 7 },
         "status": "LIVE",
-        "leader": "Andrea (GB)",
+        "leader": "Nicole (LV)",
         "matchupLabel": "LV Raiders vs GB Packers"
       },
       {
         "id": "match_3",
         "round": "2026 Regular Season Week 2",
-        "staff1": { "name": "Saul", "team": "SF", "pick": "SF 49ers", "spread": "-3.5", "avatar": "assets/avatars/Saul football.jpg", "score": 0 },
-        "staff2": { "name": "Arizona Cardinals Flag", "team": "ARI", "pick": "ARI Cardinals", "spread": "+3.5", "avatar": "assets/Arizona_Cardinals_flag.gif", "score": 0 },
-        "status": "PREVIEW",
-        "leader": "Kickoff 1:25 PM",
+        "staff1": { "name": "Saul", "team": "SF", "pick": "SF 49ers", "spread": "-3.5", "avatar": "assets/avatars/Saul football.jpg", "score": 10 },
+        "staff2": { "name": "Arizona Cardinals Flag", "team": "ARI", "pick": "ARI Cardinals", "spread": "+3.5", "avatar": "assets/Arizona_Cardinals_flag.gif", "score": 14 },
+        "status": "LIVE",
+        "leader": "Cardinals Flag (ARI)",
         "matchupLabel": "SF 49ers vs ARI Cardinals (NFC West Showdown)"
       }
     ]

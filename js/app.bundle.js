@@ -100,21 +100,29 @@
       bannerGif: "assets/Andrea football banner.gif",
       picks: { record: "1-0", pct: "1.000", streak: "W1" },
       trophy: { count: 1, label: "WEEK 1 YARDS LEADER" },
+      fantasy: {
+        totalPoints: 45.5,
+        qb: { player: "Jordan Love (QB)", stats: "158 Pass Yds, 1 TD", points: 10.3 },
+        rec: { player: "Jayden Reed (WR)", stats: "5 Rec, 78 Yds, 1 TD", points: 18.8 },
+        rush: { player: "Josh Jacobs (RB)", stats: "84 Rush Yds, 0 TD", points: 8.4 },
+        def: { player: "Packers Defense (DEF)", stats: "2 Sacks, 1 INT, 10 PA", points: 4.0 },
+        st: { player: "Brayden Narveson (K/ST)", stats: "1 FG, 1 XP", points: 4.0 }
+      },
       matchup: {
         away: { code: "GB", name: "Packers", rec: "1-0", score: 7 },
         home: { code: "NYJ", name: "Jets", rec: "1-0", score: 7 },
-        status: "Q3 11:27 • 12:15 PM MST",
+        status: "LIVE • Q3 11:27 • 12:15 PM MST",
         isLive: true,
         venue: "MetLife Stadium",
         awayStarter: "Jordan Love",
         homeStarter: "Aaron Rodgers"
       },
       schedule: [
-        { date: "Wk 1 • Sep 10", away: "GB", home: "PHI", time: "FINAL 34-29", isHome: false },
-        { date: "Wk 2 • Sep 20", away: "GB", home: "NYJ", time: "LIVE Q3", isHome: false },
-        { date: "Wk 3 • Sep 27", away: "TEN", home: "GB", time: "10:00 AM MST", isHome: true },
+        { date: "Wk 3 • Sep 27", away: "GB", home: "TEN", time: "10:00 AM MST", isHome: false },
         { date: "Wk 4 • Oct 4", away: "MIN", home: "GB", time: "10:00 AM MST", isHome: true },
-        { date: "Wk 5 • Oct 11", away: "GB", home: "LAR", time: "1:25 PM MST", isHome: false }
+        { date: "Wk 5 • Oct 11", away: "GB", home: "LAR", time: "1:25 PM MST", isHome: false },
+        { date: "Wk 6 • Oct 18", away: "ARI", home: "GB", time: "10:00 AM MST", isHome: true },
+        { date: "Wk 7 • Oct 25", away: "HOU", home: "GB", time: "10:00 AM MST", isHome: true }
       ],
       division: "NFC NORTH STANDINGS",
       standings: [
@@ -137,21 +145,29 @@
       bannerGif: "assets/CJ football banner.gif",
       picks: { record: "1-0", pct: "1.000", streak: "W1" },
       trophy: { count: 2, label: "WEEKLY YARDS & TDS LEADER" },
+      fantasy: {
+        totalPoints: 42.0,
+        qb: { player: "Caleb Williams (QB)", stats: "174 Pass Yds, 1 TD", points: 10.9 },
+        rec: { player: "DJ Moore (WR)", stats: "6 Rec, 53 Yds, 0 TD", points: 11.3 },
+        rush: { player: "D'Andre Swift (RB)", stats: "48 Rush Yds, 1 TD", points: 10.8 },
+        def: { player: "Bears Defense (DEF)", stats: "3 Sacks, 1 INT, 6 PA", points: 5.0 },
+        st: { player: "Cairo Santos (K/ST)", stats: "1 FG, 1 XP", points: 4.0 }
+      },
       matchup: {
         away: { code: "MIN", name: "Vikings", rec: "1-0", score: 6 },
         home: { code: "CHI", name: "Bears", rec: "1-0", score: 3 },
-        status: "Q3 9:38 • 12:15 PM MST",
+        status: "LIVE • Q3 9:38 • 12:15 PM MST",
         isLive: true,
         venue: "Soldier Field",
-        awayStarter: "Carson Wentz",
+        awayStarter: "Sam Darnold",
         homeStarter: "Caleb Williams"
       },
       schedule: [
-        { date: "Wk 1 • Sep 10", away: "TEN", home: "CHI", time: "FINAL 24-17", isHome: true },
-        { date: "Wk 2 • Sep 20", away: "MIN", home: "CHI", time: "LIVE Q3", isHome: true },
         { date: "Wk 3 • Sep 27", away: "CHI", home: "IND", time: "10:00 AM MST", isHome: false },
         { date: "Wk 4 • Oct 4", away: "LAR", home: "CHI", time: "10:00 AM MST", isHome: true },
-        { date: "Wk 5 • Oct 11", away: "CAR", home: "CHI", time: "10:00 AM MST", isHome: true }
+        { date: "Wk 5 • Oct 11", away: "CAR", home: "CHI", time: "10:00 AM MST", isHome: true },
+        { date: "Wk 6 • Oct 18", away: "JAX", home: "CHI", time: "6:30 AM MST", isHome: true },
+        { date: "Wk 7 • Oct 25", away: "CHI", home: "WAS", time: "1:05 PM MST", isHome: false }
       ],
       division: "NFC NORTH STANDINGS",
       standings: [
@@ -174,21 +190,29 @@
       bannerGif: "assets/Mario football banner.gif",
       picks: { record: "0-1", pct: ".000", streak: "L1" },
       trophy: { count: 1, label: "SACK CITY LEADER" },
+      fantasy: {
+        totalPoints: 46.1,
+        qb: { player: "Deshaun Watson (QB)", stats: "186 Pass Yds, 1 TD", points: 11.4 },
+        rec: { player: "Jerry Jeudy (WR)", stats: "5 Rec, 73 Yds, 0 TD", points: 12.3 },
+        rush: { player: "Jerome Ford (RB)", stats: "64 Rush Yds, 1 TD", points: 12.4 },
+        def: { player: "Browns Defense (DEF)", stats: "4 Sacks, 1 Fumble Rec, 3 PA", points: 6.0 },
+        st: { player: "Dustin Hopkins (K/ST)", stats: "1 FG, 1 XP", points: 4.0 }
+      },
       matchup: {
-        away: { code: "NYG", name: "Giants", rec: "0-1", score: 0 },
-        home: { code: "CLE", name: "Browns", rec: "0-1", score: 0 },
-        status: "TODAY • 1:05 PM MST",
-        isLive: false,
-        venue: "Huntington Bank Field",
-        awayStarter: "Daniel Jones",
-        homeStarter: "Deshaun Watson"
+        away: { code: "CLE", name: "Browns", rec: "0-1", score: 10 },
+        home: { code: "JAX", name: "Jaguars", rec: "0-1", score: 3 },
+        status: "LIVE • Q3 7:15 • 12:15 PM MST",
+        isLive: true,
+        venue: "EverBank Stadium",
+        awayStarter: "Deshaun Watson",
+        homeStarter: "Trevor Lawrence"
       },
       schedule: [
-        { date: "Wk 1 • Sep 10", away: "DAL", home: "CLE", time: "FINAL 17-33", isHome: true },
-        { date: "Wk 2 • Sep 20", away: "NYG", home: "CLE", time: "1:05 PM MST", isHome: true },
-        { date: "Wk 3 • Sep 27", away: "CLE", home: "LV", time: "1:25 PM MST", isHome: false },
-        { date: "Wk 4 • Oct 4", away: "CLE", home: "WAS", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 5 • Oct 11", away: "CLE", home: "PHI", time: "10:00 AM MST", isHome: false }
+        { date: "Wk 3 • Sep 27", away: "NYG", home: "CLE", time: "10:00 AM MST", isHome: true },
+        { date: "Wk 4 • Oct 4", away: "CLE", home: "LV", time: "1:25 PM MST", isHome: false },
+        { date: "Wk 5 • Oct 11", away: "CLE", home: "WAS", time: "10:00 AM MST", isHome: false },
+        { date: "Wk 6 • Oct 18", away: "CLE", home: "PHI", time: "10:00 AM MST", isHome: false },
+        { date: "Wk 7 • Oct 25", away: "CIN", home: "CLE", time: "10:00 AM MST", isHome: true }
       ],
       division: "AFC NORTH STANDINGS",
       standings: [
@@ -198,7 +222,7 @@
         { team: "Bengals", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false }
       ],
       banter: "Dawg Pound defense locked in for Week 2! Heavy blitz packages incoming!",
-      liveStats: { yards: 245, tds: 0, status: "Pregame Warmups" }
+      liveStats: { yards: 245, tds: 1, status: "Active in Q3" }
     },
     {
       id: "char_nicole",
@@ -211,21 +235,29 @@
       bannerGif: "assets/Nicole football banner.gif",
       picks: { record: "1-0", pct: "1.000", streak: "W1" },
       trophy: { count: 1, label: "UPSET SPECIALIST" },
+      fantasy: {
+        totalPoints: 48.9,
+        qb: { player: "Gardner Minshew (QB)", stats: "192 Pass Yds, 1 TD", points: 11.6 },
+        rec: { player: "Davante Adams (WR)", stats: "6 Rec, 88 Yds, 1 TD", points: 20.8 },
+        rush: { player: "Zamir White (RB)", stats: "55 Rush Yds, 0 TD", points: 5.5 },
+        def: { player: "Raiders Defense (DEF)", stats: "Maxx Crosby 3 Sacks, 7 PA", points: 5.0 },
+        st: { player: "Daniel Carlson (K/ST)", stats: "2 FG, 1 XP", points: 6.0 }
+      },
       matchup: {
-        away: { code: "CAR", name: "Panthers", rec: "0-1", score: 0 },
-        home: { code: "LV", name: "Raiders", rec: "1-0", score: 0 },
-        status: "TODAY • 1:05 PM MST",
-        isLive: false,
+        away: { code: "CAR", name: "Panthers", rec: "0-1", score: 7 },
+        home: { code: "LV", name: "Raiders", rec: "1-0", score: 13 },
+        status: "LIVE • Q2 4:15 • 1:05 PM MST",
+        isLive: true,
         venue: "Allegiant Stadium",
         awayStarter: "Bryce Young",
         homeStarter: "Gardner Minshew"
       },
       schedule: [
-        { date: "Wk 1 • Sep 10", away: "LV", home: "BAL", time: "FINAL 26-23", isHome: false },
-        { date: "Wk 2 • Sep 20", away: "CAR", home: "LV", time: "1:05 PM MST", isHome: true },
-        { date: "Wk 3 • Sep 27", away: "CLE", home: "LV", time: "1:25 PM MST", isHome: true },
-        { date: "Wk 4 • Oct 4", away: "LV", home: "DEN", time: "1:05 PM MST", isHome: false },
-        { date: "Wk 5 • Oct 11", away: "PIT", home: "LV", time: "1:05 PM MST", isHome: true }
+        { date: "Wk 3 • Sep 27", away: "CAR", home: "LV", time: "1:05 PM MST", isHome: true },
+        { date: "Wk 4 • Oct 4", away: "CLE", home: "LV", time: "1:25 PM MST", isHome: true },
+        { date: "Wk 5 • Oct 11", away: "LV", home: "DEN", time: "1:05 PM MST", isHome: false },
+        { date: "Wk 6 • Oct 18", away: "PIT", home: "LV", time: "1:05 PM MST", isHome: true },
+        { date: "Wk 7 • Oct 25", away: "LV", home: "LAR", time: "1:05 PM MST", isHome: false }
       ],
       division: "AFC WEST STANDINGS",
       standings: [
@@ -235,7 +267,7 @@
         { team: "Broncos", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false }
       ],
       banter: "Raider Nation! Fresh analytics project high passing efficiency this afternoon!",
-      liveStats: { yards: 290, tds: 1, status: "Pregame Warmups" }
+      liveStats: { yards: 290, tds: 1, status: "Active in Q2" }
     },
     {
       id: "char_saul",
@@ -248,21 +280,29 @@
       bannerGif: "assets/Saul football banner.gif",
       picks: { record: "1-0", pct: "1.000", streak: "W1" },
       trophy: { count: 2, label: "DIVISION CONTENDER" },
+      fantasy: {
+        totalPoints: 58.3,
+        qb: { player: "Brock Purdy (QB)", stats: "224 Pass Yds, 1 TD", points: 12.9 },
+        rec: { player: "Deebo Samuel (WR)", stats: "6 Rec, 72 Yds, 1 TD", points: 19.2 },
+        rush: { player: "Jordan Mason (RB)", stats: "92 Rush Yds, 1 TD", points: 15.2 },
+        def: { player: "49ers Defense (DEF)", stats: "Nick Bosa 2 Sacks, 1 INT, 7 PA", points: 4.0 },
+        st: { player: "Jake Moody (K/ST)", stats: "2 FG, 1 XP", points: 7.0 }
+      },
       matchup: {
-        away: { code: "SF", name: "49ers", rec: "1-0", score: 0 },
-        home: { code: "LAR", name: "Rams", rec: "0-1", score: 0 },
-        status: "TODAY • 1:25 PM MST",
-        isLive: false,
+        away: { code: "SF", name: "49ers", rec: "1-0", score: 10 },
+        home: { code: "LAR", name: "Rams", rec: "0-1", score: 7 },
+        status: "LIVE • Q2 8:40 • 1:25 PM MST",
+        isLive: true,
         venue: "SoFi Stadium",
         awayStarter: "Brock Purdy",
         homeStarter: "Matthew Stafford"
       },
       schedule: [
-        { date: "Wk 1 • Sep 10", away: "NYJ", home: "SF", time: "FINAL 32-19", isHome: true },
-        { date: "Wk 2 • Sep 20", away: "SF", home: "LAR", time: "1:25 PM MST", isHome: false },
-        { date: "Wk 3 • Sep 27", away: "NE", home: "SF", time: "1:05 PM MST", isHome: true },
-        { date: "Wk 4 • Oct 4", away: "ARI", home: "SF", time: "1:05 PM MST", isHome: true },
-        { date: "Wk 5 • Oct 11", away: "SF", home: "SEA", time: "5:15 PM MST", isHome: false }
+        { date: "Wk 3 • Sep 27", away: "SF", home: "LAR", time: "1:25 PM MST", isHome: false },
+        { date: "Wk 4 • Oct 4", away: "NE", home: "SF", time: "1:05 PM MST", isHome: true },
+        { date: "Wk 5 • Oct 11", away: "ARI", home: "SF", time: "1:05 PM MST", isHome: true },
+        { date: "Wk 6 • Oct 18", away: "SF", home: "SEA", time: "5:15 PM MST", isHome: false },
+        { date: "Wk 7 • Oct 25", away: "KC", home: "SF", time: "1:25 PM MST", isHome: true }
       ],
       division: "NFC WEST STANDINGS",
       standings: [
@@ -272,7 +312,7 @@
         { team: "Rams", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false }
       ],
       banter: "Faithful to the Bay! Playbook audited and dialed in for the divisional matchup!",
-      liveStats: { yards: 340, tds: 2, status: "Pregame Warmups" }
+      liveStats: { yards: 340, tds: 1, status: "Active in Q2" }
     },
     {
       id: "char_cardinals",
@@ -285,21 +325,29 @@
       bannerGif: "assets/Arizona_Cardinals_flag.gif",
       picks: { record: "1-0", pct: "1.000", streak: "W1" },
       trophy: { count: 1, label: "DESERT SCORING LEADER" },
+      fantasy: {
+        totalPoints: 65.2,
+        qb: { player: "Kyler Murray (QB)", stats: "202 Pass Yds, 2 TD, 35 Rush Yds", points: 21.5 },
+        rec: { player: "Marvin Harrison Jr. (WR)", stats: "5 Rec, 91 Yds, 1 TD", points: 20.1 },
+        rush: { player: "James Conner (RB)", stats: "76 Rush Yds, 1 TD", points: 13.6 },
+        def: { player: "Cardinals Defense (DEF)", stats: "Budda Baker 2 Sacks, 7 PA", points: 3.0 },
+        st: { player: "Matt Prater (K/ST)", stats: "2 FG, 1 XP", points: 7.0 }
+      },
       matchup: {
-        away: { code: "DET", name: "Lions", rec: "1-0", score: 0 },
-        home: { code: "ARI", name: "Cardinals", rec: "1-0", score: 0 },
-        status: "TODAY • 1:25 PM MST",
-        isLive: false,
+        away: { code: "DET", name: "Lions", rec: "1-0", score: 7 },
+        home: { code: "ARI", name: "Cardinals", rec: "1-0", score: 14 },
+        status: "LIVE • Q2 6:10 • 1:25 PM MST",
+        isLive: true,
         venue: "State Farm Stadium (Glendale, AZ)",
         awayStarter: "Jared Goff",
         homeStarter: "Kyler Murray"
       },
       schedule: [
-        { date: "Wk 1 • Sep 10", away: "LAR", home: "ARI", time: "FINAL 41-10", isHome: true },
-        { date: "Wk 2 • Sep 20", away: "DET", home: "ARI", time: "1:25 PM MST", isHome: true },
-        { date: "Wk 3 • Sep 27", away: "WAS", home: "ARI", time: "1:05 PM MST", isHome: true },
-        { date: "Wk 4 • Oct 4", away: "ARI", home: "SF", time: "1:05 PM MST", isHome: false },
-        { date: "Wk 5 • Oct 11", away: "GB", home: "ARI", time: "10:00 AM MST", isHome: false }
+        { date: "Wk 3 • Sep 27", away: "DET", home: "ARI", time: "1:25 PM MST", isHome: true },
+        { date: "Wk 4 • Oct 4", away: "WAS", home: "ARI", time: "1:05 PM MST", isHome: true },
+        { date: "Wk 5 • Oct 11", away: "ARI", home: "SF", time: "1:05 PM MST", isHome: false },
+        { date: "Wk 6 • Oct 18", away: "ARI", home: "GB", time: "10:00 AM MST", isHome: false },
+        { date: "Wk 7 • Oct 25", away: "LAC", home: "ARI", time: "6:00 PM MST", isHome: true }
       ],
       division: "NFC WEST STANDINGS",
       standings: [
@@ -309,7 +357,7 @@
         { team: "Rams", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false }
       ],
       banter: "Desert pride soaring high in Glendale! Rise Up Red Sea for Week 2 kickoff!",
-      liveStats: { yards: 355, tds: 2, status: "Pregame Warmups" }
+      liveStats: { yards: 355, tds: 2, status: "Active in Q2" }
     },
     {
       id: "char_mariah",
@@ -322,21 +370,29 @@
       bannerGif: "assets/Mariah football banner.mp4",
       picks: { record: "1-0", pct: "1.000", streak: "W1" },
       trophy: { count: 2, label: "TOUCHDOWN SENSATION" },
+      fantasy: {
+        totalPoints: 65.1,
+        qb: { player: "Jalen Hurts (QB)", stats: "210 Pass Yds, 1 TD, 1 Rush TD", points: 20.4 },
+        rec: { player: "DeVonta Smith (WR)", stats: "7 Rec, 82 Yds, 1 TD", points: 21.2 },
+        rush: { player: "Saquon Barkley (RB)", stats: "95 Rush Yds, 1 TD", points: 15.5 },
+        def: { player: "Eagles Defense (DEF)", stats: "2 Sacks, 10 PA", points: 2.0 },
+        st: { player: "Jake Elliott (K/ST)", stats: "2 FG", points: 6.0 }
+      },
       matchup: {
         away: { code: "PHI", name: "Eagles", rec: "1-0", score: 14 },
         home: { code: "TEN", name: "Titans", rec: "0-1", score: 10 },
-        status: "Q3 8:20 • 12:15 PM MST",
+        status: "LIVE • Q3 8:20 • 12:15 PM MST",
         isLive: true,
         venue: "Nissan Stadium",
         awayStarter: "Jalen Hurts",
         homeStarter: "Will Levis"
       },
       schedule: [
-        { date: "Wk 1 • Sep 10", away: "GB", home: "PHI", time: "FINAL 34-29", isHome: true },
-        { date: "Wk 2 • Sep 20", away: "PHI", home: "TEN", time: "LIVE Q3", isHome: false },
         { date: "Wk 3 • Sep 27", away: "PHI", home: "NO", time: "10:00 AM MST", isHome: false },
         { date: "Wk 4 • Oct 4", away: "PHI", home: "TB", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 5 • Oct 11", away: "CLE", home: "PHI", time: "10:00 AM MST", isHome: true }
+        { date: "Wk 5 • Oct 11", away: "CLE", home: "PHI", time: "10:00 AM MST", isHome: true },
+        { date: "Wk 6 • Oct 18", away: "PHI", home: "NYG", time: "10:00 AM MST", isHome: false },
+        { date: "Wk 7 • Oct 25", away: "PHI", home: "CIN", time: "10:00 AM MST", isHome: false }
       ],
       division: "NFC EAST STANDINGS",
       standings: [
@@ -352,14 +408,14 @@
 
   // TICKER DATA - 2026 REGULAR SEASON WEEK 2 LIVE SLATE
   const TODAY_TICKER_GAMES = [
-    { away: "CAR", awayScore: "20", home: "ATL", homeScore: "3", status: "HALFTIME", isLive: true },
     { away: "MIN", awayScore: "6", home: "CHI", homeScore: "3", status: "Q3 9:38 • 12:15 PM MST", isLive: true },
-    { away: "PHI", awayScore: "14", home: "TEN", homeScore: "10", status: "Q3 8:20 • 12:15 PM MST", isLive: true },
-    { away: "PIT", awayScore: "3", home: "NE", homeScore: "10", status: "Q3 11:27 • 12:15 PM MST", isLive: true },
     { away: "GB", awayScore: "7", home: "NYJ", homeScore: "7", status: "Q3 11:27 • 12:15 PM MST", isLive: true },
-    { away: "SF", awayScore: "0", home: "LAR", homeScore: "0", status: "TODAY • 1:25 PM MST", isLive: false },
-    { away: "DET", awayScore: "0", home: "ARI", homeScore: "0", status: "TODAY • 1:25 PM MST", isLive: false },
-    { away: "KC", awayScore: "0", home: "LV", homeScore: "0", status: "TODAY • 1:05 PM MST", isLive: false }
+    { away: "PHI", awayScore: "14", home: "TEN", homeScore: "10", status: "Q3 8:20 • 12:15 PM MST", isLive: true },
+    { away: "CLE", awayScore: "10", home: "JAX", homeScore: "3", status: "Q3 7:15 • 12:15 PM MST", isLive: true },
+    { away: "CAR", awayScore: "7", home: "LV", homeScore: "13", status: "Q2 4:15 • 1:05 PM MST", isLive: true },
+    { away: "SF", awayScore: "10", home: "LAR", homeScore: "7", status: "Q2 8:40 • 1:25 PM MST", isLive: true },
+    { away: "DET", awayScore: "7", home: "ARI", homeScore: "14", status: "Q2 6:10 • 1:25 PM MST", isLive: true },
+    { away: "PIT", awayScore: "3", home: "NE", homeScore: "10", status: "Q3 11:27 • 12:15 PM MST", isLive: true }
   ];
 
   const YESTERDAY_TICKER_GAMES = [
@@ -376,13 +432,13 @@
   // 18-WEEK BRACKET SYSTEM DATA
   // 18-WEEK INTERACTIVE TOURNAMENT BRACKET SYSTEM & SHOWDOWN LORE DATA
   const CONTENDERS_LIST = [
-    { name: "Andrea", team: "GB", teamName: "Packers", avatar: "assets/avatars/Andrea football.jpg", bannerGif: "assets/Andrea football banner.gif", seed: "#1", color: "#203731", rating: 91, yards: 0, rzPct: "0%", turnovers: "0" },
-    { name: "Mariah", team: "PHI", teamName: "Eagles", avatar: "assets/avatars/Mariah football.jpg", bannerGif: "assets/Mariah football banner.mp4", seed: "#2", color: "#004c54", rating: 94, yards: 0, rzPct: "0%", turnovers: "0" },
-    { name: "CJ", team: "CHI", teamName: "Bears", avatar: "assets/avatars/CJ football.jpg", bannerGif: "assets/CJ football banner.gif", seed: "#3", color: "#0b162a", rating: 95, yards: 0, rzPct: "0%", turnovers: "0" },
-    { name: "Mario", team: "CLE", teamName: "Browns", avatar: "assets/avatars/Mario football.jpg", bannerGif: "assets/Mario football banner.gif", seed: "#4", color: "#311d00", rating: 88, yards: 0, rzPct: "0%", turnovers: "0" },
-    { name: "Nicole", team: "LV", teamName: "Raiders", avatar: "assets/avatars/Nicole football.jpg", bannerGif: "assets/Nicole football banner.gif", seed: "#5", color: "#a5acaf", rating: 93, yards: 0, rzPct: "0%", turnovers: "0" },
-    { name: "Saul", team: "SF", teamName: "49ers", avatar: "assets/avatars/Saul football.jpg", bannerGif: "assets/Saul football banner.gif", seed: "#6", color: "#aa0000", rating: 92, yards: 0, rzPct: "0%", turnovers: "0" },
-    { name: "Cardinals Flag", team: "ARI", teamName: "Cardinals", avatar: "assets/Arizona_Cardinals_flag.gif", bannerGif: "assets/Arizona_Cardinals_flag.gif", seed: "#7", color: "#97233f", rating: 89, yards: 0, rzPct: "0%", turnovers: "0" }
+    { name: "Andrea", team: "GB", teamName: "Packers", avatar: "assets/avatars/Andrea football.jpg", bannerGif: "assets/Andrea football banner.gif", seed: "#1", color: "#203731", rating: 91, yards: 285, rzPct: "80%", turnovers: "0", fantasyPoints: 45.5 },
+    { name: "Mariah", team: "PHI", teamName: "Eagles", avatar: "assets/avatars/Mariah football.jpg", bannerGif: "assets/Mariah football banner.mp4", seed: "#2", color: "#004c54", rating: 94, yards: 368, rzPct: "100%", turnovers: "0", fantasyPoints: 65.1 },
+    { name: "CJ", team: "CHI", teamName: "Bears", avatar: "assets/avatars/CJ football.jpg", bannerGif: "assets/CJ football banner.gif", seed: "#3", color: "#0b162a", rating: 95, yards: 312, rzPct: "75%", turnovers: "0", fantasyPoints: 42.0 },
+    { name: "Mario", team: "CLE", teamName: "Browns", avatar: "assets/avatars/Mario football.jpg", bannerGif: "assets/Mario football banner.gif", seed: "#4", color: "#311d00", rating: 88, yards: 245, rzPct: "66%", turnovers: "1", fantasyPoints: 46.1 },
+    { name: "Nicole", team: "LV", teamName: "Raiders", avatar: "assets/avatars/Nicole football.jpg", bannerGif: "assets/Nicole football banner.gif", seed: "#5", color: "#a5acaf", rating: 93, yards: 290, rzPct: "85%", turnovers: "0", fantasyPoints: 48.9 },
+    { name: "Saul", team: "SF", teamName: "49ers", avatar: "assets/avatars/Saul football.jpg", bannerGif: "assets/Saul football banner.gif", seed: "#6", color: "#aa0000", rating: 92, yards: 340, rzPct: "90%", turnovers: "0", fantasyPoints: 58.3 },
+    { name: "Cardinals Flag", team: "ARI", teamName: "Cardinals", avatar: "assets/Arizona_Cardinals_flag.gif", bannerGif: "assets/Arizona_Cardinals_flag.gif", seed: "#7", color: "#97233f", rating: 89, yards: 355, rzPct: "88%", turnovers: "0", fantasyPoints: 65.2 }
   ];
 
   const LORE_DATABASE = [
@@ -501,12 +557,12 @@
 
   function buildWeeklyTournamentData() {
     return {
-      activeWeek: 1,
+      activeWeek: 2,
       weeks: Array.from({ length: 18 }, (_, idx) => {
         const wNum = idx + 1;
-        const isPast = false; // Fresh 2026 Kickoff
-        const isActive = wNum === 1;
-        const status = isActive ? 'LIVE' : 'UPCOMING';
+        const isPast = wNum < 2; // Week 1 is past (final)
+        const isActive = wNum === 2; // Week 2 is live today
+        const status = isPast ? 'FINAL' : (isActive ? 'LIVE' : 'UPCOMING');
 
         // Pairings rotated for all 18 weeks across all 7 staff contenders
         const p1 = CONTENDERS_LIST[idx % 7];
@@ -527,23 +583,29 @@
         const loreSemi2 = LORE_DATABASE[(idx + 4) % LORE_DATABASE.length];
         const loreFinal = LORE_DATABASE[(idx + 5) % LORE_DATABASE.length];
 
-        const baseScore = 20 + ((idx * 3) % 15);
-        const s1_score = isActive ? baseScore + 4 : 0;
-        const s2_score = isActive ? baseScore + 1 : 0;
-        const s3_score = isActive ? baseScore + 6 : 0;
-        const s4_score = isActive ? baseScore + 2 : 0;
-        const s5_score = isActive ? baseScore + 7 : 0;
-        const s6_score = isActive ? baseScore + 3 : 0;
-        const s7_score = isActive ? baseScore + 5 : 0;
-        const opp_score = isActive ? baseScore : 0;
+        const baseScore = 22 + ((idx * 3) % 10);
+        const getPts = (contender) => {
+          if (!contender) return 0;
+          if (isPast) return baseScore + 4.5;
+          if (isActive) return contender.fantasyPoints || 45.0;
+          return 0;
+        };
+        const s1_score = getPts(p1);
+        const s2_score = getPts(p2);
+        const s3_score = getPts(p3);
+        const s4_score = getPts(p4);
+        const s5_score = getPts(p5);
+        const s6_score = getPts(p6);
+        const s7_score = getPts(p7);
+        const opp_score = isPast ? baseScore : (isActive ? 38.5 : 0);
 
-        const semi1_s1 = isActive ? baseScore + 8 : 0;
-        const semi1_s2 = isActive ? baseScore + 5 : 0;
-        const semi2_s1 = isActive ? baseScore + 9 : 0;
-        const semi2_s2 = isActive ? baseScore + 4 : 0;
+        const semi1_s1 = isPast ? baseScore + 8 : 0;
+        const semi1_s2 = isPast ? baseScore + 5 : 0;
+        const semi2_s1 = isPast ? baseScore + 9 : 0;
+        const semi2_s2 = isPast ? baseScore + 4 : 0;
 
-        const fin_s1 = isActive ? baseScore + 10 : 0;
-        const fin_s2 = isActive ? baseScore + 7 : 0;
+        const fin_s1 = isPast ? baseScore + 10 : 0;
+        const fin_s2 = isPast ? baseScore + 7 : 0;
 
         const matches = [
           // Round 1 (Opening Game Slate - All 7 Office Members Active!)
@@ -695,8 +757,8 @@
           weekNumber: wNum,
           label: `Week ${wNum}${isActive ? ' (Active)' : ''}`,
           status: status,
-          winner: `${p1.name} (${p1.team})`,
-          mvp: `${p1.name} (${fin_s1} PTS)`,
+          winner: isPast ? `${p1.name} (${p1.team})` : (isActive ? `In Progress (Leader: ${p5.name})` : `TBD`),
+          mvp: isPast ? `${p1.name} (${fin_s1} PTS)` : (isActive ? `${p5.name} (Active)` : `TBD`),
           matchups: matches
         };
       })
@@ -998,7 +1060,7 @@
       this.selectedMember = null;
       this.isGifActive = false;
       this.activeBracketTab = 'WEEKLY'; // WEEKLY | SEASON
-      this.selectedWeekIndex = 0; // Week 1 (Active Starting Gate)
+      this.selectedWeekIndex = 1; // Week 2 is the Active 2026 Regular Season Game Week
       this.selectedContenderFilter = 'ALL';
       this.selectedDayFilter = 'ALL';
       this.userPicks = JSON.parse(localStorage.getItem('office_endzone_picks') || '{}');
@@ -1057,19 +1119,11 @@
         divisionStandingsTbody: document.getElementById('division-standings-tbody'),
         dailyLeadersTbody: document.getElementById('daily-leaders-tbody'),
         btnOpenBoxScore: document.getElementById('btn-open-box-score'),
-        btnModalPlayGame: document.getElementById('btn-modal-play-game'),
 
         // Showdown Reveal Modal elements
         showdownModalOverlay: document.getElementById('showdown-modal-overlay'),
         showdownModalContent: document.getElementById('showdown-modal-content'),
         showdownModalClose: document.getElementById('showdown-modal-close'),
-
-        // Game Simulator Modal elements
-        gameModalOverlay: document.getElementById('game-modal-overlay'),
-        gameModalContent: document.getElementById('game-modal-content'),
-        gameModalClose: document.getElementById('game-modal-close'),
-        gameBadgeStatus: document.getElementById('game-badge-status'),
-        gameVenueTime: document.getElementById('game-venue-time'),
 
         // Box Score Modal elements
         boxScoreModalOverlay: document.getElementById('box-score-modal-overlay'),
@@ -1084,14 +1138,32 @@
 
         // Quick Nav & Drawer
         btnNavRoster: document.getElementById('btn-nav-roster'),
-        btnNavGame: document.getElementById('btn-nav-game'),
+        btnNavFantasy: document.getElementById('btn-nav-fantasy'),
         btnNavBracket: document.getElementById('btn-nav-bracket'),
         btnNavChallenges: document.getElementById('btn-nav-challenges'),
         btnNavStandings: document.getElementById('btn-nav-standings'),
         secondaryDrawer: document.getElementById('secondary-drawer'),
         drawerTitle: document.getElementById('drawer-title'),
         drawerBody: document.getElementById('drawer-body'),
-        btnCloseDrawer: document.getElementById('btn-close-drawer')
+        btnCloseDrawer: document.getElementById('btn-close-drawer'),
+
+        // Fantasy Category Elements in Modal
+        fantasyTotalVal: document.getElementById('fantasy-total-val'),
+        fantasyQbPlayer: document.getElementById('fantasy-qb-player'),
+        fantasyQbStats: document.getElementById('fantasy-qb-stats'),
+        fantasyQbPts: document.getElementById('fantasy-qb-pts'),
+        fantasyRecPlayer: document.getElementById('fantasy-rec-player'),
+        fantasyRecStats: document.getElementById('fantasy-rec-stats'),
+        fantasyRecPts: document.getElementById('fantasy-rec-pts'),
+        fantasyRushPlayer: document.getElementById('fantasy-rush-player'),
+        fantasyRushStats: document.getElementById('fantasy-rush-stats'),
+        fantasyRushPts: document.getElementById('fantasy-rush-pts'),
+        fantasyDefPlayer: document.getElementById('fantasy-def-player'),
+        fantasyDefStats: document.getElementById('fantasy-def-stats'),
+        fantasyDefPts: document.getElementById('fantasy-def-pts'),
+        fantasyStPlayer: document.getElementById('fantasy-st-player'),
+        fantasyStStats: document.getElementById('fantasy-st-stats'),
+        fantasyStPts: document.getElementById('fantasy-st-pts')
       };
     }
 
@@ -1265,6 +1337,30 @@
         </tr>
       `).join('');
 
+      // Dynamic Fantasy Football Breakdown Hydration
+      if (member.fantasy) {
+        if (this.dom.fantasyTotalVal) this.dom.fantasyTotalVal.textContent = `${member.fantasy.totalPoints.toFixed(1)} PTS`;
+        if (this.dom.fantasyQbPlayer) this.dom.fantasyQbPlayer.textContent = member.fantasy.qb.player;
+        if (this.dom.fantasyQbStats) this.dom.fantasyQbStats.textContent = member.fantasy.qb.stats;
+        if (this.dom.fantasyQbPts) this.dom.fantasyQbPts.textContent = `+${member.fantasy.qb.points.toFixed(1)} PTS`;
+
+        if (this.dom.fantasyRecPlayer) this.dom.fantasyRecPlayer.textContent = member.fantasy.rec.player;
+        if (this.dom.fantasyRecStats) this.dom.fantasyRecStats.textContent = member.fantasy.rec.stats;
+        if (this.dom.fantasyRecPts) this.dom.fantasyRecPts.textContent = `+${member.fantasy.rec.points.toFixed(1)} PTS`;
+
+        if (this.dom.fantasyRushPlayer) this.dom.fantasyRushPlayer.textContent = member.fantasy.rush.player;
+        if (this.dom.fantasyRushStats) this.dom.fantasyRushStats.textContent = member.fantasy.rush.stats;
+        if (this.dom.fantasyRushPts) this.dom.fantasyRushPts.textContent = `+${member.fantasy.rush.points.toFixed(1)} PTS`;
+
+        if (this.dom.fantasyDefPlayer) this.dom.fantasyDefPlayer.textContent = member.fantasy.def.player;
+        if (this.dom.fantasyDefStats) this.dom.fantasyDefStats.textContent = member.fantasy.def.stats;
+        if (this.dom.fantasyDefPts) this.dom.fantasyDefPts.textContent = `+${member.fantasy.def.points.toFixed(1)} PTS`;
+
+        if (this.dom.fantasyStPlayer) this.dom.fantasyStPlayer.textContent = member.fantasy.st.player;
+        if (this.dom.fantasyStStats) this.dom.fantasyStStats.textContent = member.fantasy.st.stats;
+        if (this.dom.fantasyStPts) this.dom.fantasyStPts.textContent = `+${member.fantasy.st.points.toFixed(1)} PTS`;
+      }
+
       // Show Modal
       this.dom.modalOverlay.classList.add('open');
       this.dom.modalOverlay.setAttribute('aria-hidden', 'false');
@@ -1411,15 +1507,6 @@
         }
       });
 
-      // Play / Simulate button inside member detail modal
-      this.dom.btnModalPlayGame?.addEventListener('click', () => {
-        if (this.selectedMember && this.selectedMember.matchup) {
-          this.openGameSimulatorModal(this.selectedMember.matchup, this.selectedMember);
-        } else {
-          this.openGameSimulatorModal();
-        }
-      });
-
       // Header "LAST WEEK'S BOX SCORES" button
       this.dom.btnYesterdayModal?.addEventListener('click', () => {
         this.openBoxScoreModal(null, 'LAST_WEEK');
@@ -1437,22 +1524,26 @@
         document.getElementById('roster-section')?.scrollIntoView({ behavior: 'smooth' });
       });
 
-      this.dom.btnNavGame?.addEventListener('click', () => {
-        this.setActiveNav(this.dom.btnNavGame);
-        this.openGameSimulatorModal();
+      this.dom.btnNavFantasy?.addEventListener('click', () => {
+        this.closeModal();
+        this.setActiveNav(this.dom.btnNavFantasy);
+        this.openFantasyDrawer();
       });
 
       this.dom.btnNavBracket?.addEventListener('click', () => {
+        this.closeModal();
         this.setActiveNav(this.dom.btnNavBracket);
         this.openBracketsDrawer();
       });
 
       this.dom.btnNavChallenges?.addEventListener('click', () => {
+        this.closeModal();
         this.setActiveNav(this.dom.btnNavChallenges);
         this.openChallengesDrawer();
       });
 
       this.dom.btnNavStandings?.addEventListener('click', () => {
+        this.closeModal();
         this.setActiveNav(this.dom.btnNavStandings);
         this.openStandingsDrawer();
       });
@@ -1460,17 +1551,6 @@
       this.dom.btnCloseDrawer?.addEventListener('click', () => {
         this.closeDrawer();
         this.setActiveNav(this.dom.btnNavRoster);
-      });
-
-      // Game Simulator Modal close events
-      this.dom.gameModalClose?.addEventListener('click', () => {
-        this.closeGameSimulatorModal();
-      });
-
-      this.dom.gameModalOverlay?.addEventListener('click', (e) => {
-        if (e.target === this.dom.gameModalOverlay) {
-          this.closeGameSimulatorModal();
-        }
       });
 
       // Showdown Modal close events
@@ -1728,34 +1808,36 @@
                     <span class="contestant-team-pick">${m.staff1.pick}</span>
                   </div>
                 </div>
-                <div class="contestant-score-action">
-                  <span class="contestant-score-num">${m.staff1.score ? m.staff1.score + ' PTS' : (isUpcoming ? 'PROJ: ' + m.spread.split('•')[0] : '0 PTS')}</span>
-                  <button class="btn-bracket-pick ${userPick === m.staff1.name ? 'active' : ''}" data-match-id="${m.id}" data-staff="${m.staff1.name}">
-                    ${userPick === m.staff1.name ? '✓ Picked' : 'Pick'}
-                  </button>
+                <div class="contestant-score-action" style="display:flex; flex-direction:column; align-items:flex-end; gap:2px;">
+                  <span class="contestant-score-num" style="color:#facc15; font-weight:900; font-family:'JetBrains Mono',monospace;">${m.staff1.score ? m.staff1.score.toFixed(1) + ' PTS' : (isUpcoming ? 'PROJ: ' + m.spread.split('•')[0] : '0 PTS')}</span>
+                  <span style="font-size:0.6rem; color:#10b981; font-weight:800; background:rgba(16,185,129,0.12); padding:1px 6px; border-radius:4px; border:1px solid rgba(16,185,129,0.3);">⚡ TEAM STATS</span>
                 </div>
               </div>
 
               <div class="bracket-vs-divider">VS</div>
 
-              <div class="bracket-contestant-row ${staff2Won && !isUpcoming ? 'winning' : ''} ${userPick === m.staff2.name ? 'user-picked' : ''}">
+              <div class="bracket-contestant-row ${staff2Won && !isUpcoming ? 'winning' : ''}">
                 <div class="contestant-identity">
                   <div class="contestant-name-box">
                     <span class="contestant-staff-name">${m.staff2.seed ? m.staff2.seed + ' ' : ''}${m.staff2.name} (${m.staff2.team})</span>
                     <span class="contestant-team-pick">${m.staff2.pick}</span>
                   </div>
                 </div>
-                <div class="contestant-score-action">
-                  <span class="contestant-score-num">${m.staff2.score ? m.staff2.score + ' PTS' : (isUpcoming ? 'PROJ: ' + (m.spread.split('•')[1] || '20 PTS') : '0 PTS')}</span>
-                  <button class="btn-bracket-pick ${userPick === m.staff2.name ? 'active' : ''}" data-match-id="${m.id}" data-staff="${m.staff2.name}">
-                    ${userPick === m.staff2.name ? '✓ Picked' : 'Pick'}
-                  </button>
+                <div class="contestant-score-action" style="display:flex; flex-direction:column; align-items:flex-end; gap:2px;">
+                  <span class="contestant-score-num" style="color:#facc15; font-weight:900; font-family:'JetBrains Mono',monospace;">${m.staff2.score ? m.staff2.score.toFixed(1) + ' PTS' : (isUpcoming ? 'PROJ: ' + (m.spread.split('•')[1] || '20 PTS') : '0 PTS')}</span>
+                  <span style="font-size:0.6rem; color:#10b981; font-weight:800; background:rgba(16,185,129,0.12); padding:1px 6px; border-radius:4px; border:1px solid rgba(16,185,129,0.3);">⚡ TEAM STATS</span>
                 </div>
               </div>
             </div>
 
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.25); border-radius:6px; padding:4px 8px; font-size:0.65rem; color:#94a3b8; font-family:'JetBrains Mono',monospace; margin-top:4px;">
+              <span>📊 POSITIONS:</span>
+              <span><strong style="color:#38bdf8;">QB</strong> • <strong style="color:#a78bfa;">REC</strong> • <strong style="color:#34d399;">RUSH</strong> • <strong style="color:#fb923c;">DEF</strong> • <strong style="color:#f472b6;">ST</strong></span>
+              <span style="color:#facc15; font-weight:700;">AUTO-CALCULATED</span>
+            </div>
+
             <button class="btn-reveal-showdown" data-match-id="${m.id}">
-              <span>⚔️</span> Reveal Showdown Lore & Matchup Stats
+              <span>📊</span> View Matchup Fantasy Stats Breakdown
             </button>
           </div>
         `;
@@ -1774,35 +1856,35 @@
           </div>
         </div>
 
-        <!-- How Office Brackets Work Helper Card -->
+        <!-- How Office Fantasy Works Helper Card -->
         <div class="bracket-rules-card">
           <div class="bracket-rules-title">
-            <span>📖 HOW THE WEEKLY OFFICE BRACKET WORKS</span>
-            <span style="color:#facc15;">WEEKLY TOURNAMENT PROGRESSION</span>
+            <span>📖 HOW THE FANTASY BRACKET WORKS</span>
+            <span style="color:#facc15;">AUTOMATED POSITION SCORING</span>
           </div>
           <div class="bracket-rules-steps">
             <div class="bracket-rule-step">
-              <strong>Stage 1 • Weekly Member Game Slate</strong>
-              <span>All 7 office members active on Thursday & Sunday. Tap "Pick" to back the winning member!</span>
+              <strong>1. Quarterback & Receiver</strong>
+              <span>Passing yards (0.04/yd), pass TDs (+4), catches (1.0 PPR), receiving yards (0.1/yd), and receiving TDs (+6).</span>
             </div>
             <div class="bracket-rule-step">
-              <strong>Stage 2 • Semifinals (Sunday Late Slate)</strong>
-              <span>Advancing top-scoring members unlock their Semifinal matchups on Sunday afternoon!</span>
+              <strong>2. Offense & Running Yards</strong>
+              <span>Rushing yards (0.1/yd) and rushing touchdowns (+6) automatically count toward each member's total.</span>
             </div>
             <div class="bracket-rule-step">
-              <strong>Stage 3 • Weekly Crown Finale (SNF / MNF)</strong>
-              <span>Culminates on Sunday/Monday Night Primetime to decide the weekly champion!</span>
+              <strong>3. Defense & Special Teams</strong>
+              <span>Sacks (+1.0), turnovers (+2.0), points allowed bonuses, field goals (+3.0 to +5.0), and extra points (+1.0).</span>
             </div>
           </div>
         </div>
 
-        <!-- User Pick Tracker Bar -->
-        <div class="user-picks-tracker-bar">
-          <div class="user-picks-tracker-text">
-            🎯 YOUR SAVED PICKS: ${pickedThisWeek.length}/4 THIS WEEK • ${totalUserPicksCount} SEASON PICKS LOCKED
+        <!-- Fantasy Status Tracker Bar -->
+        <div class="user-picks-tracker-bar" style="background:linear-gradient(90deg, rgba(250,204,21,0.15), rgba(16,185,129,0.15)); border-color:rgba(250,204,21,0.3);">
+          <div class="user-picks-tracker-text" style="color:#facc15;">
+            ⚡ 100% AUTOMATED FANTASY SYSTEM: POINTS TALLIED DIRECTLY FROM TEAM STATS
           </div>
-          <div class="user-picks-tracker-badge">
-            ✓ PICKS SAVE AUTOMATICALLY
+          <div class="user-picks-tracker-badge" style="background:rgba(16,185,129,0.2); color:#10b981; border:1px solid rgba(16,185,129,0.4);">
+            ✓ NO PICKS NEEDED
           </div>
         </div>
 
@@ -2101,19 +2183,41 @@
           </div>
         </div>
 
-        <div style="margin-top:4px;">
-          <div style="font-size:0.75rem; font-weight:800; color:#fff; margin-bottom:6px; text-align:center;">
-            🎯 MAKE YOUR ${isSeasonMatch ? 'SEASON TOURNAMENT' : 'WEEKLY BRACKET'} PICK FOR THIS SHOWDOWN:
+        ${isSeasonMatch ? `
+          <div style="margin-top:4px;">
+            <div style="font-size:0.75rem; font-weight:800; color:#fff; margin-bottom:6px; text-align:center;">
+              🎯 MAKE YOUR SEASON TOURNAMENT PICK FOR THIS SHOWDOWN:
+            </div>
+            <div class="showdown-picks-row">
+              <button class="btn-showdown-action ${userPick === s1.name ? 'active-pick' : ''}" id="btn-pick-contender-1">
+                ${userPick === s1.name ? '✓ Picked ' + s1.name : 'Pick ' + s1.name + ' (' + s1.team + ')'}
+              </button>
+              <button class="btn-showdown-action ${userPick === s2.name ? 'active-pick' : ''}" id="btn-pick-contender-2">
+                ${userPick === s2.name ? '✓ Picked ' + s2.name : 'Pick ' + s2.name + ' (' + s2.team + ')'}
+              </button>
+            </div>
           </div>
-          <div class="showdown-picks-row">
-            <button class="btn-showdown-action ${userPick === s1.name ? 'active-pick' : ''}" id="btn-pick-contender-1">
-              ${userPick === s1.name ? '✓ Picked ' + s1.name : 'Pick ' + s1.name + ' (' + s1.team + ')'}
-            </button>
-            <button class="btn-showdown-action ${userPick === s2.name ? 'active-pick' : ''}" id="btn-pick-contender-2">
-              ${userPick === s2.name ? '✓ Picked ' + s2.name : 'Pick ' + s2.name + ' (' + s2.team + ')'}
-            </button>
+        ` : `
+          <div style="margin-top:10px; background:rgba(0,0,0,0.3); border:1.5px solid rgba(250,204,21,0.25); border-radius:10px; padding:12px;">
+            <div style="font-size:0.75rem; font-weight:800; color:#facc15; margin-bottom:8px; text-align:center;">
+              ⚡ AUTOMATED FANTASY STATS TALLY (NO PICKS REQUIRED)
+            </div>
+            <div style="display:flex; justify-content:space-around; align-items:center; margin-bottom:8px;">
+              <div style="text-align:center;">
+                <div style="font-size:0.8rem; font-weight:800; color:#38bdf8;">${s1.name}</div>
+                <div style="font-family:'JetBrains Mono',monospace; font-size:1.25rem; font-weight:900; color:#facc15;">${(s1.fantasyPoints || s1.score || 0).toFixed(1)} PTS</div>
+              </div>
+              <div style="font-weight:900; font-size:0.8rem; color:#64748b;">VS</div>
+              <div style="text-align:center;">
+                <div style="font-size:0.8rem; font-weight:800; color:#facc15;">${s2.name}</div>
+                <div style="font-family:'JetBrains Mono',monospace; font-size:1.25rem; font-weight:900; color:#facc15;">${(s2.fantasyPoints || s2.score || 0).toFixed(1)} PTS</div>
+              </div>
+            </div>
+            <div style="font-size:0.68rem; color:#94a3b8; text-align:center; line-height:1.4;">
+              Points are automatically calculated in real-time from official game performance across: <strong>QB</strong>, <strong>REC</strong>, <strong>RUSH</strong>, <strong>DEF</strong>, and <strong>ST</strong>.
+            </div>
           </div>
-        </div>
+        `}
       `;
 
       let isGif1 = false;
@@ -2142,12 +2246,9 @@
           }
           this.seasonPicks[m.id] = s1.name;
           localStorage.setItem('office_endzone_season_picks', JSON.stringify(this.seasonPicks));
-        } else {
-          this.userPicks[m.id] = s1.name;
-          localStorage.setItem('office_endzone_picks', JSON.stringify(this.userPicks));
+          this.openShowdownModal(m.id);
+          this.renderBracketsHub();
         }
-        this.openShowdownModal(m.id);
-        this.renderBracketsHub();
       });
 
       document.getElementById('btn-pick-contender-2')?.addEventListener('click', () => {
@@ -2160,12 +2261,9 @@
           }
           this.seasonPicks[m.id] = s2.name;
           localStorage.setItem('office_endzone_season_picks', JSON.stringify(this.seasonPicks));
-        } else {
-          this.userPicks[m.id] = s2.name;
-          localStorage.setItem('office_endzone_picks', JSON.stringify(this.userPicks));
+          this.openShowdownModal(m.id);
+          this.renderBracketsHub();
         }
-        this.openShowdownModal(m.id);
-        this.renderBracketsHub();
       });
 
       this.dom.showdownModalOverlay.classList.add('open');
@@ -2819,6 +2917,189 @@
       this.dom.secondaryDrawer.scrollIntoView({ behavior: 'smooth' });
     }
 
+    openFantasyDrawer() {
+      if (!this.dom.drawerBody || !this.dom.secondaryDrawer) return;
+      this.dom.drawerTitle.textContent = "🏈 Automated Fantasy Matchups (By Team Stats)";
+
+      // Top Leaders sorted by Fantasy Points
+      const sortedByFantasy = [...this.roster].sort((a, b) => (b.fantasy?.totalPoints || 0) - (a.fantasy?.totalPoints || 0));
+
+      // 4 Weekly Fantasy Head-to-Head Duels based on Week 2 real matchups
+      const duels = [
+        {
+          title: "Desert Air & High Stakes Showdown",
+          sub: "Week 2 Live Fantasy Battle",
+          c1: this.roster.find(m => m.id === 'char_cardinals'),
+          c2: this.roster.find(m => m.id === 'char_nicole')
+        },
+        {
+          title: "Heavyweight Powerhouse Duel",
+          sub: "Week 2 Live Fantasy Battle",
+          c1: this.roster.find(m => m.id === 'char_mariah'),
+          c2: this.roster.find(m => m.id === 'char_saul')
+        },
+        {
+          title: "Midwest Gridiron Clash",
+          sub: "Week 2 Live Fantasy Battle",
+          c1: this.roster.find(m => m.id === 'char_mario'),
+          c2: this.roster.find(m => m.id === 'char_cj')
+        },
+        {
+          title: "Frozen Tundra Precision vs Big Apple",
+          sub: "Week 2 Live Fantasy Battle",
+          c1: this.roster.find(m => m.id === 'char_andrea'),
+          c2: {
+            id: null,
+            name: "Jets (Aaron Rodgers)",
+            teamId: "NYJ",
+            teamName: "JETS",
+            image: "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
+            fantasy: {
+              totalPoints: 39.5,
+              qb: { player: "Aaron Rodgers (QB)", stats: "176 Pass Yds, 1 TD", points: 11.0 },
+              rec: { player: "Garrett Wilson (WR)", stats: "5 Rec, 57 Yds, 0 TD", points: 10.7 },
+              rush: { player: "Breece Hall (RB)", stats: "62 Rush Yds, 0 TD", points: 6.2 },
+              def: { player: "Jets Defense (DEF)", stats: "3 Sacks, 7 PA", points: 5.0 },
+              st: { player: "Greg Zuerlein (K/ST)", stats: "2 FG", points: 6.6 }
+            }
+          }
+        }
+      ];
+
+      this.dom.drawerBody.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <!-- Fantasy System Banner -->
+          <div style="background: linear-gradient(135deg, rgba(250, 204, 21, 0.12) 0%, rgba(56, 189, 248, 0.08) 100%); border: 1.5px solid rgba(250, 204, 21, 0.3); border-radius: 12px; padding: 14px 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
+              <span style="font-family:'Outfit',sans-serif; font-size:0.95rem; font-weight:800; color:#facc15;">⚡ NO PICKS REQUIRED • 100% AUTOMATED FROM REAL TEAM STATS</span>
+              <span style="font-size:0.7rem; font-weight:800; background:rgba(16,185,129,0.2); color:#10b981; border:1px solid rgba(16,185,129,0.4); padding:2px 8px; border-radius:12px;">ACTIVE • WEEK 2</span>
+            </div>
+            <p style="font-size:0.78rem; color:#cbd5e1; line-height:1.45; margin:0;">
+              Points are automatically calculated in real-time from official game performance across 5 key positions:
+              <strong style="color:#38bdf8;">Quarterback</strong>, 
+              <strong style="color:#a78bfa;">Receiver</strong>, 
+              <strong style="color:#34d399;">Running / Offense</strong>, 
+              <strong style="color:#fb923c;">Defense</strong>, and 
+              <strong style="color:#f472b6;">Special Teams / Punting</strong>.
+            </p>
+          </div>
+
+          <!-- Fantasy Leaderboard Table -->
+          <div class="standings-table-wrap" style="background:#091322; border-radius:12px; border:1px solid rgba(255,255,255,0.08); overflow:hidden;">
+            <div style="padding:10px 14px; background:rgba(0,0,0,0.3); font-family:'Outfit',sans-serif; font-size:0.8rem; font-weight:800; color:#38bdf8; display:flex; justify-content:space-between; align-items:center;">
+              <span>🏆 OFFICE FANTASY LEADERBOARD (WEEK 2 LIVE)</span>
+              <span style="font-size:0.68rem; color:#94a3b8; font-weight:600;">Ranked by total automated points</span>
+            </div>
+            <table class="dugout-standings-table">
+              <thead>
+                <tr>
+                  <th style="width:40px; text-align:center;">RANK</th>
+                  <th class="col-team">COWORKER / TEAM</th>
+                  <th class="col-stat">QB</th>
+                  <th class="col-stat">REC</th>
+                  <th class="col-stat">RUSH</th>
+                  <th class="col-stat">DEF</th>
+                  <th class="col-stat">ST</th>
+                  <th class="col-stat" style="color:#facc15; font-weight:900;">TOTAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${sortedByFantasy.map((m, idx) => `
+                  <tr class="fantasy-leaderboard-row" data-member-id="${m.id}" style="cursor:pointer;" title="Click to view full player details">
+                    <td style="text-align:center; font-weight:900; color:${idx === 0 ? '#facc15' : (idx === 1 ? '#cbd5e1' : (idx === 2 ? '#fb923c' : '#64748b'))};">#${idx + 1}</td>
+                    <td style="font-weight:700; color:#fff; display:flex; align-items:center; gap:8px;">
+                      <img src="${m.image}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;" alt="">
+                      <span>${m.name} <span style="font-size:0.7rem; color:${this.teams.find(t=>t.id===m.teamId)?.color || '#38bdf8'}; font-weight:800;">(${m.teamId})</span></span>
+                    </td>
+                    <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${(m.fantasy?.qb?.points || 0).toFixed(1)}</td>
+                    <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${(m.fantasy?.rec?.points || 0).toFixed(1)}</td>
+                    <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${(m.fantasy?.rush?.points || 0).toFixed(1)}</td>
+                    <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${(m.fantasy?.def?.points || 0).toFixed(1)}</td>
+                    <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${(m.fantasy?.st?.points || 0).toFixed(1)}</td>
+                    <td class="col-stat" style="color:#facc15; font-weight:900; font-size:0.95rem; font-family:'JetBrains Mono',monospace;">${(m.fantasy?.totalPoints || 0).toFixed(1)}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Section: Head-to-Head Fantasy Duels -->
+          <div style="font-family:'Outfit',sans-serif; font-size:0.9rem; font-weight:800; color:#cbd5e1; letter-spacing:0.5px; margin-top:4px;">
+            ⚔️ WEEK 2 HEAD-TO-HEAD FANTASY BATTLES
+          </div>
+
+          <div class="fantasy-matchups-grid">
+            ${duels.map(d => {
+              const pts1 = d.c1.fantasy?.totalPoints || 0;
+              const pts2 = d.c2.fantasy?.totalPoints || 0;
+              const isLead1 = pts1 >= pts2;
+              const isLead2 = pts2 > pts1;
+
+              return `
+                <div class="fantasy-duel-card">
+                  <div class="fantasy-duel-header">
+                    <span>${d.title}</span>
+                    <span style="color:#facc15;">${d.sub}</span>
+                  </div>
+
+                  <div class="fantasy-contenders-row">
+                    <!-- Contender 1 -->
+                    <div class="fantasy-contender-box ${isLead1 ? 'leading' : ''} ${d.c1.id ? 'interactive-fantasy-box' : ''}" data-member-id="${d.c1.id || ''}" style="cursor:pointer;" title="Click to view details">
+                      <img src="${d.c1.image}" class="fantasy-contender-avatar" alt="${d.c1.name}">
+                      <div class="fantasy-contender-meta">
+                        <span class="fantasy-contender-name">${d.c1.name}</span>
+                        <span class="fantasy-contender-team" style="color:${this.teams.find(t=>t.id===d.c1.teamId)?.color || '#38bdf8'};">${d.c1.teamName || d.c1.teamId}</span>
+                      </div>
+                      <div class="fantasy-contender-score">${pts1.toFixed(1)} <span style="font-size:0.65rem; color:#94a3b8;">PTS</span></div>
+                    </div>
+
+                    <span class="fantasy-vs-separator">VS</span>
+
+                    <!-- Contender 2 -->
+                    <div class="fantasy-contender-box ${isLead2 ? 'leading' : ''} ${d.c2.id ? 'interactive-fantasy-box' : ''}" data-member-id="${d.c2.id || ''}" style="cursor:pointer;" title="Click to view details">
+                      <img src="${d.c2.image}" class="fantasy-contender-avatar" alt="${d.c2.name}">
+                      <div class="fantasy-contender-meta">
+                        <span class="fantasy-contender-name">${d.c2.name}</span>
+                        <span class="fantasy-contender-team" style="color:${this.teams.find(t=>t.id===d.c2.teamId)?.color || '#38bdf8'};">${d.c2.teamName || d.c2.teamId}</span>
+                      </div>
+                      <div class="fantasy-contender-score">${pts2.toFixed(1)} <span style="font-size:0.65rem; color:#94a3b8;">PTS</span></div>
+                    </div>
+                  </div>
+
+                  <!-- Category comparison row pills -->
+                  <div class="fantasy-category-pill-row">
+                    <span style="color:#facc15; font-weight:700;">STATS BREAKDOWN:</span>
+                    <span><strong style="color:#38bdf8;">QB</strong>: ${d.c1.fantasy?.qb?.points?.toFixed(1) || 0} vs ${d.c2.fantasy?.qb?.points?.toFixed(1) || 0}</span>
+                    <span>•</span>
+                    <span><strong style="color:#a78bfa;">REC</strong>: ${d.c1.fantasy?.rec?.points?.toFixed(1) || 0} vs ${d.c2.fantasy?.rec?.points?.toFixed(1) || 0}</span>
+                    <span>•</span>
+                    <span><strong style="color:#34d399;">RUSH</strong>: ${d.c1.fantasy?.rush?.points?.toFixed(1) || 0} vs ${d.c2.fantasy?.rush?.points?.toFixed(1) || 0}</span>
+                    <span>•</span>
+                    <span><strong style="color:#fb923c;">DEF</strong>: ${d.c1.fantasy?.def?.points?.toFixed(1) || 0} vs ${d.c2.fantasy?.def?.points?.toFixed(1) || 0}</span>
+                    <span>•</span>
+                    <span><strong style="color:#f472b6;">ST</strong>: ${d.c1.fantasy?.st?.points?.toFixed(1) || 0} vs ${d.c2.fantasy?.st?.points?.toFixed(1) || 0}</span>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+
+      // Bind click handlers on leaderboard rows and duel boxes
+      this.dom.drawerBody.querySelectorAll('.fantasy-leaderboard-row, .interactive-fantasy-box').forEach(el => {
+        el.addEventListener('click', () => {
+          const mId = el.dataset.memberId;
+          if (mId) {
+            this.openMemberModal(mId);
+          }
+        });
+      });
+
+      this.dom.secondaryDrawer.style.display = 'flex';
+      this.dom.secondaryDrawer.scrollIntoView({ behavior: 'smooth' });
+    }
+
     openStandingsDrawer() {
       if (!this.dom.drawerBody || !this.dom.secondaryDrawer) return;
       this.dom.drawerTitle.textContent = "📊 Office Football Season Standings";
@@ -2858,450 +3139,6 @@
       }
     }
 
-    // =========================================================================
-    // FULL INTERACTIVE GRIDIRON GAME SIMULATOR & STADIUM ARENA ENGINE
-    // =========================================================================
-    openGameSimulatorModal(customMatchup = null, memberContext = null) {
-      const activeMember = memberContext || this.selectedMember || this.roster.find(m => m.id === 'char_cj') || this.roster[0];
-      const awayTeamCode = customMatchup?.away?.code || 'MIN';
-      const homeTeamCode = customMatchup?.home?.code || 'CHI';
-      
-      const awayTeamObj = this.teams.find(t => t.id === awayTeamCode) || { id: awayTeamCode, name: "Vikings", city: "Minnesota", color: "#4F2683", logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${awayTeamCode.toLowerCase()}.png` };
-      const homeTeamObj = this.teams.find(t => t.id === homeTeamCode) || { id: homeTeamCode, name: "Bears", city: "Chicago", color: "#ef4444", logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${homeTeamCode.toLowerCase()}.png` };
-
-      this.simState = {
-        homeTeam: homeTeamObj,
-        awayTeam: awayTeamObj,
-        homeScore: parseInt(customMatchup?.home?.score ?? 3, 10),
-        awayScore: parseInt(customMatchup?.away?.score ?? 6, 10),
-        quarter: 3,
-        clock: '9:38',
-        possession: 'HOME', // 'HOME' or 'AWAY'
-        down: 1,
-        distance: 10,
-        ballOnYard: 25, // 0 to 100
-        drivePlays: 1,
-        driveYards: 0,
-        venue: customMatchup?.venue || "Soldier Field • Chicago, IL",
-        mascot: activeMember,
-        mascotSpeech: `Bear Down! Let's dial up a big gain on this drive!`,
-        playHistory: [
-          { text: `⚡ 1st & 10: Drive started at OWN 25 yard line`, time: `Q3 9:38`, category: `info` },
-          { text: `🏈 Game Initialized: ${awayTeamObj.city} ${awayTeamObj.name} at ${homeTeamObj.city} ${homeTeamObj.name}`, time: `Q3 9:38`, category: `info` }
-        ]
-      };
-
-      this.renderGameArena();
-      if (this.dom.gameModalOverlay) {
-        this.dom.gameModalOverlay.classList.add('open');
-        this.dom.gameModalOverlay.style.display = 'flex';
-      }
-    }
-
-    closeGameSimulatorModal() {
-      if (this.dom.gameModalOverlay) {
-        this.dom.gameModalOverlay.classList.remove('open');
-        this.dom.gameModalOverlay.style.display = 'none';
-      }
-    }
-
-    renderGameArena() {
-      if (!this.dom.gameModalContent || !this.simState) return;
-
-      const s = this.simState;
-      const downSuffix = ['th', 'st', 'nd', 'rd', 'th'][s.down] || 'th';
-      const side = s.ballOnYard <= 50 ? 'OWN' : 'OPP';
-      const yardDisplay = s.ballOnYard <= 50 ? s.ballOnYard : 100 - s.ballOnYard;
-      const downDistanceText = `${s.down}${downSuffix} & ${s.distance} at ${side} ${yardDisplay}`;
-      const isRedZone = s.ballOnYard >= 80;
-
-      // Calculate football & scrimmage line position percentage (10% to 90% along visualizer)
-      const visualLeftPct = 10 + (s.ballOnYard * 0.8);
-      const firstDownYard = Math.min(100, s.ballOnYard + s.distance);
-      const visualFirstDownPct = 10 + (firstDownYard * 0.8);
-
-      const possessionTeamName = s.possession === 'HOME' ? s.homeTeam.name : s.awayTeam.name;
-
-      this.dom.gameModalContent.innerHTML = `
-        <div class="game-arena-wrap" id="game-arena-container">
-          
-          <!-- Stadium Scoreboard Display -->
-          <div class="stadium-scoreboard-card">
-            <div class="stadium-score-header">
-              <span>🏟️ ${s.venue}</span>
-              <span style="color:#facc15;">2026 REGULAR SEASON • WEEK 2</span>
-            </div>
-
-            <div class="stadium-score-teams-row">
-              <!-- Away Team Block -->
-              <div class="stadium-team-block ${s.possession === 'AWAY' ? 'has-ball' : ''}">
-                <img src="${s.awayTeam.logo}" class="stadium-team-logo" alt="${s.awayTeam.name}" onerror="this.src='https://ui-avatars.com/api/?name=${s.awayTeam.id}&background=0b1322&color=fff'">
-                <div class="stadium-team-meta">
-                  <span class="stadium-team-name">${s.awayTeam.city} ${s.awayTeam.name}</span>
-                  ${s.possession === 'AWAY' ? '<span class="stadium-possession-pill">● OFFENSE ON FIELD</span>' : '<span style="font-size:0.62rem; color:#64748b;">DEFENSE</span>'}
-                </div>
-                <div class="stadium-score-digit" style="margin-left:auto;">${s.awayScore}</div>
-              </div>
-
-              <!-- Center Clock & Down Info -->
-              <div class="stadium-score-mid">
-                <div class="stadium-game-clock">Q${s.quarter} • ${s.clock}</div>
-                <div class="stadium-down-distance">${downDistanceText}</div>
-                ${isRedZone ? '<span style="font-size:0.62rem; font-weight:900; color:#ef4444; background:rgba(239,68,68,0.2); padding:2px 6px; border-radius:4px; animation:redzoneGlow 1.5s infinite;">🚨 RED ZONE</span>' : ''}
-              </div>
-
-              <!-- Home Team Block -->
-              <div class="stadium-team-block ${s.possession === 'HOME' ? 'has-ball' : ''}">
-                <div class="stadium-score-digit" style="margin-right:auto;">${s.homeScore}</div>
-                <div class="stadium-team-meta" style="text-align:right;">
-                  <span class="stadium-team-name">${s.homeTeam.city} ${s.homeTeam.name}</span>
-                  ${s.possession === 'HOME' ? '<span class="stadium-possession-pill">● OFFENSE ON FIELD</span>' : '<span style="font-size:0.62rem; color:#64748b;">DEFENSE</span>'}
-                </div>
-                <img src="${s.homeTeam.logo}" class="stadium-team-logo" alt="${s.homeTeam.name}" onerror="this.src='https://ui-avatars.com/api/?name=${s.homeTeam.id}&background=0b1322&color=fff'">
-              </div>
-            </div>
-          </div>
-
-          <!-- Interactive 100-Yard Field Visualizer -->
-          <div class="gridiron-field-wrap">
-            <div class="field-endzone left" style="background:${s.awayTeam.color || '#1e3a8a'}">
-              <span>${s.awayTeam.id}</span>
-            </div>
-
-            <div class="field-playing-surface">
-              <div class="field-yard-numbers">
-                <span>10</span><span>20</span><span>30</span><span>40</span><span>50</span><span>40</span><span>30</span><span>20</span><span>10</span>
-              </div>
-              ${isRedZone ? '<div class="field-redzone-pulse"></div>' : ''}
-              <div class="field-scrimmage-line" style="left:${visualLeftPct}%;"></div>
-              <div class="field-firstdown-line" style="left:${visualFirstDownPct}%;"></div>
-              <div class="field-football-token" style="left:${visualLeftPct}%;">🏈</div>
-            </div>
-
-            <div class="field-endzone right" style="background:${s.homeTeam.color || '#dc2626'}">
-              <span>${s.homeTeam.id}</span>
-            </div>
-          </div>
-
-          <!-- Mascot / Staff Contender Live Reaction Stage -->
-          <div class="stadium-mascot-stage">
-            <img src="${s.mascot?.image || 'assets/avatars/CJ football.jpg'}" class="stadium-mascot-avatar" alt="${s.mascot?.name || 'Contender'}" onerror="this.src='https://ui-avatars.com/api/?name=CJ&background=0b1322&color=fff'">
-            <div class="stadium-mascot-bubble">
-              <strong style="color:#38bdf8;">${s.mascot?.name || 'Office MVP'} (${s.mascot?.teamName || 'Bears'}):</strong> 
-              <span>${s.mascotSpeech}</span>
-            </div>
-          </div>
-
-          <!-- Tactical Play Execution Controls -->
-          <div style="font-size:0.75rem; font-weight:800; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.5px;">
-            ⚡ EXECUTE OFFENSIVE PLAY (${possessionTeamName.toUpperCase()} POSSESSION):
-          </div>
-
-          <div class="stadium-tactical-controls">
-            <button class="btn-tactical-play play-run" id="sim-btn-run">
-              <span>🏃</span> Run Inside (+3-8 YDS)
-            </button>
-            <button class="btn-tactical-play play-pass" id="sim-btn-pass">
-              <span>🎯</span> Pass Play (+6-20 YDS)
-            </button>
-            <button class="btn-tactical-play play-pass" id="sim-btn-deep" style="border-color:#38bdf8; color:#38bdf8;">
-              <span>🚀</span> Deep Bomb (Big Play!)
-            </button>
-            <button class="btn-tactical-play play-fg" id="sim-btn-fg">
-              <span>🎯</span> Attempt Field Goal (+3)
-            </button>
-            <button class="btn-tactical-play play-td" id="sim-btn-td">
-              <span>⚡</span> Touchdown Home (+6)
-            </button>
-            <button class="btn-tactical-play play-td" id="sim-btn-td-away" style="background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
-              <span>⚡</span> Touchdown Away (+6)
-            </button>
-            <button class="btn-tactical-play play-sack" id="sim-btn-sack">
-              <span>💥</span> QB Blitz Sack (-8 YDS)
-            </button>
-            <button class="btn-tactical-play play-turnover" id="sim-btn-turnover">
-              <span>🔄</span> Turnover (Fumble/INT)
-            </button>
-            <button class="btn-tactical-play play-reset" id="sim-btn-reset">
-              <span>🔁</span> Reset Drive (1st & 10)
-            </button>
-          </div>
-
-          <!-- Live Play-by-Play Announcer Log Feed -->
-          <div style="font-size:0.72rem; font-weight:800; color:#94a3b8; margin-top:2px;">
-            📋 LIVE PLAY-BY-PLAY FEED
-          </div>
-          <div class="stadium-play-log">
-            ${s.playHistory.map(item => `
-              <div class="play-log-item ${item.category}">
-                <span>${item.text}</span>
-                <span style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:#94a3b8;">${item.time}</span>
-              </div>
-            `).join('')}
-          </div>
-
-        </div>
-      `;
-
-      this.bindGameSimulationButtons();
-    }
-
-    bindGameSimulationButtons() {
-      document.getElementById('sim-btn-run')?.addEventListener('click', () => this.simulateRunPlay());
-      document.getElementById('sim-btn-pass')?.addEventListener('click', () => this.simulatePassPlay(false));
-      document.getElementById('sim-btn-deep')?.addEventListener('click', () => this.simulatePassPlay(true));
-      document.getElementById('sim-btn-fg')?.addEventListener('click', () => this.simulateFieldGoal());
-      document.getElementById('sim-btn-td')?.addEventListener('click', () => this.simulateTouchdown('HOME'));
-      document.getElementById('sim-btn-td-away')?.addEventListener('click', () => this.simulateTouchdown('AWAY'));
-      document.getElementById('sim-btn-sack')?.addEventListener('click', () => this.simulateSack());
-      document.getElementById('sim-btn-turnover')?.addEventListener('click', () => this.simulateTurnover('Interception'));
-      document.getElementById('sim-btn-reset')?.addEventListener('click', () => this.resetGameSimulation());
-    }
-
-    addPlayLog(text, category = 'info') {
-      if (!this.simState) return;
-      this.simState.playHistory.unshift({
-        text,
-        time: `Q${this.simState.quarter} ${this.simState.clock}`,
-        category
-      });
-      if (this.simState.playHistory.length > 25) {
-        this.simState.playHistory.pop();
-      }
-    }
-
-    shakeArena() {
-      const container = document.getElementById('game-arena-container');
-      if (!container) return;
-      container.classList.remove('screen-shake');
-      void container.offsetWidth;
-      container.classList.add('screen-shake');
-    }
-
-    advanceSimClock() {
-      if (!this.simState) return;
-      const parts = this.simState.clock.split(':');
-      let min = parseInt(parts[0], 10) || 10;
-      let sec = parseInt(parts[1], 10) || 0;
-
-      sec -= Math.floor(Math.random() * 25 + 15);
-      if (sec < 0) {
-        sec += 60;
-        min -= 1;
-      }
-      if (min < 0) {
-        min = 14;
-        sec = 59;
-        this.simState.quarter = this.simState.quarter >= 4 ? 4 : this.simState.quarter + 1;
-      }
-      this.simState.clock = `${min}:${sec < 10 ? '0' + sec : sec}`;
-    }
-
-    simulateRunPlay() {
-      if (!this.simState) return;
-      this.advanceSimClock();
-      const s = this.simState;
-      const gain = Math.floor(Math.random() * 11) - 1; // -1 to +9 yds
-      const newYard = Math.min(100, Math.max(1, s.ballOnYard + gain));
-      const team = s.possession === 'HOME' ? s.homeTeam.name : s.awayTeam.name;
-
-      if (newYard >= 100) {
-        this.simulateTouchdown(s.possession);
-        return;
-      }
-
-      s.ballOnYard = newYard;
-      s.distance -= gain;
-      s.drivePlays += 1;
-      s.driveYards += gain;
-
-      if (s.distance <= 0) {
-        s.down = 1;
-        s.distance = 10;
-        this.addPlayLog(`🏈 ${team} rush for ${gain} yards — FIRST DOWN!`, 'touchdown');
-        s.mascotSpeech = `First down! Moving the chains right through the defense!`;
-      } else {
-        s.down += 1;
-        if (s.down > 4) {
-          this.simulateTurnover('Turnover on Downs');
-          return;
-        }
-        this.addPlayLog(`🏃 ${team} handoff inside for a ${gain >= 0 ? '+' + gain : gain} yard gain.`, 'info');
-        s.mascotSpeech = `Good ground gain! Keeping the defense honest in the trenches.`;
-      }
-
-      this.renderGameArena();
-    }
-
-    simulatePassPlay(isDeep = false) {
-      if (!this.simState) return;
-      this.advanceSimClock();
-      const s = this.simState;
-      const team = s.possession === 'HOME' ? s.homeTeam.name : s.awayTeam.name;
-      const completeRoll = Math.random();
-
-      if (isDeep) {
-        if (completeRoll > 0.6) {
-          // Incomplete deep shot
-          s.down += 1;
-          if (s.down > 4) { this.simulateTurnover('Turnover on Downs'); return; }
-          this.addPlayLog(`💨 ${team} deep bomb down the sideline is INCOMPLETE.`, 'info');
-          s.mascotSpeech = `Deep shot just missed! Regroup for the next snap.`;
-        } else if (completeRoll < 0.1) {
-          // Interception
-          this.simulateTurnover('Interception downfield');
-          return;
-        } else {
-          // Deep completion!
-          const gain = Math.floor(Math.random() * 25 + 20); // 20-45 yds
-          const newYard = Math.min(100, s.ballOnYard + gain);
-          if (newYard >= 100) { this.simulateTouchdown(s.possession); return; }
-          s.ballOnYard = newYard;
-          s.down = 1;
-          s.distance = 10;
-          this.addPlayLog(`🚀 HUGE PLAY! ${team} connects on a ${gain}-yard deep strike! FIRST DOWN!`, 'touchdown');
-          s.mascotSpeech = `WHAT A CATCH! Beautiful spiral downfield!`;
-          this.spawnConfetti();
-        }
-      } else {
-        if (completeRoll > 0.75) {
-          s.down += 1;
-          if (s.down > 4) { this.simulateTurnover('Turnover on Downs'); return; }
-          this.addPlayLog(`❌ ${team} pass over the middle is INCOMPLETE.`, 'info');
-          s.mascotSpeech = `Incomplete pass. Third down conversion coming up!`;
-        } else {
-          const gain = Math.floor(Math.random() * 12 + 6); // 6-18 yds
-          const newYard = Math.min(100, s.ballOnYard + gain);
-          if (newYard >= 100) { this.simulateTouchdown(s.possession); return; }
-          s.ballOnYard = newYard;
-          s.distance -= gain;
-          if (s.distance <= 0) {
-            s.down = 1;
-            s.distance = 10;
-            this.addPlayLog(`🎯 ${team} slant completion for ${gain} yards — FIRST DOWN!`, 'touchdown');
-            s.mascotSpeech = `Precision route running! That's how we execute the scheme!`;
-          } else {
-            s.down += 1;
-            if (s.down > 4) { this.simulateTurnover('Turnover on Downs'); return; }
-            this.addPlayLog(`🎯 ${team} short completion for ${gain} yards.`, 'info');
-            s.mascotSpeech = `Solid completion, staying ahead of the chains.`;
-          }
-        }
-      }
-
-      this.renderGameArena();
-    }
-
-    simulateSack() {
-      if (!this.simState) return;
-      this.advanceSimClock();
-      const s = this.simState;
-      const loss = Math.floor(Math.random() * 5 + 6); // 6-10 yds
-      s.ballOnYard = Math.max(1, s.ballOnYard - loss);
-      s.down += 1;
-      s.distance += loss;
-      const team = s.possession === 'HOME' ? s.homeTeam.name : s.awayTeam.name;
-
-      this.shakeArena();
-      if (s.down > 4) {
-        this.simulateTurnover('Turnover on Downs after Sack');
-        return;
-      }
-
-      this.addPlayLog(`💥 SACK! Blitz overwhelms the pocket! ${team} lost ${loss} yards!`, 'sack');
-      s.mascotSpeech = `Ouch! Pass protection broke down! Dial up maximum protection!`;
-      this.renderGameArena();
-    }
-
-    simulateFieldGoal() {
-      if (!this.simState) return;
-      this.advanceSimClock();
-      const s = this.simState;
-      const dist = (100 - s.ballOnYard) + 17;
-      const team = s.possession === 'HOME' ? s.homeTeam.name : s.awayTeam.name;
-
-      if (dist <= 58) {
-        if (s.possession === 'HOME') s.homeScore += 3;
-        else s.awayScore += 3;
-
-        this.addPlayLog(`🎯 IT'S GOOD! ${team} splits the uprights on a ${dist}-yard Field Goal! (+3 PTS)`, 'field_goal');
-        s.mascotSpeech = `Three points on the board! Special teams executes smoothly!`;
-        this.spawnConfetti();
-
-        // Change possession & reset kickoff
-        s.possession = s.possession === 'HOME' ? 'AWAY' : 'HOME';
-        s.ballOnYard = 25;
-        s.down = 1;
-        s.distance = 10;
-      } else {
-        this.addPlayLog(`❌ NO GOOD! ${team} ${dist}-yard Field Goal attempt falls short!`, 'turnover');
-        s.possession = s.possession === 'HOME' ? 'AWAY' : 'HOME';
-        s.down = 1;
-        s.distance = 10;
-        s.mascotSpeech = `Field goal fell short! Opponent gets great field position.`;
-      }
-
-      this.renderGameArena();
-    }
-
-    simulateTouchdown(teamKey = 'HOME') {
-      if (!this.simState) return;
-      this.advanceSimClock();
-      const s = this.simState;
-      const scoringTeam = teamKey === 'HOME' ? s.homeTeam : s.awayTeam;
-
-      if (teamKey === 'HOME') {
-        s.homeScore += 7; // Touchdown + Extra Point
-      } else {
-        s.awayScore += 7;
-      }
-
-      this.addPlayLog(`🎉 TOUCHDOWN ${scoringTeam.name.toUpperCase()}! 7 points with the extra point!`, 'touchdown');
-      s.mascotSpeech = `TOUCHDOWN! Coffee mug spike celebration in the end zone! 🎉`;
-      this.spawnConfetti();
-
-      // Flip possession, kickoff to 25
-      s.possession = teamKey === 'HOME' ? 'AWAY' : 'HOME';
-      s.ballOnYard = 25;
-      s.down = 1;
-      s.distance = 10;
-
-      this.renderGameArena();
-    }
-
-    simulateTurnover(reason = 'Fumble') {
-      if (!this.simState) return;
-      this.advanceSimClock();
-      const s = this.simState;
-      const prevTeam = s.possession === 'HOME' ? s.homeTeam.name : s.awayTeam.name;
-      s.possession = s.possession === 'HOME' ? 'AWAY' : 'HOME';
-      const newTeam = s.possession === 'HOME' ? s.homeTeam.name : s.awayTeam.name;
-
-      s.ballOnYard = Math.max(15, 100 - s.ballOnYard);
-      s.down = 1;
-      s.distance = 10;
-
-      this.shakeArena();
-      this.addPlayLog(`😱 TURNOVER! ${reason} by ${prevTeam}! Ball recovered by ${newTeam}!`, 'turnover');
-      s.mascotSpeech = `TURNOVER! Huge momentum shift! Time for defense to step up!`;
-      this.renderGameArena();
-    }
-
-    resetGameSimulation() {
-      if (!this.simState) return;
-      const s = this.simState;
-      s.quarter = 1;
-      s.clock = '15:00';
-      s.homeScore = 0;
-      s.awayScore = 0;
-      s.down = 1;
-      s.distance = 10;
-      s.ballOnYard = 25;
-      s.possession = 'HOME';
-      s.mascotSpeech = `Opening kickoff! Welcome to the 2026 Gridiron Arena!`;
-      this.addPlayLog(`🔁 Game reset to 1st Quarter 15:00. Kickoff at OWN 25 yard line.`, 'info');
-      this.renderGameArena();
-    }
 
     // =========================================================================
     // ENRICHED LIVE ESPN DATA ENGINE (2026 REGULAR SEASON WEEK 2)
@@ -3464,6 +3301,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     const app = new DugoutEndzoneApp();
+    window.app = app;
     app.init();
   });
 })();
