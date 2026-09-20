@@ -55,10 +55,10 @@ class OfficeEndzoneApp {
     this.renderCompetitionsViews();
 
     // Fetch ESPN NFL Live Feed
-    await this.fetchEspnScoreboard();
+    await this.fetchEspnScoreboard(false, true);
 
     // Auto-refresh ESPN feed every 45 seconds
-    setInterval(() => this.fetchEspnScoreboard(true), 45000);
+    setInterval(() => this.fetchEspnScoreboard(true, false), 45000);
   }
 
   cacheDom() {
@@ -132,7 +132,9 @@ class OfficeEndzoneApp {
     }
   }
 
-  async fetchEspnScoreboard(isBackground = false) {
+  async fetchEspnScoreboard(isBackground = false, isInitial = false) {
+    if (document.hidden && !isInitial) return;
+
     if (!isBackground && this.dom.espnStatusText) {
       this.dom.espnStatusText.textContent = 'CONNECTING TO ESPN (MST)...';
     }
@@ -145,7 +147,11 @@ class OfficeEndzoneApp {
       this.dom.espnStatusText.textContent = `ESPN LIVE • ARIZONA TIME (MST)`;
     }
 
-    this.renderTickerCarousel();
+    const currentHash = JSON.stringify(this.liveGames);
+    if (currentHash !== this.lastCarouselHash) {
+      this.lastCarouselHash = currentHash;
+      this.renderTickerCarousel();
+    }
 
     if (!this.activeGameId && this.liveGames.length > 0) {
       this.selectGame(this.liveGames[0].id);
@@ -165,20 +171,21 @@ class OfficeEndzoneApp {
       const isLive = game.status.state === 'in';
       const statusBadgeClass = isLive ? 'badge-live' : (game.status.completed ? 'badge-final' : 'badge-pre');
 
+      const ariaLabel = `${game.awayTeam.abbreviation} ${game.awayTeam.score} versus ${game.homeTeam.abbreviation} ${game.homeTeam.score}. ${game.status.detail}. Broadcast: ${game.broadcast || 'NFL'}.`;
       return `
-        <div class="ticker-game-card ${isSelected ? 'selected' : ''}" data-game-id="${game.id}">
-          <div class="ticker-card-top">
+        <div class="ticker-game-card ${isSelected ? 'selected' : ''}" data-game-id="${game.id}" role="button" tabindex="0" aria-label="${ariaLabel}">
+          <div class="ticker-card-top" aria-hidden="true">
             <span class="ticker-status ${statusBadgeClass}">${game.status.detail}</span>
             <span class="ticker-broadcast">${game.broadcast || 'NFL'}</span>
           </div>
-          <div class="ticker-matchup-row">
+          <div class="ticker-matchup-row" aria-hidden="true">
             <div class="ticker-team">
-              <img src="${game.awayTeam.logo}" class="ticker-logo" alt="${game.awayTeam.abbreviation}" onerror="this.src='https://a.espncdn.com/i/teamlogos/nfl/500/${game.awayTeam.abbreviation.toLowerCase()}.png'">
+              <img src="${game.awayTeam.logo}" class="ticker-logo" alt="" onerror="this.src='https://a.espncdn.com/i/teamlogos/nfl/500/${game.awayTeam.abbreviation.toLowerCase()}.png'">
               <span class="ticker-abbr">${game.awayTeam.abbreviation}</span>
               <span class="ticker-score">${game.awayTeam.score}</span>
             </div>
             <div class="ticker-team">
-              <img src="${game.homeTeam.logo}" class="ticker-logo" alt="${game.homeTeam.abbreviation}" onerror="this.src='https://a.espncdn.com/i/teamlogos/nfl/500/${game.homeTeam.abbreviation.toLowerCase()}.png'">
+              <img src="${game.homeTeam.logo}" class="ticker-logo" alt="" onerror="this.src='https://a.espncdn.com/i/teamlogos/nfl/500/${game.homeTeam.abbreviation.toLowerCase()}.png'">
               <span class="ticker-abbr">${game.homeTeam.abbreviation}</span>
               <span class="ticker-score">${game.homeTeam.score}</span>
             </div>
@@ -438,14 +445,35 @@ class OfficeEndzoneApp {
     history.forEach(item => {
       const row = document.createElement('div');
       row.className = `event-item ${item.type}`;
-      row.innerHTML = `
-        <span class="event-text">${item.text}</span>
-        <span class="event-time">${item.timestamp}</span>
-      `;
+
+      const textSpan = document.createElement('span');
+      textSpan.className = 'event-text';
+      textSpan.textContent = item.text;
+
+      const timeSpan = document.createElement('span');
+      timeSpan.className = 'event-time';
+      timeSpan.textContent = item.timestamp;
+
+      row.appendChild(textSpan);
+      row.appendChild(timeSpan);
+
       this.dom.eventLogList.appendChild(row);
     });
   }
 }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    const target = e.target.closest('[role="button"], [role="tab"]');
+    if (target) {
+      const tag = target.tagName;
+      if (tag !== 'BUTTON' && tag !== 'A' && tag !== 'INPUT' && tag !== 'SELECT' && tag !== 'TEXTAREA' && tag !== 'SUMMARY') {
+        e.preventDefault();
+        target.click();
+      }
+    }
+  }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new OfficeEndzoneApp();
