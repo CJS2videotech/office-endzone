@@ -71,6 +71,26 @@
       </div>
     </section>
 
+    <!-- Quick Navigation / Sticky Tabs Bar -->
+    <nav class="quick-nav-bar" id="quick-nav-bar" aria-label="Section Navigation">
+      <button class="quick-nav-btn active" id="btn-nav-roster">👥 Roster Hub</button>
+      <button class="quick-nav-btn" id="btn-nav-fantasy">🏈 Fantasy Matchups</button>
+      <button class="quick-nav-btn" id="btn-nav-bracket">🌲 Office Brackets</button>
+      <button class="quick-nav-btn" id="btn-nav-challenges">🏆 Challenges</button>
+      <button class="quick-nav-btn" id="btn-nav-standings">📊 Standings</button>
+    </nav>
+
+    <!-- Secondary Views Drawer (Brackets / Fantasy / Challenges / Standings) -->
+    <div class="secondary-view-drawer" id="secondary-drawer" style="display: none;">
+      <div class="drawer-header">
+        <h3 id="drawer-title">🌲 Office Brackets Hub</h3>
+        <button class="btn-drawer-close" id="btn-close-drawer" aria-label="Close View">✕</button>
+      </div>
+      <div class="drawer-body" id="drawer-body">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+
     <!-- Main Content: TEAM ROSTER Grid -->
     <main class="main-content" id="roster-section">
       <div class="section-badge-header">
@@ -82,26 +102,6 @@
         <!-- Populated dynamically with rounded bobblehead avatar cards -->
       </div>
     </main>
-
-    <!-- Quick Navigation / Secondary Links -->
-    <nav class="quick-nav-bar" aria-label="Section Navigation">
-      <button class="quick-nav-btn active" id="btn-nav-roster">👥 Roster Hub</button>
-      <button class="quick-nav-btn" id="btn-nav-fantasy">🏈 Fantasy Matchups</button>
-      <button class="quick-nav-btn" id="btn-nav-bracket">🌲 Office Brackets</button>
-      <button class="quick-nav-btn" id="btn-nav-challenges">🏆 Challenges</button>
-      <button class="quick-nav-btn" id="btn-nav-standings">📊 Standings</button>
-    </nav>
-
-    <!-- Secondary Views Drawer (Brackets / Challenges / Standings) -->
-    <div class="secondary-view-drawer" id="secondary-drawer" style="display: none;">
-      <div class="drawer-header">
-        <h3 id="drawer-title">🌲 Office Brackets Hub</h3>
-        <button class="btn-drawer-close" id="btn-close-drawer" aria-label="Close View">✕</button>
-      </div>
-      <div class="drawer-body" id="drawer-body">
-        <!-- Injected dynamically -->
-      </div>
-    </div>
 
   </div>
 
