@@ -2189,10 +2189,10 @@
               🎯 MAKE YOUR SEASON TOURNAMENT PICK FOR THIS SHOWDOWN:
             </div>
             <div class="showdown-picks-row">
-              <button class="btn-showdown-action ${userPick === s1.name ? 'active-pick' : ''}" id="btn-pick-contender-1">
+              <button class="btn-showdown-action ${userPick === s1.name ? 'active-pick' : ''}" id="btn-pick-contender-1" aria-label="Pick ${s1.name}" aria-pressed="${userPick === s1.name}">
                 ${userPick === s1.name ? '✓ Picked ' + s1.name : 'Pick ' + s1.name + ' (' + s1.team + ')'}
               </button>
-              <button class="btn-showdown-action ${userPick === s2.name ? 'active-pick' : ''}" id="btn-pick-contender-2">
+              <button class="btn-showdown-action ${userPick === s2.name ? 'active-pick' : ''}" id="btn-pick-contender-2" aria-label="Pick ${s2.name}" aria-pressed="${userPick === s2.name}">
                 ${userPick === s2.name ? '✓ Picked ' + s2.name : 'Pick ' + s2.name + ' (' + s2.team + ')'}
               </button>
             </div>
@@ -2345,7 +2345,7 @@
                 </div>
                 <div class="contestant-score-action">
                   ${canPick1 ? `
-                    <button class="btn-season-pick btn-bracket-pick ${userPick === c1.name ? 'active' : ''}" data-match-id="${matchId}" data-staff="${c1.name}">
+                    <button class="btn-season-pick btn-bracket-pick ${userPick === c1.name ? 'active' : ''}" data-match-id="${matchId}" data-staff="${c1.name}" aria-label="Pick ${c1.name}" aria-pressed="${userPick === c1.name}">
                       ${userPick === c1.name ? '✓ Picked' : 'Pick'}
                     </button>
                   ` : `<span class="contestant-score-num" style="color:#64748b; font-size:0.68rem;">TBD</span>`}
@@ -2363,7 +2363,7 @@
                 </div>
                 <div class="contestant-score-action">
                   ${canPick2 ? `
-                    <button class="btn-season-pick btn-bracket-pick ${userPick === c2.name ? 'active' : ''}" data-match-id="${matchId}" data-staff="${c2.name}">
+                    <button class="btn-season-pick btn-bracket-pick ${userPick === c2.name ? 'active' : ''}" data-match-id="${matchId}" data-staff="${c2.name}" aria-label="Pick ${c2.name}" aria-pressed="${userPick === c2.name}">
                       ${userPick === c2.name ? '✓ Picked' : 'Pick'}
                     </button>
                   ` : `<span class="contestant-score-num" style="color:#64748b; font-size:0.68rem;">TBD</span>`}
