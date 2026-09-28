@@ -7,18 +7,20 @@
 (function() {
   'use strict';
 
+  const azTimeFormatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Phoenix',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+
   // Helper for Arizona Time (Mountain Standard Time - UTC-7, no Daylight Saving)
   function formatArizonaTime(dateInput) {
     if (!dateInput) return '12:15 PM MST';
     try {
       const date = new Date(dateInput);
       if (isNaN(date.getTime())) return dateInput.includes('MST') ? dateInput : `${dateInput} MST`;
-      return date.toLocaleTimeString('en-US', {
-        timeZone: 'America/Phoenix',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      }) + ' MST';
+      return azTimeFormatter.format(date) + ' MST';
     } catch (e) {
       return `${dateInput} MST`;
     }
@@ -26,12 +28,7 @@
 
   function getArizonaDateString() {
     try {
-      return new Date().toLocaleTimeString('en-US', {
-        timeZone: 'America/Phoenix',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      }) + ' MST';
+      return azTimeFormatter.format(new Date()) + ' MST';
     } catch (e) {
       return '11:24 AM MST';
     }
@@ -1172,7 +1169,7 @@
       this.renderTicker();
       this.renderRosterGrid();
       this.bindEvents();
-      this.fetchLiveEspnFeed();
+      this.fetchLiveEspnFeed(true);
       setInterval(() => this.fetchLiveEspnFeed(), 45000);
     }
 
@@ -3143,9 +3140,11 @@
     // =========================================================================
     // ENRICHED LIVE ESPN DATA ENGINE (2026 REGULAR SEASON WEEK 2)
     // =========================================================================
-    async fetchLiveEspnFeed() {
+    async fetchLiveEspnFeed(isInitial = false) {
+      if (document.hidden && !isInitial) return;
+
       try {
-        const res = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard');
+        const res = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard', { cache: 'no-cache' });
         if (!res.ok) return;
         const data = await res.json();
         if (data && data.events && data.events.length > 0) {
@@ -3176,8 +3175,13 @@
           if (liveList.length > 0) {
             TODAY_TICKER_GAMES.length = 0;
             TODAY_TICKER_GAMES.push(...liveList);
-            if (this.currentTickerMode === 'TODAY') {
-              this.renderTicker();
+
+            const currentHash = JSON.stringify(TODAY_TICKER_GAMES) + this.currentTickerMode;
+            if (currentHash !== this.lastTickerRenderHash) {
+              this.lastTickerRenderHash = currentHash;
+              if (this.currentTickerMode === 'TODAY') {
+                this.renderTicker();
+              }
             }
           }
 
