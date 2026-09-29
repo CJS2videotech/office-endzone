@@ -3306,3 +3306,15 @@
   });
 })();
 
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    const target = e.target.closest('[role="button"], [role="tab"]');
+    if (target) {
+      const tag = target.tagName;
+      if (tag !== 'BUTTON' && tag !== 'A' && tag !== 'INPUT' && tag !== 'SELECT' && tag !== 'TEXTAREA' && tag !== 'SUMMARY') {
+        e.preventDefault();
+        target.click();
+      }
+    }
+  }
+});
