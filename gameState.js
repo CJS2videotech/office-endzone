@@ -1,6 +1,9 @@
 /**
  * GameState - Core state management and event dispatcher for Office Endzone
  */
+
+const timeFormatter = new Intl.DateTimeFormat('en-US', { timeStyle: 'medium' });
+
 export class GameState {
   constructor() {
     this.listeners = [];
@@ -21,7 +24,7 @@ export class GameState {
       lastEventCategory: 'info',
       eventHistory: [
         {
-          timestamp: new Date().toLocaleTimeString(),
+          timestamp: timeFormatter.format(new Date()),
           text: 'Kickoff! Welcome to Office Endzone.',
           type: 'info'
         }
@@ -49,7 +52,7 @@ export class GameState {
 
   logEvent(text, type = 'info') {
     const entry = {
-      timestamp: new Date().toLocaleTimeString(),
+      timestamp: timeFormatter.format(new Date()),
       text,
       type
     };
