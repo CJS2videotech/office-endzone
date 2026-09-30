@@ -4,3 +4,6 @@
 ## 2024-05-25 - Accessibility: Nested Interactive Elements
 **Learning:** Adding `role="button"` and `tabindex="0"` to both a parent container and its child creates an accessibility anti-pattern. Keyboard users must tab twice, and screen readers announce a "button inside a button".
 **Action:** Apply interactive roles and tab index only to the outer logical container. Use `aria-hidden="true"` on inner decorative/text elements.
+## 2024-05-26 - Accessibility: Dynamic Action Buttons
+**Learning:** When generating lists of identical action buttons via JavaScript template literals (like "Pick" buttons in a tournament bracket), providing static text leaves screen reader users without context (e.g., they hear "Pick, button" repeatedly).
+**Action:** Always interpolate specific item identifiers into an explicit `aria-label` (e.g., `aria-label="Pick ${name}"`). If the button toggles state, implement `aria-pressed="true/false"` to convey whether the item is currently active or selected.
