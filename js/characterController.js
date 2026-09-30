@@ -46,18 +46,37 @@ export class CharacterController {
     const imgSrc = this.activeCharacter.image;
     const charName = this.activeCharacter.name;
 
-    this.avatarContainer.innerHTML = `
-      <div class="avatar-photo-wrapper">
-        <img 
-          src="${imgSrc}" 
-          alt="${charName}" 
-          class="avatar-photo-img" 
-          onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'avatar-fallback-initials\\'>${charName.charAt(0)}</div>';"
-        />
-        <div class="avatar-glow-ring"></div>
-        <div class="avatar-status-badge">⚡ LIVE</div>
-      </div>
-    `;
+    this.avatarContainer.innerHTML = '';
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'avatar-photo-wrapper';
+
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    img.alt = charName;
+    img.className = 'avatar-photo-img';
+
+    img.onerror = () => {
+      img.onerror = null;
+      wrapper.innerHTML = '';
+      const fallback = document.createElement('div');
+      fallback.className = 'avatar-fallback-initials';
+      fallback.textContent = charName.charAt(0);
+      wrapper.appendChild(fallback);
+    };
+
+    const glowRing = document.createElement('div');
+    glowRing.className = 'avatar-glow-ring';
+
+    const statusBadge = document.createElement('div');
+    statusBadge.className = 'avatar-status-badge';
+    statusBadge.textContent = '⚡ LIVE';
+
+    wrapper.appendChild(img);
+    wrapper.appendChild(glowRing);
+    wrapper.appendChild(statusBadge);
+
+    this.avatarContainer.appendChild(wrapper);
   }
 
   getRandomLine(category) {
