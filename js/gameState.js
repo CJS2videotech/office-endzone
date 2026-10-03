@@ -3,6 +3,8 @@
  * Synchronizes with real ESPN NFL game feeds or runs local tactical simulations.
  */
 
+const defaultTimeFormatter = new Intl.DateTimeFormat(undefined, { timeStyle: 'medium' });
+
 export class GameState {
   constructor() {
     this.listeners = [];
@@ -58,7 +60,7 @@ export class GameState {
       lastEventCategory: 'info',
       eventHistory: [
         {
-          timestamp: new Date().toLocaleTimeString(),
+          timestamp: defaultTimeFormatter.format(new Date()),
           text: '⚡ Welcome to Office Endzone! Live football simulation ready.',
           type: 'info'
         }
@@ -86,7 +88,7 @@ export class GameState {
 
   logEvent(text, type = 'info') {
     const entry = {
-      timestamp: new Date().toLocaleTimeString(),
+      timestamp: defaultTimeFormatter.format(new Date()),
       text,
       type
     };
