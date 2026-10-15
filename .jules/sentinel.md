@@ -7,3 +7,8 @@
 **Vulnerability:** The `showEventBanner` function in `characterController.js` (and `js/characterController.js`) was vulnerable to DOM-based XSS. It used `innerHTML` to render event banners with dynamic content (`title`, `subtitle`), some of which contain unescaped team names or external text.
 **Learning:** Similar to the event history feed, UI components that pop up or show transient text (like banners and toasts) must sanitize input. External data strings (such as team names passed from API via `triggerTouchdownHome` etc.) can introduce script execution if appended directly via template literals into `innerHTML`.
 **Prevention:** Apply safe text rendering practices uniformly across all UI components. Replace `innerHTML` with `document.createElement` and `textContent` (or `innerText`) to handle unescaped dynamic strings securely.
+
+## 2025-09-19 - Fix DOM-based XSS in team department rendering
+**Vulnerability:** The application was vulnerable to DOM-based Cross-Site Scripting (XSS) because it used `innerHTML` to render unescaped team department text (`homeTeam.officeDept` and `awayTeam.officeDept`) in the scoreboard section in `js/app.js`.
+**Learning:** Dynamic properties on team objects, even seemingly safe ones like `officeDept` which could potentially be sourced from an external API or user input in the future, should not be rendered directly using `innerHTML`. This exposes a potential vector for XSS if the data source contains unescaped HTML.
+**Prevention:** Apply safe text rendering practices consistently across the application. Use `textContent` and `document.createElement` to safely assemble DOM nodes instead of injecting strings containing HTML tags directly with `innerHTML`.
