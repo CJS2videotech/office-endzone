@@ -139,20 +139,20 @@
       <section class="modal-section">
         <div class="modal-section-header">
           <span class="section-bullet gold">●</span>
-          <span class="modal-section-title">WEEKLY PICKS</span>
+          <span class="modal-section-title" id="picks-section-title">TEAM RECORD &amp; STREAK</span>
         </div>
 
         <div class="picks-stats-row">
           <div class="picks-stat-box">
-            <div class="picks-val" id="picks-record">1-0</div>
+            <div class="picks-val" id="picks-record">--</div>
             <div class="picks-label">RECORD</div>
           </div>
           <div class="picks-stat-box">
-            <div class="picks-val" id="picks-pct">1.000</div>
+            <div class="picks-val" id="picks-pct">--</div>
             <div class="picks-label">WIN PCT</div>
           </div>
           <div class="picks-stat-box">
-            <div class="picks-val" id="picks-streak">W1</div>
+            <div class="picks-val" id="picks-streak">--</div>
             <div class="picks-label">STREAK</div>
           </div>
         </div>
@@ -160,8 +160,8 @@
         <!-- Trophy Leader Banner -->
         <div class="trophy-banner" id="trophy-banner">
           <span class="trophy-icon">🏆</span>
-          <span class="trophy-count" id="trophy-count">× 1</span>
-          <span class="trophy-label" id="trophy-label">WEEKLY YARDS & TOUCHDOWNS LEADER</span>
+          <span class="trophy-count" id="trophy-count">--</span>
+          <span class="trophy-label" id="trophy-label">LOADING LIVE NFL STATS...</span>
         </div>
       </section>
 
@@ -169,35 +169,35 @@
       <section class="modal-section">
         <div class="modal-section-header">
           <span class="section-bullet green">●</span>
-          <span class="modal-section-title">THIS WEEK'S MATCHUP</span>
+          <span class="modal-section-title" id="matchup-section-title">THIS WEEK'S MATCHUP</span>
         </div>
 
         <div class="today-matchup-card" id="today-matchup-card">
-          <div class="matchup-live-tag" id="matchup-live-tag">LIVE</div>
+          <div class="matchup-live-tag" id="matchup-live-tag" style="display:none;">LIVE</div>
           
           <div class="matchup-scoreboard-row">
             <div class="matchup-team away">
-              <span class="team-code" id="matchup-away-code">MIN</span>
-              <span class="team-rec" id="matchup-away-rec">1-0</span>
+              <span class="team-code" id="matchup-away-code">--</span>
+              <span class="team-rec" id="matchup-away-rec">--</span>
             </div>
 
             <div class="matchup-score-center">
               <div class="score-numbers">
-                <span id="matchup-away-score">6</span>
+                <span id="matchup-away-score">-</span>
                 <span class="score-sep">-</span>
-                <span id="matchup-home-score">3</span>
+                <span id="matchup-home-score">-</span>
               </div>
-              <div class="matchup-clock-status" id="matchup-clock-status">LIVE • Q3 9:38 • 12:15 PM MST</div>
+              <div class="matchup-clock-status" id="matchup-clock-status">Loading live ESPN feed...</div>
             </div>
 
             <div class="matchup-team home">
-              <span class="team-code highlight-team" id="matchup-home-code">CHI</span>
-              <span class="team-rec" id="matchup-home-rec">1-0</span>
+              <span class="team-code highlight-team" id="matchup-home-code">--</span>
+              <span class="team-rec" id="matchup-home-rec">--</span>
             </div>
           </div>
 
           <div class="matchup-venue-row">
-            <span class="venue-name" id="matchup-venue">Soldier Field</span>
+            <span class="venue-name" id="matchup-venue">NFL Stadium</span>
             <div class="matchup-actions-wrap">
               <button class="btn-box-score" id="btn-open-box-score">
                 <span class="box-icon">📊</span> Box Score
@@ -206,11 +206,11 @@
           </div>
 
           <div class="matchup-starters-row" id="matchup-starters-row">
-            <div class="starters-label">STARTING QUARTERBACKS:</div>
+            <div class="starters-label">LEADING QUARTERBACKS:</div>
             <div class="starters-names">
-              <span class="starter-away" id="starter-away">Sam Darnold</span>
+              <span class="starter-away" id="starter-away">--</span>
               <span class="vs-label">VS</span>
-              <span class="starter-home" id="starter-home">Caleb Williams</span>
+              <span class="starter-home" id="starter-home">--</span>
             </div>
           </div>
         </div>
@@ -221,58 +221,58 @@
         <div class="modal-section-header">
           <span class="section-bullet gold">●</span>
           <span class="modal-section-title">WEEKLY FANTASY STATS (TEAM POINT BREAKDOWN)</span>
-          <span class="fantasy-header-pts-badge" id="fantasy-header-total-badge">42.0 PTS</span>
+          <span class="fantasy-header-pts-badge" id="fantasy-header-total-badge">0.0 PTS</span>
         </div>
 
         <div class="fantasy-stats-card" id="fantasy-stats-card">
           <div class="fantasy-category-row" id="fantasy-row-qb">
             <div class="fantasy-cat-badge badge-qb">🎯 QB</div>
             <div class="fantasy-cat-info">
-              <span class="fantasy-player-name" id="fantasy-qb-name">Caleb Williams</span>
-              <span class="fantasy-stat-line" id="fantasy-qb-stats">174 Pass Yds, 1 TD</span>
+              <span class="fantasy-player-name" id="fantasy-qb-name">Loading...</span>
+              <span class="fantasy-stat-line" id="fantasy-qb-stats">--</span>
             </div>
-            <div class="fantasy-cat-points" id="fantasy-qb-pts">+10.9 PTS</div>
+            <div class="fantasy-cat-points" id="fantasy-qb-pts">+0.0 PTS</div>
           </div>
 
           <div class="fantasy-category-row" id="fantasy-row-rec">
             <div class="fantasy-cat-badge badge-rec">⚡ WR</div>
             <div class="fantasy-cat-info">
-              <span class="fantasy-player-name" id="fantasy-rec-name">DJ Moore</span>
-              <span class="fantasy-stat-line" id="fantasy-rec-stats">6 Rec, 53 Yds, 0 TD</span>
+              <span class="fantasy-player-name" id="fantasy-rec-name">Loading...</span>
+              <span class="fantasy-stat-line" id="fantasy-rec-stats">--</span>
             </div>
-            <div class="fantasy-cat-points" id="fantasy-rec-pts">+11.3 PTS</div>
+            <div class="fantasy-cat-points" id="fantasy-rec-pts">+0.0 PTS</div>
           </div>
 
           <div class="fantasy-category-row" id="fantasy-row-rush">
             <div class="fantasy-cat-badge badge-rush">🏃 RB</div>
             <div class="fantasy-cat-info">
-              <span class="fantasy-player-name" id="fantasy-rush-name">D'Andre Swift</span>
-              <span class="fantasy-stat-line" id="fantasy-rush-stats">48 Rush Yds, 1 TD</span>
+              <span class="fantasy-player-name" id="fantasy-rush-name">Loading...</span>
+              <span class="fantasy-stat-line" id="fantasy-rush-stats">--</span>
             </div>
-            <div class="fantasy-cat-points" id="fantasy-rush-pts">+10.8 PTS</div>
+            <div class="fantasy-cat-points" id="fantasy-rush-pts">+0.0 PTS</div>
           </div>
 
           <div class="fantasy-category-row" id="fantasy-row-def">
             <div class="fantasy-cat-badge badge-def">🛡️ DEF</div>
             <div class="fantasy-cat-info">
-              <span class="fantasy-player-name" id="fantasy-def-name">Bears Defense</span>
-              <span class="fantasy-stat-line" id="fantasy-def-stats">3 Sacks, 1 INT</span>
+              <span class="fantasy-player-name" id="fantasy-def-name">Loading...</span>
+              <span class="fantasy-stat-line" id="fantasy-def-stats">--</span>
             </div>
-            <div class="fantasy-cat-points" id="fantasy-def-pts">+5.0 PTS</div>
+            <div class="fantasy-cat-points" id="fantasy-def-pts">+0.0 PTS</div>
           </div>
 
           <div class="fantasy-category-row" id="fantasy-row-st">
             <div class="fantasy-cat-badge badge-st">👟 ST</div>
             <div class="fantasy-cat-info">
-              <span class="fantasy-player-name" id="fantasy-st-name">Cairo Santos</span>
-              <span class="fantasy-stat-line" id="fantasy-st-stats">1 FG, 1 XP, Punting</span>
+              <span class="fantasy-player-name" id="fantasy-st-name">Loading...</span>
+              <span class="fantasy-stat-line" id="fantasy-st-stats">--</span>
             </div>
-            <div class="fantasy-cat-points" id="fantasy-st-pts">+4.0 PTS</div>
+            <div class="fantasy-cat-points" id="fantasy-st-pts">+0.0 PTS</div>
           </div>
 
           <div class="fantasy-total-footer">
-            <span class="fantasy-total-label">AUTOMATED WEEK 2 FANTASY TOTAL:</span>
-            <span class="fantasy-total-val" id="fantasy-total-val">42.0 PTS</span>
+            <span class="fantasy-total-label" id="fantasy-total-label">AUTOMATED WEEKLY FANTASY TOTAL:</span>
+            <span class="fantasy-total-val" id="fantasy-total-val">0.0 PTS</span>
           </div>
         </div>
       </section>

@@ -1,18 +1,41 @@
 /**
- * app.bundle.js - Standalone Office Endzone Application Engine
- * Dugout Layout, Live Ticker (Today/Yesterday), Team Roster Grid, Member Detail Modal,
- * Weekly & Season Long Office Brackets Hub, Challenges & Standings.
+ * app.bundle.js - Live ESPN-Powered Office Endzone Application Engine
+ * Dynamic NFL Season/Week sync, Live Ticker (Current Week & Last Week), Team Roster Grid,
+ * Member Detail Modal (Real Records, Standings, Next 5 Schedule, Automated Fantasy Stats),
+ * Real ESPN Box Score Modal, Weekly & 18-Week Season Brackets, Automated Challenges & Standings.
  */
 
 (function() {
   'use strict';
 
-  // Helper for Arizona Time (Mountain Standard Time - UTC-7, no Daylight Saving)
+  const ESPN_BASE = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl';
+  const ESPN_STANDINGS_URL = 'https://site.api.espn.com/apis/v2/sports/football/nfl/standings?level=3';
+
+  // Normalize team abbreviations across ESPN / legacy aliases
+  function normalizeAbbr(abbr) {
+    if (!abbr) return '';
+    const u = String(abbr).toUpperCase().trim();
+    if (u === 'WAS') return 'WSH';
+    if (u === 'LA') return 'LAR';
+    return u;
+  }
+
+  // Escape HTML safely for dynamic ESPN text
+  function escapeHtml(str) {
+    return String(str ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // Arizona Time (Mountain Standard Time - UTC-7, no Daylight Saving)
   function formatArizonaTime(dateInput) {
-    if (!dateInput) return '12:15 PM MST';
+    if (!dateInput) return 'TBD MST';
     try {
       const date = new Date(dateInput);
-      if (isNaN(date.getTime())) return dateInput.includes('MST') ? dateInput : `${dateInput} MST`;
+      if (isNaN(date.getTime())) return String(dateInput).includes('MST') ? dateInput : `${dateInput} MST`;
       return date.toLocaleTimeString('en-US', {
         timeZone: 'America/Phoenix',
         hour: 'numeric',
@@ -24,7 +47,45 @@
     }
   }
 
-  function getArizonaDateString() {
+  function formatArizonaShortDate(dateInput) {
+    if (!dateInput) return '';
+    try {
+      const date = new Date(dateInput);
+      if (isNaN(date.getTime())) return '';
+      return date.toLocaleDateString('en-US', {
+        timeZone: 'America/Phoenix',
+        month: 'short',
+        day: 'numeric'
+      });
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function formatArizonaDayTime(dateInput) {
+    if (!dateInput) return 'TBD MST';
+    try {
+      const date = new Date(dateInput);
+      if (isNaN(date.getTime())) return 'TBD MST';
+      const day = date.toLocaleDateString('en-US', {
+        timeZone: 'America/Phoenix',
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric'
+      });
+      const time = date.toLocaleTimeString('en-US', {
+        timeZone: 'America/Phoenix',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+      return `${day} • ${time} MST`;
+    } catch (e) {
+      return 'TBD MST';
+    }
+  }
+
+  function getArizonaClockString() {
     try {
       return new Date().toLocaleTimeString('en-US', {
         timeZone: 'America/Phoenix',
@@ -33,1034 +94,589 @@
         hour12: true
       }) + ' MST';
     } catch (e) {
-      return '11:24 AM MST';
+      return '--:-- MST';
     }
   }
 
-  // 1. DATASETS - ALL 32 NFL FRANCHISES
+  function formatRecordPct(wins, losses, ties = 0) {
+    const total = wins + losses + ties;
+    if (total <= 0) return '.000';
+    const pct = (wins + ties * 0.5) / total;
+    return pct === 1 ? '1.000' : pct.toFixed(3).replace(/^0\./, '.');
+  }
+
+  // 1. ALL 32 NFL FRANCHISES (Metadata & Division Map — NO hardcoded rosters/records)
   const TEAMS = [
     // NFC North
-    { id: "CHI", city: "Chicago", name: "Bears", abbreviation: "CHI", color: "#ef4444", secondaryColor: "#0B162A", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png", stadium: "Soldier Field", division: "NFC North", qb: "Caleb Williams" },
-    { id: "GB", city: "Green Bay", name: "Packers", abbreviation: "GB", color: "#facc15", secondaryColor: "#203731", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png", stadium: "Lambeau Field", division: "NFC North", qb: "Jordan Love" },
-    { id: "DET", city: "Detroit", name: "Lions", abbreviation: "DET", color: "#0076B6", secondaryColor: "#B0B7BC", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/det.png", stadium: "Ford Field", division: "NFC North", qb: "Jared Goff" },
-    { id: "MIN", city: "Minnesota", name: "Vikings", abbreviation: "MIN", color: "#4F2683", secondaryColor: "#FFC62F", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/min.png", stadium: "U.S. Bank Stadium", division: "NFC North", qb: "Sam Darnold" },
-    
+    { id: "CHI", city: "Chicago", name: "Bears", abbreviation: "CHI", color: "#ef4444", secondaryColor: "#0B162A", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/chi.png", stadium: "Soldier Field", division: "NFC North" },
+    { id: "GB", city: "Green Bay", name: "Packers", abbreviation: "GB", color: "#facc15", secondaryColor: "#203731", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/gb.png", stadium: "Lambeau Field", division: "NFC North" },
+    { id: "DET", city: "Detroit", name: "Lions", abbreviation: "DET", color: "#0076B6", secondaryColor: "#B0B7BC", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/det.png", stadium: "Ford Field", division: "NFC North" },
+    { id: "MIN", city: "Minnesota", name: "Vikings", abbreviation: "MIN", color: "#4F2683", secondaryColor: "#FFC62F", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/min.png", stadium: "U.S. Bank Stadium", division: "NFC North" },
+
     // AFC North
-    { id: "CLE", city: "Cleveland", name: "Browns", abbreviation: "CLE", color: "#fb923c", secondaryColor: "#311D00", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png", stadium: "Huntington Bank Field", division: "AFC North", qb: "Deshaun Watson" },
-    { id: "PIT", city: "Pittsburgh", name: "Steelers", abbreviation: "PIT", color: "#FFB612", secondaryColor: "#101820", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png", stadium: "Acrisure Stadium", division: "AFC North", qb: "Russell Wilson" },
-    { id: "BAL", city: "Baltimore", name: "Ravens", abbreviation: "BAL", color: "#241773", secondaryColor: "#9E7C0C", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png", stadium: "M&T Bank Stadium", division: "AFC North", qb: "Lamar Jackson" },
-    { id: "CIN", city: "Cincinnati", name: "Bengals", abbreviation: "CIN", color: "#FB4F14", secondaryColor: "#000000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png", stadium: "Paycor Stadium", division: "AFC North", qb: "Joe Burrow" },
+    { id: "CLE", city: "Cleveland", name: "Browns", abbreviation: "CLE", color: "#fb923c", secondaryColor: "#311D00", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png", stadium: "Huntington Bank Field", division: "AFC North" },
+    { id: "PIT", city: "Pittsburgh", name: "Steelers", abbreviation: "PIT", color: "#FFB612", secondaryColor: "#101820", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/pit.png", stadium: "Acrisure Stadium", division: "AFC North" },
+    { id: "BAL", city: "Baltimore", name: "Ravens", abbreviation: "BAL", color: "#241773", secondaryColor: "#9E7C0C", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/bal.png", stadium: "M&T Bank Stadium", division: "AFC North" },
+    { id: "CIN", city: "Cincinnati", name: "Bengals", abbreviation: "CIN", color: "#FB4F14", secondaryColor: "#000000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png", stadium: "Paycor Stadium", division: "AFC North" },
 
     // AFC West
-    { id: "LV", city: "Las Vegas", name: "Raiders", abbreviation: "LV", color: "#38bdf8", secondaryColor: "#000000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png", stadium: "Allegiant Stadium", division: "AFC West", qb: "Gardner Minshew" },
-    { id: "KC", city: "Kansas City", name: "Chiefs", abbreviation: "KC", color: "#E31837", secondaryColor: "#FFB81C", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png", stadium: "Arrowhead Stadium", division: "AFC West", qb: "Patrick Mahomes" },
-    { id: "LAC", city: "Los Angeles", name: "Chargers", abbreviation: "LAC", color: "#0080C6", secondaryColor: "#FFC20E", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png", stadium: "SoFi Stadium", division: "AFC West", qb: "Justin Herbert" },
-    { id: "DEN", city: "Denver", name: "Broncos", abbreviation: "DEN", color: "#FB4F14", secondaryColor: "#002244", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/den.png", stadium: "Empower Field", division: "AFC West", qb: "Bo Nix" },
+    { id: "LV", city: "Las Vegas", name: "Raiders", abbreviation: "LV", color: "#38bdf8", secondaryColor: "#000000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png", stadium: "Allegiant Stadium", division: "AFC West" },
+    { id: "KC", city: "Kansas City", name: "Chiefs", abbreviation: "KC", color: "#E31837", secondaryColor: "#FFB81C", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/kc.png", stadium: "GEHA Field at Arrowhead Stadium", division: "AFC West" },
+    { id: "LAC", city: "Los Angeles", name: "Chargers", abbreviation: "LAC", color: "#0080C6", secondaryColor: "#FFC20E", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lac.png", stadium: "SoFi Stadium", division: "AFC West" },
+    { id: "DEN", city: "Denver", name: "Broncos", abbreviation: "DEN", color: "#FB4F14", secondaryColor: "#002244", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/den.png", stadium: "Empower Field at Mile High", division: "AFC West" },
 
     // NFC West
-    { id: "SF", city: "San Francisco", name: "49ers", abbreviation: "SF", color: "#fb7185", secondaryColor: "#AA0000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png", stadium: "Levi's Stadium", division: "NFC West", qb: "Brock Purdy" },
-    { id: "ARI", city: "Arizona", name: "Cardinals", abbreviation: "ARI", color: "#f43f5e", secondaryColor: "#97233F", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png", stadium: "State Farm Stadium", division: "NFC West", qb: "Kyler Murray" },
-    { id: "LAR", city: "Los Angeles", name: "Rams", abbreviation: "LAR", color: "#003594", secondaryColor: "#FFA300", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png", stadium: "SoFi Stadium", division: "NFC West", qb: "Matthew Stafford" },
-    { id: "SEA", city: "Seattle", name: "Seahawks", abbreviation: "SEA", color: "#002244", secondaryColor: "#69BE28", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png", stadium: "Lumen Field", division: "NFC West", qb: "Geno Smith" },
+    { id: "SF", city: "San Francisco", name: "49ers", abbreviation: "SF", color: "#fb7185", secondaryColor: "#AA0000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/sf.png", stadium: "Levi's Stadium", division: "NFC West" },
+    { id: "ARI", city: "Arizona", name: "Cardinals", abbreviation: "ARI", color: "#f43f5e", secondaryColor: "#97233F", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ari.png", stadium: "State Farm Stadium", division: "NFC West" },
+    { id: "LAR", city: "Los Angeles", name: "Rams", abbreviation: "LAR", color: "#003594", secondaryColor: "#FFA300", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png", stadium: "SoFi Stadium", division: "NFC West" },
+    { id: "SEA", city: "Seattle", name: "Seahawks", abbreviation: "SEA", color: "#69BE28", secondaryColor: "#002244", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png", stadium: "Lumen Field", division: "NFC West" },
 
     // NFC East
-    { id: "PHI", city: "Philadelphia", name: "Eagles", abbreviation: "PHI", color: "#004C54", secondaryColor: "#A5ACAF", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png", stadium: "Lincoln Financial Field", division: "NFC East", qb: "Jalen Hurts" },
-    { id: "DAL", city: "Dallas", name: "Cowboys", abbreviation: "DAL", color: "#003594", secondaryColor: "#041E42", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png", stadium: "AT&T Stadium", division: "NFC East", qb: "Dak Prescott" },
-    { id: "NYG", city: "New York", name: "Giants", abbreviation: "NYG", color: "#0B2265", secondaryColor: "#A71930", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png", stadium: "MetLife Stadium", division: "NFC East", qb: "Daniel Jones" },
-    { id: "WAS", city: "Washington", name: "Commanders", abbreviation: "WAS", color: "#5A1414", secondaryColor: "#FFB612", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/was.png", stadium: "Northwest Stadium", division: "NFC East", qb: "Jayden Daniels" },
+    { id: "PHI", city: "Philadelphia", name: "Eagles", abbreviation: "PHI", color: "#2dd4bf", secondaryColor: "#004C54", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/phi.png", stadium: "Lincoln Financial Field", division: "NFC East" },
+    { id: "DAL", city: "Dallas", name: "Cowboys", abbreviation: "DAL", color: "#3b82f6", secondaryColor: "#041E42", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/dal.png", stadium: "AT&T Stadium", division: "NFC East" },
+    { id: "NYG", city: "New York", name: "Giants", abbreviation: "NYG", color: "#3b82f6", secondaryColor: "#0B2265", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png", stadium: "MetLife Stadium", division: "NFC East" },
+    { id: "WSH", city: "Washington", name: "Commanders", abbreviation: "WSH", color: "#f59e0b", secondaryColor: "#5A1414", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/wsh.png", stadium: "Northwest Stadium", division: "NFC East" },
 
     // AFC South
-    { id: "HOU", city: "Houston", name: "Texans", abbreviation: "HOU", color: "#03202F", secondaryColor: "#A71930", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png", stadium: "NRG Stadium", division: "AFC South", qb: "C.J. Stroud" },
-    { id: "IND", city: "Indianapolis", name: "Colts", abbreviation: "IND", color: "#002C5F", secondaryColor: "#A2AAAD", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png", stadium: "Lucas Oil Stadium", division: "AFC South", qb: "Anthony Richardson" },
-    { id: "JAX", city: "Jacksonville", name: "Jaguars", abbreviation: "JAX", color: "#006778", secondaryColor: "#D7A22A", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png", stadium: "EverBank Stadium", division: "AFC South", qb: "Trevor Lawrence" },
-    { id: "TEN", city: "Tennessee", name: "Titans", abbreviation: "TEN", color: "#0C2340", secondaryColor: "#4B92DB", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png", stadium: "Nissan Stadium", division: "AFC South", qb: "Will Levis" },
+    { id: "HOU", city: "Houston", name: "Texans", abbreviation: "HOU", color: "#ef4444", secondaryColor: "#03202F", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/hou.png", stadium: "NRG Stadium", division: "AFC South" },
+    { id: "IND", city: "Indianapolis", name: "Colts", abbreviation: "IND", color: "#3b82f6", secondaryColor: "#002C5F", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ind.png", stadium: "Lucas Oil Stadium", division: "AFC South" },
+    { id: "JAX", city: "Jacksonville", name: "Jaguars", abbreviation: "JAX", color: "#14b8a6", secondaryColor: "#006778", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/jax.png", stadium: "EverBank Stadium", division: "AFC South" },
+    { id: "TEN", city: "Tennessee", name: "Titans", abbreviation: "TEN", color: "#38bdf8", secondaryColor: "#0C2340", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png", stadium: "Nissan Stadium", division: "AFC South" },
 
     // AFC East
-    { id: "BUF", city: "Buffalo", name: "Bills", abbreviation: "BUF", color: "#00338D", secondaryColor: "#C60C30", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png", stadium: "Highmark Stadium", division: "AFC East", qb: "Josh Allen" },
-    { id: "MIA", city: "Miami", name: "Dolphins", abbreviation: "MIA", color: "#008E97", secondaryColor: "#FC4C02", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png", stadium: "Hard Rock Stadium", division: "AFC East", qb: "Tua Tagovailoa" },
-    { id: "NE", city: "New England", name: "Patriots", abbreviation: "NE", color: "#002244", secondaryColor: "#C60C30", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png", stadium: "Gillette Stadium", division: "AFC East", qb: "Drake Maye" },
-    { id: "NYJ", city: "New York", name: "Jets", abbreviation: "NYJ", color: "#125740", secondaryColor: "#000000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png", stadium: "MetLife Stadium", division: "AFC East", qb: "Aaron Rodgers" },
+    { id: "BUF", city: "Buffalo", name: "Bills", abbreviation: "BUF", color: "#3b82f6", secondaryColor: "#00338D", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png", stadium: "Highmark Stadium", division: "AFC East" },
+    { id: "MIA", city: "Miami", name: "Dolphins", abbreviation: "MIA", color: "#14b8a6", secondaryColor: "#008E97", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png", stadium: "Hard Rock Stadium", division: "AFC East" },
+    { id: "NE", city: "New England", name: "Patriots", abbreviation: "NE", color: "#ef4444", secondaryColor: "#002244", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png", stadium: "Gillette Stadium", division: "AFC East" },
+    { id: "NYJ", city: "New York", name: "Jets", abbreviation: "NYJ", color: "#22c55e", secondaryColor: "#125740", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png", stadium: "MetLife Stadium", division: "AFC East" },
 
     // NFC South
-    { id: "ATL", city: "Atlanta", name: "Falcons", abbreviation: "ATL", color: "#A71930", secondaryColor: "#000000", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png", stadium: "Mercedes-Benz Stadium", division: "NFC South", qb: "Kirk Cousins" },
-    { id: "CAR", city: "Carolina", name: "Panthers", abbreviation: "CAR", color: "#0085CA", secondaryColor: "#101820", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/car.png", stadium: "Bank of America Stadium", division: "NFC South", qb: "Bryce Young" },
-    { id: "NO", city: "New Orleans", name: "Saints", abbreviation: "NO", color: "#D3BC8D", secondaryColor: "#101820", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/no.png", stadium: "Caesars Superdome", division: "NFC South", qb: "Derek Carr" },
-    { id: "TB", city: "Tampa Bay", name: "Buccaneers", abbreviation: "TB", color: "#D50A0A", secondaryColor: "#0A0A08", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png", stadium: "Raymond James Stadium", division: "NFC South", qb: "Baker Mayfield" }
+    { id: "ATL", city: "Atlanta", name: "Falcons", abbreviation: "ATL", color: "#ef4444", secondaryColor: "#A71930", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/atl.png", stadium: "Mercedes-Benz Stadium", division: "NFC South" },
+    { id: "CAR", city: "Carolina", name: "Panthers", abbreviation: "CAR", color: "#38bdf8", secondaryColor: "#0085CA", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/car.png", stadium: "Bank of America Stadium", division: "NFC South" },
+    { id: "NO", city: "New Orleans", name: "Saints", abbreviation: "NO", color: "#eab308", secondaryColor: "#D3BC8D", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/no.png", stadium: "Caesars Superdome", division: "NFC South" },
+    { id: "TB", city: "Tampa Bay", name: "Buccaneers", abbreviation: "TB", color: "#ef4444", secondaryColor: "#D50A0A", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/tb.png", stadium: "Raymond James Stadium", division: "NFC South" }
   ];
 
-  const ROSTER = [
-    {
-      id: "char_andrea",
-      name: "Andrea",
-      teamId: "GB",
-      teamName: "PACKERS",
-      frameClass: "frame-andrea",
-      nameClass: "name-andrea",
-      image: "assets/avatars/Andrea football.jpg",
-      bannerGif: "assets/Andrea football banner.gif",
-      picks: { record: "1-0", pct: "1.000", streak: "W1" },
-      trophy: { count: 1, label: "WEEK 1 YARDS LEADER" },
-      fantasy: {
-        totalPoints: 45.5,
-        qb: { player: "Jordan Love (QB)", stats: "158 Pass Yds, 1 TD", points: 10.3 },
-        rec: { player: "Jayden Reed (WR)", stats: "5 Rec, 78 Yds, 1 TD", points: 18.8 },
-        rush: { player: "Josh Jacobs (RB)", stats: "84 Rush Yds, 0 TD", points: 8.4 },
-        def: { player: "Packers Defense (DEF)", stats: "2 Sacks, 1 INT, 10 PA", points: 4.0 },
-        st: { player: "Brayden Narveson (K/ST)", stats: "1 FG, 1 XP", points: 4.0 }
-      },
-      matchup: {
-        away: { code: "GB", name: "Packers", rec: "1-0", score: 7 },
-        home: { code: "NYJ", name: "Jets", rec: "1-0", score: 7 },
-        status: "LIVE • Q3 11:27 • 12:15 PM MST",
-        isLive: true,
-        venue: "MetLife Stadium",
-        awayStarter: "Jordan Love",
-        homeStarter: "Aaron Rodgers"
-      },
-      schedule: [
-        { date: "Wk 3 • Sep 27", away: "GB", home: "TEN", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 4 • Oct 4", away: "MIN", home: "GB", time: "10:00 AM MST", isHome: true },
-        { date: "Wk 5 • Oct 11", away: "GB", home: "LAR", time: "1:25 PM MST", isHome: false },
-        { date: "Wk 6 • Oct 18", away: "ARI", home: "GB", time: "10:00 AM MST", isHome: true },
-        { date: "Wk 7 • Oct 25", away: "HOU", home: "GB", time: "10:00 AM MST", isHome: true }
-      ],
-      division: "NFC NORTH STANDINGS",
-      standings: [
-        { team: "Packers", w: 1, l: 0, pct: "1.000", gb: "—", highlight: true },
-        { team: "Bears", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
-        { team: "Lions", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
-        { team: "Vikings", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false }
-      ],
-      banter: "Go Pack Go! Lambeau energy running strong in Week 2! Ready to light up the board!",
-      liveStats: { yards: 285, tds: 1, status: "Active in Q3" }
-    },
-    {
-      id: "char_cj",
-      name: "CJ",
-      teamId: "CHI",
-      teamName: "BEARS",
-      frameClass: "frame-cj",
-      nameClass: "name-cj",
-      image: "assets/avatars/CJ football.jpg",
-      bannerGif: "assets/CJ football banner.gif",
-      picks: { record: "1-0", pct: "1.000", streak: "W1" },
-      trophy: { count: 2, label: "WEEKLY YARDS & TDS LEADER" },
-      fantasy: {
-        totalPoints: 42.0,
-        qb: { player: "Caleb Williams (QB)", stats: "174 Pass Yds, 1 TD", points: 10.9 },
-        rec: { player: "DJ Moore (WR)", stats: "6 Rec, 53 Yds, 0 TD", points: 11.3 },
-        rush: { player: "D'Andre Swift (RB)", stats: "48 Rush Yds, 1 TD", points: 10.8 },
-        def: { player: "Bears Defense (DEF)", stats: "3 Sacks, 1 INT, 6 PA", points: 5.0 },
-        st: { player: "Cairo Santos (K/ST)", stats: "1 FG, 1 XP", points: 4.0 }
-      },
-      matchup: {
-        away: { code: "MIN", name: "Vikings", rec: "1-0", score: 6 },
-        home: { code: "CHI", name: "Bears", rec: "1-0", score: 3 },
-        status: "LIVE • Q3 9:38 • 12:15 PM MST",
-        isLive: true,
-        venue: "Soldier Field",
-        awayStarter: "Sam Darnold",
-        homeStarter: "Caleb Williams"
-      },
-      schedule: [
-        { date: "Wk 3 • Sep 27", away: "CHI", home: "IND", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 4 • Oct 4", away: "LAR", home: "CHI", time: "10:00 AM MST", isHome: true },
-        { date: "Wk 5 • Oct 11", away: "CAR", home: "CHI", time: "10:00 AM MST", isHome: true },
-        { date: "Wk 6 • Oct 18", away: "JAX", home: "CHI", time: "6:30 AM MST", isHome: true },
-        { date: "Wk 7 • Oct 25", away: "CHI", home: "WAS", time: "1:05 PM MST", isHome: false }
-      ],
-      division: "NFC NORTH STANDINGS",
-      standings: [
-        { team: "Bears", w: 1, l: 0, pct: "1.000", gb: "—", highlight: true },
-        { team: "Packers", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
-        { team: "Lions", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
-        { team: "Vikings", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false }
-      ],
-      banter: "Bear Down Chicago! Caleb Williams orchestrating the Soldier Field comeback right now!",
-      liveStats: { yards: 312, tds: 1, status: "Active in Q3" }
-    },
-    {
-      id: "char_mario",
-      name: "Mario",
-      teamId: "CLE",
-      teamName: "BROWNS",
-      frameClass: "frame-mario",
-      nameClass: "name-mario",
-      image: "assets/avatars/Mario football.jpg",
-      bannerGif: "assets/Mario football banner.gif",
-      picks: { record: "0-1", pct: ".000", streak: "L1" },
-      trophy: { count: 1, label: "SACK CITY LEADER" },
-      fantasy: {
-        totalPoints: 46.1,
-        qb: { player: "Deshaun Watson (QB)", stats: "186 Pass Yds, 1 TD", points: 11.4 },
-        rec: { player: "Jerry Jeudy (WR)", stats: "5 Rec, 73 Yds, 0 TD", points: 12.3 },
-        rush: { player: "Jerome Ford (RB)", stats: "64 Rush Yds, 1 TD", points: 12.4 },
-        def: { player: "Browns Defense (DEF)", stats: "4 Sacks, 1 Fumble Rec, 3 PA", points: 6.0 },
-        st: { player: "Dustin Hopkins (K/ST)", stats: "1 FG, 1 XP", points: 4.0 }
-      },
-      matchup: {
-        away: { code: "CLE", name: "Browns", rec: "0-1", score: 10 },
-        home: { code: "JAX", name: "Jaguars", rec: "0-1", score: 3 },
-        status: "LIVE • Q3 7:15 • 12:15 PM MST",
-        isLive: true,
-        venue: "EverBank Stadium",
-        awayStarter: "Deshaun Watson",
-        homeStarter: "Trevor Lawrence"
-      },
-      schedule: [
-        { date: "Wk 3 • Sep 27", away: "NYG", home: "CLE", time: "10:00 AM MST", isHome: true },
-        { date: "Wk 4 • Oct 4", away: "CLE", home: "LV", time: "1:25 PM MST", isHome: false },
-        { date: "Wk 5 • Oct 11", away: "CLE", home: "WAS", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 6 • Oct 18", away: "CLE", home: "PHI", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 7 • Oct 25", away: "CIN", home: "CLE", time: "10:00 AM MST", isHome: true }
-      ],
-      division: "AFC NORTH STANDINGS",
-      standings: [
-        { team: "Steelers", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
-        { team: "Ravens", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false },
-        { team: "Browns", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: true },
-        { team: "Bengals", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false }
-      ],
-      banter: "Dawg Pound defense locked in for Week 2! Heavy blitz packages incoming!",
-      liveStats: { yards: 245, tds: 1, status: "Active in Q3" }
-    },
-    {
-      id: "char_nicole",
-      name: "Nicole",
-      teamId: "LV",
-      teamName: "RAIDERS",
-      frameClass: "frame-nicole",
-      nameClass: "name-nicole",
-      image: "assets/avatars/Nicole football.jpg",
-      bannerGif: "assets/Nicole football banner.gif",
-      picks: { record: "1-0", pct: "1.000", streak: "W1" },
-      trophy: { count: 1, label: "UPSET SPECIALIST" },
-      fantasy: {
-        totalPoints: 48.9,
-        qb: { player: "Gardner Minshew (QB)", stats: "192 Pass Yds, 1 TD", points: 11.6 },
-        rec: { player: "Davante Adams (WR)", stats: "6 Rec, 88 Yds, 1 TD", points: 20.8 },
-        rush: { player: "Zamir White (RB)", stats: "55 Rush Yds, 0 TD", points: 5.5 },
-        def: { player: "Raiders Defense (DEF)", stats: "Maxx Crosby 3 Sacks, 7 PA", points: 5.0 },
-        st: { player: "Daniel Carlson (K/ST)", stats: "2 FG, 1 XP", points: 6.0 }
-      },
-      matchup: {
-        away: { code: "CAR", name: "Panthers", rec: "0-1", score: 7 },
-        home: { code: "LV", name: "Raiders", rec: "1-0", score: 13 },
-        status: "LIVE • Q2 4:15 • 1:05 PM MST",
-        isLive: true,
-        venue: "Allegiant Stadium",
-        awayStarter: "Bryce Young",
-        homeStarter: "Gardner Minshew"
-      },
-      schedule: [
-        { date: "Wk 3 • Sep 27", away: "CAR", home: "LV", time: "1:05 PM MST", isHome: true },
-        { date: "Wk 4 • Oct 4", away: "CLE", home: "LV", time: "1:25 PM MST", isHome: true },
-        { date: "Wk 5 • Oct 11", away: "LV", home: "DEN", time: "1:05 PM MST", isHome: false },
-        { date: "Wk 6 • Oct 18", away: "PIT", home: "LV", time: "1:05 PM MST", isHome: true },
-        { date: "Wk 7 • Oct 25", away: "LV", home: "LAR", time: "1:05 PM MST", isHome: false }
-      ],
-      division: "AFC WEST STANDINGS",
-      standings: [
-        { team: "Chiefs", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
-        { team: "Chargers", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
-        { team: "Raiders", w: 1, l: 0, pct: "1.000", gb: "—", highlight: true },
-        { team: "Broncos", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false }
-      ],
-      banter: "Raider Nation! Fresh analytics project high passing efficiency this afternoon!",
-      liveStats: { yards: 290, tds: 1, status: "Active in Q2" }
-    },
-    {
-      id: "char_saul",
-      name: "Saul",
-      teamId: "SF",
-      teamName: "49ERS",
-      frameClass: "frame-saul",
-      nameClass: "name-saul",
-      image: "assets/avatars/Saul football.jpg",
-      bannerGif: "assets/Saul football banner.gif",
-      picks: { record: "1-0", pct: "1.000", streak: "W1" },
-      trophy: { count: 2, label: "DIVISION CONTENDER" },
-      fantasy: {
-        totalPoints: 58.3,
-        qb: { player: "Brock Purdy (QB)", stats: "224 Pass Yds, 1 TD", points: 12.9 },
-        rec: { player: "Deebo Samuel (WR)", stats: "6 Rec, 72 Yds, 1 TD", points: 19.2 },
-        rush: { player: "Jordan Mason (RB)", stats: "92 Rush Yds, 1 TD", points: 15.2 },
-        def: { player: "49ers Defense (DEF)", stats: "Nick Bosa 2 Sacks, 1 INT, 7 PA", points: 4.0 },
-        st: { player: "Jake Moody (K/ST)", stats: "2 FG, 1 XP", points: 7.0 }
-      },
-      matchup: {
-        away: { code: "SF", name: "49ers", rec: "1-0", score: 10 },
-        home: { code: "LAR", name: "Rams", rec: "0-1", score: 7 },
-        status: "LIVE • Q2 8:40 • 1:25 PM MST",
-        isLive: true,
-        venue: "SoFi Stadium",
-        awayStarter: "Brock Purdy",
-        homeStarter: "Matthew Stafford"
-      },
-      schedule: [
-        { date: "Wk 3 • Sep 27", away: "SF", home: "LAR", time: "1:25 PM MST", isHome: false },
-        { date: "Wk 4 • Oct 4", away: "NE", home: "SF", time: "1:05 PM MST", isHome: true },
-        { date: "Wk 5 • Oct 11", away: "ARI", home: "SF", time: "1:05 PM MST", isHome: true },
-        { date: "Wk 6 • Oct 18", away: "SF", home: "SEA", time: "5:15 PM MST", isHome: false },
-        { date: "Wk 7 • Oct 25", away: "KC", home: "SF", time: "1:25 PM MST", isHome: true }
-      ],
-      division: "NFC WEST STANDINGS",
-      standings: [
-        { team: "49ers", w: 1, l: 0, pct: "1.000", gb: "—", highlight: true },
-        { team: "Cardinals", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
-        { team: "Seahawks", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
-        { team: "Rams", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false }
-      ],
-      banter: "Faithful to the Bay! Playbook audited and dialed in for the divisional matchup!",
-      liveStats: { yards: 340, tds: 1, status: "Active in Q2" }
-    },
-    {
-      id: "char_cardinals",
-      name: "Arizona Cardinals Flag",
-      teamId: "ARI",
-      teamName: "CARDINALS",
-      frameClass: "frame-cardinals",
-      nameClass: "name-cardinals",
-      image: "assets/Arizona_Cardinals_flag.gif",
-      bannerGif: "assets/Arizona_Cardinals_flag.gif",
-      picks: { record: "1-0", pct: "1.000", streak: "W1" },
-      trophy: { count: 1, label: "DESERT SCORING LEADER" },
-      fantasy: {
-        totalPoints: 65.2,
-        qb: { player: "Kyler Murray (QB)", stats: "202 Pass Yds, 2 TD, 35 Rush Yds", points: 21.5 },
-        rec: { player: "Marvin Harrison Jr. (WR)", stats: "5 Rec, 91 Yds, 1 TD", points: 20.1 },
-        rush: { player: "James Conner (RB)", stats: "76 Rush Yds, 1 TD", points: 13.6 },
-        def: { player: "Cardinals Defense (DEF)", stats: "Budda Baker 2 Sacks, 7 PA", points: 3.0 },
-        st: { player: "Matt Prater (K/ST)", stats: "2 FG, 1 XP", points: 7.0 }
-      },
-      matchup: {
-        away: { code: "DET", name: "Lions", rec: "1-0", score: 7 },
-        home: { code: "ARI", name: "Cardinals", rec: "1-0", score: 14 },
-        status: "LIVE • Q2 6:10 • 1:25 PM MST",
-        isLive: true,
-        venue: "State Farm Stadium (Glendale, AZ)",
-        awayStarter: "Jared Goff",
-        homeStarter: "Kyler Murray"
-      },
-      schedule: [
-        { date: "Wk 3 • Sep 27", away: "DET", home: "ARI", time: "1:25 PM MST", isHome: true },
-        { date: "Wk 4 • Oct 4", away: "WAS", home: "ARI", time: "1:05 PM MST", isHome: true },
-        { date: "Wk 5 • Oct 11", away: "ARI", home: "SF", time: "1:05 PM MST", isHome: false },
-        { date: "Wk 6 • Oct 18", away: "ARI", home: "GB", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 7 • Oct 25", away: "LAC", home: "ARI", time: "6:00 PM MST", isHome: true }
-      ],
-      division: "NFC WEST STANDINGS",
-      standings: [
-        { team: "49ers", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
-        { team: "Cardinals", w: 1, l: 0, pct: "1.000", gb: "—", highlight: true },
-        { team: "Seahawks", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
-        { team: "Rams", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false }
-      ],
-      banter: "Desert pride soaring high in Glendale! Rise Up Red Sea for Week 2 kickoff!",
-      liveStats: { yards: 355, tds: 2, status: "Active in Q2" }
-    },
-    {
-      id: "char_mariah",
-      name: "Mariah",
-      teamId: "PHI",
-      teamName: "EAGLES",
-      frameClass: "frame-mariah",
-      nameClass: "name-mariah",
-      image: "assets/avatars/Mariah football.jpg",
-      bannerGif: "assets/Mariah football banner.mp4",
-      picks: { record: "1-0", pct: "1.000", streak: "W1" },
-      trophy: { count: 2, label: "TOUCHDOWN SENSATION" },
-      fantasy: {
-        totalPoints: 65.1,
-        qb: { player: "Jalen Hurts (QB)", stats: "210 Pass Yds, 1 TD, 1 Rush TD", points: 20.4 },
-        rec: { player: "DeVonta Smith (WR)", stats: "7 Rec, 82 Yds, 1 TD", points: 21.2 },
-        rush: { player: "Saquon Barkley (RB)", stats: "95 Rush Yds, 1 TD", points: 15.5 },
-        def: { player: "Eagles Defense (DEF)", stats: "2 Sacks, 10 PA", points: 2.0 },
-        st: { player: "Jake Elliott (K/ST)", stats: "2 FG", points: 6.0 }
-      },
-      matchup: {
-        away: { code: "PHI", name: "Eagles", rec: "1-0", score: 14 },
-        home: { code: "TEN", name: "Titans", rec: "0-1", score: 10 },
-        status: "LIVE • Q3 8:20 • 12:15 PM MST",
-        isLive: true,
-        venue: "Nissan Stadium",
-        awayStarter: "Jalen Hurts",
-        homeStarter: "Will Levis"
-      },
-      schedule: [
-        { date: "Wk 3 • Sep 27", away: "PHI", home: "NO", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 4 • Oct 4", away: "PHI", home: "TB", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 5 • Oct 11", away: "CLE", home: "PHI", time: "10:00 AM MST", isHome: true },
-        { date: "Wk 6 • Oct 18", away: "PHI", home: "NYG", time: "10:00 AM MST", isHome: false },
-        { date: "Wk 7 • Oct 25", away: "PHI", home: "CIN", time: "10:00 AM MST", isHome: false }
-      ],
-      division: "NFC EAST STANDINGS",
-      standings: [
-        { team: "Eagles", w: 1, l: 0, pct: "1.000", gb: "—", highlight: true },
-        { team: "Commanders", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
-        { team: "Cowboys", w: 1, l: 0, pct: "1.000", gb: "—", highlight: false },
-        { team: "Giants", w: 0, l: 1, pct: ".000", gb: "1.0", highlight: false }
-      ],
-      banter: "Fly Eagles Fly! Jalen Hurts and DeVonta Smith already have touchdowns on the board!",
-      liveStats: { yards: 368, tds: 2, status: "Active in Q3" }
-    }
-  ];
-
-  // TICKER DATA - 2026 REGULAR SEASON WEEK 2 LIVE SLATE
-  const TODAY_TICKER_GAMES = [
-    { away: "MIN", awayScore: "6", home: "CHI", homeScore: "3", status: "Q3 9:38 • 12:15 PM MST", isLive: true },
-    { away: "GB", awayScore: "7", home: "NYJ", homeScore: "7", status: "Q3 11:27 • 12:15 PM MST", isLive: true },
-    { away: "PHI", awayScore: "14", home: "TEN", homeScore: "10", status: "Q3 8:20 • 12:15 PM MST", isLive: true },
-    { away: "CLE", awayScore: "10", home: "JAX", homeScore: "3", status: "Q3 7:15 • 12:15 PM MST", isLive: true },
-    { away: "CAR", awayScore: "7", home: "LV", homeScore: "13", status: "Q2 4:15 • 1:05 PM MST", isLive: true },
-    { away: "SF", awayScore: "10", home: "LAR", homeScore: "7", status: "Q2 8:40 • 1:25 PM MST", isLive: true },
-    { away: "DET", awayScore: "7", home: "ARI", homeScore: "14", status: "Q2 6:10 • 1:25 PM MST", isLive: true },
-    { away: "PIT", awayScore: "3", home: "NE", homeScore: "10", status: "Q3 11:27 • 12:15 PM MST", isLive: true }
-  ];
-
-  const YESTERDAY_TICKER_GAMES = [
-    { away: "KC", awayScore: "27", home: "BAL", homeScore: "20", status: "FINAL", isLive: false },
-    { away: "GB", awayScore: "29", home: "PHI", homeScore: "34", status: "FINAL", isLive: false },
-    { away: "TEN", awayScore: "17", home: "CHI", homeScore: "24", status: "FINAL", isLive: false },
-    { away: "PIT", awayScore: "18", home: "ATL", homeScore: "10", status: "FINAL", isLive: false },
-    { away: "LAR", awayScore: "10", home: "ARI", homeScore: "41", status: "FINAL", isLive: false },
-    { away: "NYJ", awayScore: "19", home: "SF", homeScore: "32", status: "FINAL", isLive: false },
-    { away: "DAL", awayScore: "33", home: "CLE", homeScore: "17", status: "FINAL", isLive: false },
-    { away: "LV", awayScore: "26", home: "DEN", homeScore: "20", status: "FINAL", isLive: false }
-  ];
-
-  // 18-WEEK BRACKET SYSTEM DATA
-  // 18-WEEK INTERACTIVE TOURNAMENT BRACKET SYSTEM & SHOWDOWN LORE DATA
-  const CONTENDERS_LIST = [
-    { name: "Andrea", team: "GB", teamName: "Packers", avatar: "assets/avatars/Andrea football.jpg", bannerGif: "assets/Andrea football banner.gif", seed: "#1", color: "#203731", rating: 91, yards: 285, rzPct: "80%", turnovers: "0", fantasyPoints: 45.5 },
-    { name: "Mariah", team: "PHI", teamName: "Eagles", avatar: "assets/avatars/Mariah football.jpg", bannerGif: "assets/Mariah football banner.mp4", seed: "#2", color: "#004c54", rating: 94, yards: 368, rzPct: "100%", turnovers: "0", fantasyPoints: 65.1 },
-    { name: "CJ", team: "CHI", teamName: "Bears", avatar: "assets/avatars/CJ football.jpg", bannerGif: "assets/CJ football banner.gif", seed: "#3", color: "#0b162a", rating: 95, yards: 312, rzPct: "75%", turnovers: "0", fantasyPoints: 42.0 },
-    { name: "Mario", team: "CLE", teamName: "Browns", avatar: "assets/avatars/Mario football.jpg", bannerGif: "assets/Mario football banner.gif", seed: "#4", color: "#311d00", rating: 88, yards: 245, rzPct: "66%", turnovers: "1", fantasyPoints: 46.1 },
-    { name: "Nicole", team: "LV", teamName: "Raiders", avatar: "assets/avatars/Nicole football.jpg", bannerGif: "assets/Nicole football banner.gif", seed: "#5", color: "#a5acaf", rating: 93, yards: 290, rzPct: "85%", turnovers: "0", fantasyPoints: 48.9 },
-    { name: "Saul", team: "SF", teamName: "49ers", avatar: "assets/avatars/Saul football.jpg", bannerGif: "assets/Saul football banner.gif", seed: "#6", color: "#aa0000", rating: 92, yards: 340, rzPct: "90%", turnovers: "0", fantasyPoints: 58.3 },
-    { name: "Cardinals Flag", team: "ARI", teamName: "Cardinals", avatar: "assets/Arizona_Cardinals_flag.gif", bannerGif: "assets/Arizona_Cardinals_flag.gif", seed: "#7", color: "#97233f", rating: 89, yards: 355, rzPct: "88%", turnovers: "0", fantasyPoints: 65.2 }
-  ];
-
-  const LORE_DATABASE = [
-    {
-      title: "The 105-Year NFC North Border War",
-      venue: "Soldier Field • Chicago, IL",
-      kickoff: "Sunday • 12:15 PM MST",
-      surface: "Natural Grass • Cold/Windy 42°F",
-      spread: "CHI -2.5 • O/U 44.5",
-      lore: "The most storied rivalry in gridiron history spills directly into the office hallway. Andrea channels the frozen mysticism of Lambeau Field and Jordan Love's precision spirals, while CJ brings the blistering swagger of Caleb Williams and Chicago's revitalized aerial assault. Every yard gained echoes across the office watercooler.",
-      smack1: "Go Pack Go! You can draft whoever you want in the Windy City, but the NFC North trophy still rests safely in Wisconsin!",
-      smack2: "Bear Down! That secondary doesn't have the speed for our receivers. Better get ready, Andrea!"
-    },
-    {
-      title: "The Dawg Pound vs Sin City Blitz",
-      venue: "Allegiant Stadium • Las Vegas, NV",
-      kickoff: "Thursday • 5:15 PM MST (TNF)",
-      surface: "Dome Turf • 72°F Climate Controlled",
-      spread: "LV -3.5 • O/U 41.5",
-      lore: "A collision between pure blue-collar Ohio grit and neon Vegas electricity. Mario anchors the Browns with relentless ground-and-pound defense and bruising tackle statistics, while Nicole unleashes the Silver & Black vertical strike playbook under the desert dome lights.",
-      smack1: "The Dawg Pound doesn't care about Vegas glitz. We play smashmouth football and win in the trenches every single snap!",
-      smack2: "Raider Nation moves too fast for you, Mario. Just wait until our deep routes light up the scoreboard under the dome!"
-    },
-    {
-      title: "The Desert Heat vs Red & Gold War",
-      venue: "State Farm Stadium • Glendale, AZ",
-      kickoff: "Sunday • 1:05 PM MST",
-      surface: "Retractable Grass Tray • 70°F Roof Open",
-      spread: "SF -4.0 • O/U 47.5",
-      lore: "NFC West bragging rights right here in the Valley of the Sun! Saul commands the West Coast precision scheme with Christian McCaffrey and Brock Purdy's elite execution, while the Arizona Cardinals Flag represents the rising desert energy with Kyler Murray's scrambles.",
-      smack1: "Faithful to the Bay! Five Super Bowl rings and the sharpest offensive scheme in football. Arizona can't contain our dynamic playmakers!",
-      smack2: "The Red Sea will rise! State Farm Stadium is rocking, and Murray's scramble magic will blow right past your blitz packages!"
-    },
-    {
-      title: "The Great Lakes Lakefront Showdown",
-      venue: "Huntington Bank Field • Cleveland, OH",
-      kickoff: "Sunday • 10:00 AM MST",
-      surface: "Natural Grass • Lakefront Gusts 38°F",
-      spread: "CHI -1.5 • O/U 39.5",
-      lore: "A classic freezing weather battle between two legendary Midwest cold-weather franchises. CJ's dynamic playmakers face Mario's ferocious defensive front seven in a test of endurance and physical dominance.",
-      smack1: "You're entering the Lake Erie wind tunnel, CJ. No fancy plays survive our pass rush!",
-      smack2: "Wind or snow, Chicago knows cold weather better than anyone. We're putting up 30 points minimum, Mario!"
-    },
-    {
-      title: "The California-Nevada Desert Clash",
-      venue: "Levi's Stadium • Santa Clara, CA",
-      kickoff: "Monday • 5:15 PM MST (MNF)",
-      surface: "Tifway II Bermuda Grass • Mild 62°F",
-      spread: "SF -2.5 • O/U 48.0",
-      lore: "A fierce historical interstate showdown. Nicole's Raiders bring the silver thunder across state lines into Saul's 49ers fortress for Monday Night Football primetime glory.",
-      smack1: "Just Win, Baby! The Raiders own primetime spotlight games and we're taking over Levi's Stadium tonight!",
-      smack2: "Not in our house, Nicole. San Francisco's defense swarms every route. Ring the victory siren!"
-    },
-    {
-      title: "The Frozen Tundra vs Desert Red Sea",
-      venue: "Lambeau Field • Green Bay, WI",
-      kickoff: "Sunday • 10:00 AM MST",
-      surface: "Desso GrassMaster • Freezing 24°F",
-      spread: "GB -5.5 • O/U 45.0",
-      lore: "Contrast of extreme climates! Andrea welcomes Arizona to the legendary sub-zero Lambeau tundra where the cheesehead faithful turn the stadium into a green-and-gold wall of sound.",
-      smack1: "Welcome to the Frozen Tundra! Bring your snow parkas because Green Bay rules the winter weather!",
-      smack2: "Desert speed thaws frozen defenses! We're burning your secondary with explosive vertical go-routes, Andrea!"
-    },
-    {
-      title: "The Midnight Green Battle of the Birds",
-      venue: "Lincoln Financial Field • Philadelphia, PA",
-      kickoff: "Sunday • 1:25 PM MST",
-      surface: "Desso GrassMaster • Crisp 48°F",
-      spread: "PHI -3.5 • O/U 46.5",
-      lore: "Midnight green mania erupts in South Philly! Mariah leads the thunderous Eagles crowd with Jalen Hurts' dynamic dual-threat playmaking and Saquon Barkley's explosive bursts, going toe-to-toe with the fiercest contenders in the office.",
-      smack1: "Fly Eagles Fly! On the road to victory! We've got the most unstoppable offense in football!",
-      smack2: "Philadelphia might have the hype, but we came to play 60 minutes of real smashmouth football!"
-    }
-  ];
-
-  const DIVISION_LAST_PLACE_TEAMS = {
-    "NFC North": [
-      { team: "MIN", name: "Vikings", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/min.png", color: "#4F2683", qb: "Sam Darnold", venue: "U.S. Bank Stadium • Minneapolis, MN", city: "Minnesota" },
-      { team: "DET", name: "Lions", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/det.png", color: "#0076B6", qb: "Jared Goff", venue: "Ford Field • Detroit, MI", city: "Detroit" }
-    ],
-    "NFC East": [
-      { team: "NYG", name: "Giants", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/nyg.png", color: "#0B2265", qb: "Daniel Jones", venue: "MetLife Stadium • East Rutherford, NJ", city: "New York" },
-      { team: "WAS", name: "Commanders", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/was.png", color: "#5A1414", qb: "Jayden Daniels", venue: "Northwest Stadium • Landover, MD", city: "Washington" }
-    ],
-    "NFC West": [
-      { team: "SEA", name: "Seahawks", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/sea.png", color: "#002244", qb: "Geno Smith", venue: "Lumen Field • Seattle, WA", city: "Seattle" },
-      { team: "LAR", name: "Rams", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lar.png", color: "#003594", qb: "Matthew Stafford", venue: "SoFi Stadium • Inglewood, CA", city: "Los Angeles" }
-    ],
-    "NFC South": [
-      { team: "CAR", name: "Panthers", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/car.png", color: "#0085CA", qb: "Bryce Young", venue: "Bank of America Stadium • Charlotte, NC", city: "Carolina" }
-    ],
-    "AFC North": [
-      { team: "CIN", name: "Bengals", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/cin.png", color: "#FB4F14", qb: "Joe Burrow", venue: "Paycor Stadium • Cincinnati, OH", city: "Cincinnati" },
-      { team: "CLE", name: "Browns", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/cle.png", color: "#311D00", qb: "Deshaun Watson", venue: "Huntington Bank Field • Cleveland, OH", city: "Cleveland" }
-    ],
-    "AFC West": [
-      { team: "DEN", name: "Broncos", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/den.png", color: "#FB4F14", qb: "Bo Nix", venue: "Empower Field • Denver, CO", city: "Denver" },
-      { team: "LV", name: "Raiders", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/lv.png", color: "#000000", qb: "Gardner Minshew", venue: "Allegiant Stadium • Las Vegas, NV", city: "Las Vegas" }
-    ],
-    "AFC East": [
-      { team: "NE", name: "Patriots", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png", color: "#002244", qb: "Drake Maye", venue: "Gillette Stadium • Foxborough, MA", city: "New England" }
-    ],
-    "AFC South": [
-      { team: "TEN", name: "Titans", logo: "https://a.espncdn.com/i/teamlogos/nfl/500/ten.png", color: "#0C2340", qb: "Will Levis", venue: "Nissan Stadium • Nashville, TN", city: "Tennessee" }
-    ]
-  };
-
-  function getDivisionLastPlaceOpponent(member, weekIdx) {
-    const teamObj = TEAMS.find(t => t.id === member.team) || { division: "NFC North" };
-    const div = teamObj.division || "NFC North";
-    const candidates = DIVISION_LAST_PLACE_TEAMS[div] || DIVISION_LAST_PLACE_TEAMS["NFC North"];
-    const filtered = candidates.filter(c => c.team !== member.team);
-    const chosen = filtered.length > 0 ? filtered[weekIdx % filtered.length] : candidates[0];
-    return { chosen, division: div };
-  }
-
-  function buildWeeklyTournamentData() {
+  function createEmptyFantasy(label = 'Loading...', sub = 'Syncing ESPN box score...') {
     return {
-      activeWeek: 2,
-      weeks: Array.from({ length: 18 }, (_, idx) => {
-        const wNum = idx + 1;
-        const isPast = wNum < 2; // Week 1 is past (final)
-        const isActive = wNum === 2; // Week 2 is live today
-        const status = isPast ? 'FINAL' : (isActive ? 'LIVE' : 'UPCOMING');
-
-        // Pairings rotated for all 18 weeks across all 7 staff contenders
-        const p1 = CONTENDERS_LIST[idx % 7];
-        const p2 = CONTENDERS_LIST[(idx + 1) % 7];
-        const p3 = CONTENDERS_LIST[(idx + 2) % 7];
-        const p4 = CONTENDERS_LIST[(idx + 3) % 7];
-        const p5 = CONTENDERS_LIST[(idx + 4) % 7];
-        const p6 = CONTENDERS_LIST[(idx + 5) % 7];
-        const p7 = CONTENDERS_LIST[(idx + 6) % 7]; // The Odd Player of the week!
-
-        // Matchmaking Logic: Odd player plays a random team that is last in their division!
-        const { chosen: divCellarTeam, division: p7Division } = getDivisionLastPlaceOpponent(p7, idx);
-
-        const lore1 = LORE_DATABASE[idx % LORE_DATABASE.length];
-        const lore2 = LORE_DATABASE[(idx + 1) % LORE_DATABASE.length];
-        const lore3 = LORE_DATABASE[(idx + 2) % LORE_DATABASE.length];
-        const loreSemi1 = LORE_DATABASE[(idx + 3) % LORE_DATABASE.length];
-        const loreSemi2 = LORE_DATABASE[(idx + 4) % LORE_DATABASE.length];
-        const loreFinal = LORE_DATABASE[(idx + 5) % LORE_DATABASE.length];
-
-        const baseScore = 22 + ((idx * 3) % 10);
-        const getPts = (contender) => {
-          if (!contender) return 0;
-          if (isPast) return baseScore + 4.5;
-          if (isActive) return contender.fantasyPoints || 45.0;
-          return 0;
-        };
-        const s1_score = getPts(p1);
-        const s2_score = getPts(p2);
-        const s3_score = getPts(p3);
-        const s4_score = getPts(p4);
-        const s5_score = getPts(p5);
-        const s6_score = getPts(p6);
-        const s7_score = getPts(p7);
-        const opp_score = isPast ? baseScore : (isActive ? 38.5 : 0);
-
-        const semi1_s1 = isPast ? baseScore + 8 : 0;
-        const semi1_s2 = isPast ? baseScore + 5 : 0;
-        const semi2_s1 = isPast ? baseScore + 9 : 0;
-        const semi2_s2 = isPast ? baseScore + 4 : 0;
-
-        const fin_s1 = isPast ? baseScore + 10 : 0;
-        const fin_s2 = isPast ? baseScore + 7 : 0;
-
-        const matches = [
-          // Round 1 (Opening Game Slate - All 7 Office Members Active!)
-          {
-            id: `w${wNum}_q1`,
-            round: 1,
-            roundName: "Stage 1 • Division Clash",
-            title: `Matchup 1: ${lore1.title}`,
-            rivalryName: lore1.title,
-            day: "Sun Early",
-            venue: lore1.venue,
-            kickoff: lore1.kickoff,
-            surface: lore1.surface,
-            spread: lore1.spread,
-            staff1: { ...p1, score: s1_score, pick: `${p1.team} ${p1.teamName}` },
-            staff2: { ...p2, score: s2_score, pick: `${p2.team} ${p2.teamName}` },
-            lore: lore1.lore,
-            smack1: lore1.smack1,
-            smack2: lore1.smack2,
-            status: status
-          },
-          {
-            id: `w${wNum}_q2`,
-            round: 1,
-            roundName: "Stage 1 • Division Clash",
-            title: `Matchup 2: ${lore2.title}`,
-            rivalryName: lore2.title,
-            day: "Thu Night",
-            venue: lore2.venue,
-            kickoff: lore2.kickoff,
-            surface: lore2.surface,
-            spread: lore2.spread,
-            staff1: { ...p3, score: s3_score, pick: `${p3.team} ${p3.teamName}` },
-            staff2: { ...p4, score: s4_score, pick: `${p4.team} ${p4.teamName}` },
-            lore: lore2.lore,
-            smack1: lore2.smack1,
-            smack2: lore2.smack2,
-            status: status
-          },
-          {
-            id: `w${wNum}_q3`,
-            round: 1,
-            roundName: "Stage 1 • Division Clash",
-            title: `Matchup 3: ${lore3.title}`,
-            rivalryName: lore3.title,
-            day: "Sun Late",
-            venue: lore3.venue,
-            kickoff: lore3.kickoff,
-            surface: lore3.surface,
-            spread: lore3.spread,
-            staff1: { ...p5, score: s5_score, pick: `${p5.team} ${p5.teamName}` },
-            staff2: { ...p6, score: s6_score, pick: `${p6.team} ${p6.teamName}` },
-            lore: lore3.lore,
-            smack1: lore3.smack1,
-            smack2: lore3.smack2,
-            status: status
-          },
-          {
-            id: `w${wNum}_q4`,
-            round: 1,
-            roundName: "Stage 1 • Division Clash",
-            title: `Matchup 4: ${p7.name} (${p7.team}) vs ${divCellarTeam.name} (${p7Division})`,
-            rivalryName: `${p7.name} vs ${divCellarTeam.name} (${p7Division} Cellar Matchup)`,
-            day: "Sun Late",
-            venue: divCellarTeam.venue,
-            kickoff: "Sunday • 1:05 PM MST",
-            surface: "Natural Grass / Turf",
-            spread: `${p7.team} -4.5 • O/U 42.5`,
-            staff1: { ...p7, score: s7_score, pick: `${p7.team} ${p7.teamName}` },
-            staff2: { 
-              name: `${divCellarTeam.name}`, 
-              team: divCellarTeam.team, 
-              teamName: divCellarTeam.name, 
-              avatar: divCellarTeam.logo, 
-              bannerGif: divCellarTeam.logo,
-              seed: "DIV-LAST", 
-              color: divCellarTeam.color, 
-              rating: 83, 
-              yards: 295, 
-              rzPct: "48%", 
-              turnovers: "-4", 
-              score: opp_score, 
-              pick: `${divCellarTeam.team} ${divCellarTeam.name}` 
-            },
-            lore: `${p7.name}'s ${p7.teamName} face the last-place ${divCellarTeam.name} in a pivotal ${p7Division} clash. A must-win division trap game with critical regular season conference seeding on the line!`,
-            smack1: `We're taking care of business in the division! No trap game can slow down ${p7.teamName} momentum!`,
-            smack2: `Don't look past the ${divCellarTeam.name}! We're ready to play spoiler and ruin your week!`,
-            status: status
-          },
-          // Round 2 (Semifinals • Unlocks after Stage 1 finishes on Sunday afternoon)
-          {
-            id: `w${wNum}_s1`,
-            round: 2,
-            roundName: "Stage 2 • Semifinal Battle",
-            title: isActive ? "Semifinal 1: Game 1 Winner vs Game 2 Winner" : `Semifinal 1: ${loreSemi1.title}`,
-            rivalryName: isActive ? "Stage 2 Semifinal 1 (Unlocks Sun 4:00 PM)" : loreSemi1.title,
-            day: "Sun Late",
-            venue: loreSemi1.venue,
-            kickoff: "Sunday Late • 4:25 PM MST",
-            surface: loreSemi1.surface,
-            spread: isActive ? "TBD • Unlocks after Sun Games" : loreSemi1.spread,
-            staff1: isActive ? { name: `TBD (${p1.name}/${p2.name})`, team: "TBD", teamName: "Game 1 Winner", avatar: p1.avatar, seed: "ADV", score: 0, pick: "Advances after Game 1" } : { ...p1, score: semi1_s1, pick: `${p1.team} ${p1.teamName}` },
-            staff2: isActive ? { name: `TBD (${p3.name}/${p4.name})`, team: "TBD", teamName: "Game 2 Winner", avatar: p3.avatar, seed: "ADV", score: 0, pick: "Advances after Game 2" } : { ...p3, score: semi1_s2, pick: `${p3.team} ${p3.teamName}` },
-            lore: loreSemi1.lore,
-            smack1: loreSemi1.smack1,
-            smack2: loreSemi1.smack2,
-            status: isActive ? "PENDING" : status
-          },
-          {
-            id: `w${wNum}_s2`,
-            round: 2,
-            roundName: "Stage 2 • Semifinal Battle",
-            title: isActive ? "Semifinal 2: Game 3 Winner vs Game 4 Winner" : `Semifinal 2: ${loreSemi2.title}`,
-            rivalryName: isActive ? "Stage 2 Semifinal 2 (Unlocks Sun 4:00 PM)" : loreSemi2.title,
-            day: "Sun Late",
-            venue: loreSemi2.venue,
-            kickoff: "Sunday Late • 4:25 PM MST",
-            surface: loreSemi2.surface,
-            spread: isActive ? "TBD • Unlocks after Sun Games" : loreSemi2.spread,
-            staff1: isActive ? { name: `TBD (${p5.name}/${p6.name})`, team: "TBD", teamName: "Game 3 Winner", avatar: p5.avatar, seed: "ADV", score: 0, pick: "Advances after Game 3" } : { ...p5, score: semi2_s1, pick: `${p5.team} ${p5.teamName}` },
-            staff2: isActive ? { name: `TBD (${p7.name}/Advancer)`, team: "TBD", teamName: "Game 4 Winner", avatar: p7.avatar, seed: "ADV", score: 0, pick: "Advances after Game 4" } : { ...p7, score: semi2_s2, pick: `${p7.team} ${p7.teamName}` },
-            lore: loreSemi2.lore,
-            smack1: loreSemi2.smack1,
-            smack2: loreSemi2.smack2,
-            status: isActive ? "PENDING" : status
-          },
-          // Round 3 (Weekly Championship Finale • Sunday/Monday Night Primetime)
-          {
-            id: `w${wNum}_f1`,
-            round: 3,
-            roundName: "Stage 3 • Weekly Crown Finale",
-            title: isActive ? "Weekly Championship: Primetime Finale" : `Weekly Grand Finale: ${loreFinal.title}`,
-            rivalryName: isActive ? "👑 Weekly Championship (SNF / MNF Primetime)" : `👑 ${p1.name} vs ${p5.name} • Weekly Championship`,
-            day: "Sun/Mon Night (Primetime)",
-            venue: loreFinal.venue,
-            kickoff: "Sunday/Monday Night • 5:20 PM MST",
-            surface: loreFinal.surface,
-            spread: isActive ? "TBD • Decided in Primetime" : loreFinal.spread,
-            staff1: isActive ? { name: "TBD (Semifinal 1 Winner)", team: "TBD", teamName: "Finalist A", avatar: p1.avatar, seed: "TOP", score: 0, pick: "Advances to Championship" } : { ...p1, score: fin_s1, pick: `${p1.team} ${p1.teamName}` },
-            staff2: isActive ? { name: "TBD (Semifinal 2 Winner)", team: "TBD", teamName: "Finalist B", avatar: p5.avatar, seed: "TOP", score: 0, pick: "Advances to Championship" } : { ...p5, score: fin_s2, pick: `${p5.team} ${p5.teamName}` },
-            lore: loreFinal.lore,
-            smack1: loreFinal.smack1,
-            smack2: loreFinal.smack2,
-            status: isActive ? "PENDING" : status
-          }
-        ];
-
-        return {
-          weekNumber: wNum,
-          label: `Week ${wNum}${isActive ? ' (Active)' : ''}`,
-          status: status,
-          winner: isPast ? `${p1.name} (${p1.team})` : (isActive ? `In Progress (Leader: ${p5.name})` : `TBD`),
-          mvp: isPast ? `${p1.name} (${fin_s1} PTS)` : (isActive ? `${p5.name} (Active)` : `TBD`),
-          matchups: matches
-        };
-      })
+      totalPoints: 0,
+      hasStats: false,
+      qb: { player: label, stats: sub, points: 0 },
+      rec: { player: label, stats: sub, points: 0 },
+      rush: { player: label, stats: sub, points: 0 },
+      def: { player: label, stats: sub, points: 0 },
+      st: { player: label, stats: sub, points: 0 }
     };
   }
 
-  const WEEKLY_BRACKET_DATA = buildWeeklyTournamentData();
-
-  // 18-WEEK SEASON TOURNAMENT DATA (WEEKS 16 - 18)
-  // Round 1 (Quarterfinals - Week 16): 4 Matchups (7 Office Contenders + #32 NFL Last-Place Team for the 7th player)
-  // Round 2 (Semifinals - Week 17): 2 Matchups (TBD - Awaiting Week 16)
-  // Round 3 (Grand Finale - Week 18): 1 Matchup (TBD - Awaiting Week 17 to Crown Office Champion)
-  const SEASON_TOURNAMENT_DATA = {
-    title: "2026 Office Endzone 18-Week Season Championship",
-    description: "The official postseason climax! Weeks 1–15 determine regular season standings & playoff seeds (#1 to #7). Week 16 starts Round 1 (Quarterfinals) featuring all 7 office contenders + the #32 Last-Place NFL Team (Oddball Wild Card Challenge) playing the #7 seed. Round 2 Semifinals (Week 17) and the Grand Championship Finale (Week 18) are TBD and unlock as each round concludes.",
-    rounds: [
+  function createInitialRoster() {
+    const members = [
       {
-        roundNum: 1,
-        weekNum: 16,
-        name: "Week 16 • Quarterfinals",
-        matchups: [
-          {
-            id: "st_q1",
-            round: 1,
-            week: "Week 16",
-            roundName: "Week 16 • Quarterfinal 1",
-            title: "Quarterfinal 1 • #1 Andrea vs #6 Saul",
-            rivalryName: "NFC North vs NFC West Playoff Clash",
-            day: "Sun Early",
-            venue: "Lambeau Field • Green Bay, WI",
-            kickoff: "Week 16 • Sun 10:00 AM MST",
-            surface: "Desso GrassMaster • 28°F Freezing",
-            spread: "GB -3.5 • O/U 44.5",
-            staff1: {
-              name: "Andrea",
-              team: "GB",
-              teamName: "Packers",
-              avatar: "assets/avatars/Andrea football.jpg",
-              bannerGif: "assets/Andrea football banner.gif",
-              seed: "#1",
-              color: "#203731",
-              rating: 91,
-              yards: 360,
-              rzPct: "72%",
-              turnovers: "+5",
-              score: 0,
-              pick: "GB Packers"
-            },
-            staff2: {
-              name: "Saul",
-              team: "SF",
-              teamName: "49ers",
-              avatar: "assets/avatars/Saul football.jpg",
-              bannerGif: "assets/Saul football banner.gif",
-              seed: "#6",
-              color: "#aa0000",
-              rating: 92,
-              yards: 350,
-              rzPct: "68%",
-              turnovers: "+3",
-              score: 0,
-              pick: "SF 49ers"
-            },
-            lore: "Top-seeded Andrea welcomes Saul to the Frozen Tundra of Lambeau Field in an electrifying Quarterfinal showdown. The winner advances directly to the Week 17 Semifinals!",
-            smack1: "Number one seed for a reason! Lambeau is ready to freeze out the Niners and punch our ticket to Week 17!",
-            smack2: "The 49ers West Coast playbook is built for December playoff upsets. We're advancing to the Semifinals!",
-            status: "UPCOMING"
-          },
-          {
-            id: "st_q2",
-            round: 1,
-            week: "Week 16",
-            roundName: "Week 16 • Quarterfinal 2",
-            title: "Quarterfinal 2 • #2 Mariah vs #5 Nicole",
-            rivalryName: "Midnight Green vs Silver & Black Playoff Battle",
-            day: "Sun Late",
-            venue: "Lincoln Financial Field • Philadelphia, PA",
-            kickoff: "Week 16 • Sun 1:25 PM MST",
-            surface: "Desso GrassMaster • 42°F Cold",
-            spread: "PHI -4.0 • O/U 48.0",
-            staff1: {
-              name: "Mariah",
-              team: "PHI",
-              teamName: "Eagles",
-              avatar: "assets/avatars/Mariah football.jpg",
-              bannerGif: "assets/Mariah football banner.mp4",
-              seed: "#2",
-              color: "#004c54",
-              rating: 94,
-              yards: 385,
-              rzPct: "75%",
-              turnovers: "+6",
-              score: 0,
-              pick: "PHI Eagles"
-            },
-            staff2: {
-              name: "Nicole",
-              team: "LV",
-              teamName: "Raiders",
-              avatar: "assets/avatars/Nicole football.jpg",
-              bannerGif: "assets/Nicole football banner.gif",
-              seed: "#5",
-              color: "#a5acaf",
-              rating: 93,
-              yards: 340,
-              rzPct: "65%",
-              turnovers: "+2",
-              score: 0,
-              pick: "LV Raiders"
-            },
-            lore: "Mariah's #2 seeded Philadelphia Eagles clash with Nicole's #5 seeded Las Vegas Raiders. Explosive ground game meets aggressive vertical passing for a spot in the Week 17 final four!",
-            smack1: "Fly Eagles Fly! Lincoln Financial Field is going to be deafening on Sunday! No one stops our playoff march!",
-            smack2: "Raider Nation thrives in high-stakes road playoff matchups. Statistically primed for the Quarterfinal upset!",
-            status: "UPCOMING"
-          },
-          {
-            id: "st_q3",
-            round: 1,
-            week: "Week 16",
-            roundName: "Week 16 • Quarterfinal 3",
-            title: "Quarterfinal 3 • #3 CJ vs #4 Mario",
-            rivalryName: "The Great Lakes Postseason Showdown",
-            day: "Sun Early",
-            venue: "Soldier Field • Chicago, IL",
-            kickoff: "Week 16 • Sun 12:15 PM MST",
-            surface: "Natural Grass • 36°F Windy",
-            spread: "CHI -2.5 • O/U 41.5",
-            staff1: {
-              name: "CJ",
-              team: "CHI",
-              teamName: "Bears",
-              avatar: "assets/avatars/CJ football.jpg",
-              bannerGif: "assets/CJ football banner.gif",
-              seed: "#3",
-              color: "#0b162a",
-              rating: 95,
-              yards: 390,
-              rzPct: "70%",
-              turnovers: "+4",
-              score: 0,
-              pick: "CHI Bears"
-            },
-            staff2: {
-              name: "Mario",
-              team: "CLE",
-              teamName: "Browns",
-              avatar: "assets/avatars/Mario football.jpg",
-              bannerGif: "assets/Mario football banner.gif",
-              seed: "#4",
-              color: "#311d00",
-              rating: 88,
-              yards: 310,
-              rzPct: "62%",
-              turnovers: "+1",
-              score: 0,
-              pick: "CLE Browns"
-            },
-            lore: "A fierce 3-vs-4 rivalry battle along Lake Michigan. CJ's dynamic Chicago aerial attack faces Mario's hard-hitting Cleveland Dawg Pound blitz defense.",
-            smack1: "Bear Down! We've been preparing for this postseason run all 15 weeks! Nothing can stop Chicago!",
-            smack2: "The Dawg Pound defense will shut down the passing lanes and take this win in the trenches! Browns rolling!",
-            status: "UPCOMING"
-          },
-          {
-            id: "st_q4",
-            round: 1,
-            week: "Week 16",
-            roundName: "Week 16 • Quarterfinal 4",
-            title: "Quarterfinal 4 • #7 Cardinals Flag vs NFL #32 Panthers (Oddball Challenge)",
-            rivalryName: "🎯 Oddball Challenge: #7 Seed vs NFL #32 Last-Place Squad",
-            day: "Sun Late",
-            venue: "State Farm Stadium • Glendale, AZ",
-            kickoff: "Week 16 • Sun 2:05 PM MST",
-            surface: "Retractable Grass • 72°F Roof Open",
-            spread: "ARI -6.5 • O/U 38.5",
-            isOddball: true,
-            staff1: {
-              name: "Cardinals Flag",
-              team: "ARI",
-              teamName: "Cardinals",
-              avatar: "assets/Arizona_Cardinals_flag.gif",
-              bannerGif: "assets/Arizona_Cardinals_flag.gif",
-              seed: "#7",
-              color: "#97233f",
-              rating: 89,
-              yards: 325,
-              rzPct: "60%",
-              turnovers: "0",
-              score: 0,
-              pick: "ARI Cardinals"
-            },
-            staff2: {
-              name: "Carolina Panthers",
-              team: "CAR",
-              teamName: "Panthers (NFL #32)",
-              avatar: "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
-              bannerGif: "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
-              seed: "NFL #32",
-              color: "#0085ca",
-              rating: 79,
-              yards: 280,
-              rzPct: "45%",
-              turnovers: "-8",
-              score: 0,
-              pick: "CAR Panthers (NFL #32)"
-            },
-            lore: "In the 7-player tournament format, the 7th-seeded contender faces the ultimate test: battling the team in 32nd/last place across the entire NFL (Carolina Panthers)! The Cardinals Flag must win this game to punch their ticket to the Week 17 Semifinals!",
-            smack1: "Rise Up Red Sea! The Arizona flag will wave victoriously over the NFL basement squad and advance to the Semifinals!",
-            smack2: "The NFL #32 Panthers have nothing to lose and everything to prove as postseason spoilers looking to shock the office bracket!",
-            status: "UPCOMING"
-          }
-        ]
+        id: "char_andrea",
+        name: "Andrea",
+        teamId: "GB",
+        teamName: "PACKERS",
+        division: "NFC North",
+        frameClass: "frame-andrea",
+        nameClass: "name-andrea",
+        image: "assets/avatars/Andrea football.jpg",
+        bannerGif: "assets/Andrea football banner.gif",
+        color: "#facc15",
+        badgeTag: "🧀 Lambeau Scout"
       },
       {
-        roundNum: 2,
-        weekNum: 17,
-        name: "Week 17 • Semifinals",
-        matchups: [
-          {
-            id: "st_s1",
-            round: 2,
-            week: "Week 17",
-            roundName: "Week 17 • Semifinal 1",
-            title: "Semifinal 1 • Winner QF 1 vs Winner QF 4",
-            rivalryName: "Week 17 Semifinal 1 (Awaiting Week 16)",
-            day: "Sun Late",
-            venue: "Higher Seed Home Field",
-            kickoff: "Week 17 • Sunday Late Slate",
-            surface: "Playoff Turf/Grass",
-            spread: "TBD • Unlocks after Week 16",
-            qfSource1: "st_q1",
-            qfSource2: "st_q4",
-            qfSource1Desc: "Winner QF 1 (#1 Andrea vs #6 Saul)",
-            qfSource2Desc: "Winner QF 4 (#7 Cardinals Flag vs NFL #32)",
-            lore: "The winner of Quarterfinal 1 takes on the winner of the Oddball Quarterfinal 4 challenge for a ticket to the Week 18 Grand Championship Game!",
-            smack1: "One win away from the Week 18 Grand Championship!",
-            smack2: "We fought through the Quarterfinals and aren't stopping now!",
-            status: "PENDING"
-          },
-          {
-            id: "st_s2",
-            round: 2,
-            week: "Week 17",
-            roundName: "Week 17 • Semifinal 2",
-            title: "Semifinal 2 • Winner QF 2 vs Winner QF 3",
-            rivalryName: "Week 17 Semifinal 2 (Awaiting Week 16)",
-            day: "Sun Late",
-            venue: "Higher Seed Home Field",
-            kickoff: "Week 17 • Sunday Late Slate",
-            surface: "Playoff Turf/Grass",
-            spread: "TBD • Unlocks after Week 16",
-            qfSource1: "st_q2",
-            qfSource2: "st_q3",
-            qfSource1Desc: "Winner QF 2 (#2 Mariah vs #5 Nicole)",
-            qfSource2Desc: "Winner QF 3 (#3 CJ vs #4 Mario)",
-            lore: "The winner of Quarterfinal 2 battles the winner of Quarterfinal 3 in an explosive Semifinal collision for the final ticket to the Week 18 Grand Championship Game!",
-            smack1: "Our offense is firing on all cylinders heading into the Semifinals!",
-            smack2: "Defense wins championships and we're punching our ticket to Week 18!",
-            status: "PENDING"
-          }
-        ]
+        id: "char_cj",
+        name: "CJ",
+        teamId: "CHI",
+        teamName: "BEARS",
+        division: "NFC North",
+        frameClass: "frame-cj",
+        nameClass: "name-cj",
+        image: "assets/avatars/CJ football.jpg",
+        bannerGif: "assets/CJ football banner.gif",
+        color: "#f87171",
+        badgeTag: "🐻 Bear Down"
       },
       {
-        roundNum: 3,
-        weekNum: 18,
-        name: "Week 18 • Grand Finale",
-        matchups: [
-          {
-            id: "st_final",
-            round: 3,
-            week: "Week 18",
-            roundName: "Week 18 • Grand Championship Game",
-            title: "👑 2026 Office Endzone Grand Championship",
-            rivalryName: "Week 18 Regular Season Grand Finale",
-            day: "Sun Primetime",
-            venue: "Grand Championship Stadium",
-            kickoff: "Week 18 Finale • Sun 6:20 PM MST (SNF)",
-            surface: "Championship Turf",
-            spread: "TBD • Decided in Week 18 Finale",
-            semiSource1: "st_s1",
-            semiSource2: "st_s2",
-            semiSource1Desc: "Winner Semifinal 1",
-            semiSource2Desc: "Winner Semifinal 2",
-            lore: "The crowning moment of the 18-Week NFL regular season! The two surviving office titans battle in the final game of Week 18 for the 2026 Office Endzone Championship Trophy, eternal office bragging rights, and the golden football prize!",
-            smack1: "The 2026 Office Championship trophy is coming home with me!",
-            smack2: "60 minutes of football to decide the true ruler of the office gridiron!",
-            status: "PENDING"
-          }
-        ]
+        id: "char_mario",
+        name: "Mario",
+        teamId: "CLE",
+        teamName: "BROWNS",
+        division: "AFC North",
+        frameClass: "frame-mario",
+        nameClass: "name-mario",
+        image: "assets/avatars/Mario football.jpg",
+        bannerGif: "assets/Mario football banner.gif",
+        color: "#fb923c",
+        badgeTag: "🐶 Dawg Pound"
+      },
+      {
+        id: "char_nicole",
+        name: "Nicole",
+        teamId: "LV",
+        teamName: "RAIDERS",
+        division: "AFC West",
+        frameClass: "frame-nicole",
+        nameClass: "name-nicole",
+        image: "assets/avatars/Nicole football.jpg",
+        bannerGif: "assets/Nicole football banner.gif",
+        color: "#38bdf8",
+        badgeTag: "☠️ Raider Nation"
+      },
+      {
+        id: "char_saul",
+        name: "Saul",
+        teamId: "SF",
+        teamName: "49ERS",
+        division: "NFC West",
+        frameClass: "frame-saul",
+        nameClass: "name-saul",
+        image: "assets/avatars/Saul football.jpg",
+        bannerGif: "assets/Saul football banner.gif",
+        color: "#fb7185",
+        badgeTag: "⛏️ Faithful 49ers"
+      },
+      {
+        id: "char_cardinals",
+        name: "Arizona Cardinals Flag",
+        shortName: "Cardinals Flag",
+        teamId: "ARI",
+        teamName: "CARDINALS",
+        division: "NFC West",
+        frameClass: "frame-cardinals",
+        nameClass: "name-cardinals",
+        image: "assets/Arizona_Cardinals_flag.gif",
+        bannerGif: "assets/Arizona_Cardinals_flag.gif",
+        color: "#f43f5e",
+        badgeTag: "🚩 Desert Flag"
+      },
+      {
+        id: "char_mariah",
+        name: "Mariah",
+        teamId: "PHI",
+        teamName: "EAGLES",
+        division: "NFC East",
+        frameClass: "frame-mariah",
+        nameClass: "name-mariah",
+        image: "assets/avatars/Mariah football.jpg",
+        bannerGif: "assets/Mariah football banner.mp4",
+        color: "#2dd4bf",
+        badgeTag: "🦅 Midnight Green"
       }
-    ]
-  };
+    ];
 
+    return members.map(m => ({
+      ...m,
+      picks: { record: "--", pct: "--", streak: "--", wins: 0, losses: 0, ties: 0, winPercent: 0 },
+      trophy: { count: 0, label: "SYNCING LIVE NFL DATA..." },
+      fantasy: createEmptyFantasy(),
+      matchup: {
+        eventId: null,
+        isBye: false,
+        away: { code: "--", name: "TBD", rec: "--", score: "-" },
+        home: { code: m.teamId, name: m.teamName, rec: "--", score: "-" },
+        status: "Loading live ESPN schedule...",
+        state: "pre",
+        isLive: false,
+        venue: "NFL Stadium",
+        awayStarter: "--",
+        homeStarter: "--"
+      },
+      schedule: [],
+      divisionTitle: `${m.division.toUpperCase()} STANDINGS`,
+      standings: [],
+      liveStats: {
+        yards: 0,
+        tds: 0,
+        sacks: 0,
+        fieldGoals: 0,
+        longFG: 0,
+        pointsScored: 0,
+        pointsAllowed: 0,
+        won: false,
+        hasPlayed: false,
+        isBye: false,
+        status: "Loading..."
+      }
+    }));
+  }
+
+  // Evergreen rivalry lore templates (no hardcoded player names or outdated seasons)
+  const LORE_DATABASE = [
+    {
+      title: "The Office Gridiron Showdown",
+      surface: "Championship Turf",
+      lore: "Two office heavyweights go head-to-head with real weekly NFL team performance deciding every single point on the board.",
+      smack1: "Our squad is dialed in this week—check the scoreboard when the clock hits zero!",
+      smack2: "Talk is cheap! Let the real NFL box scores settle this one on Sunday!"
+    },
+    {
+      title: "Watercooler Rivalry Clash",
+      surface: "Stadium Grass",
+      lore: "Bragging rights across the entire office hallway are on the line as automated QB, WR, RB, DEF, and Special Teams stats decide the winner.",
+      smack1: "We're putting up points on both sides of the ball this week!",
+      smack2: "Our defense and playmakers are ready to steal the crown!"
+    },
+    {
+      title: "Primetime Office Spotlight",
+      surface: "Under the Floodlights",
+      lore: "Big plays, red-zone touchdowns, and clutch kicks fuel this weekly matchup—powered 100% by real-time ESPN game telemetry.",
+      smack1: "Look at the live numbers—this matchup is already trending our way!",
+      smack2: "Never count us out until the final whistle blows!"
+    },
+    {
+      title: "Division Bragging Rights Battle",
+      surface: "Outdoor Stadium Field",
+      lore: "Every yard, sack, and field goal counts in this heated head-to-head duel for weekly Office Endzone supremacy.",
+      smack1: "We came to dominate the trenches and light up the fantasy leaderboard!",
+      smack2: "Bring your best game—our roster is built for clutch performances!"
+    },
+    {
+      title: "Sunday Slate Slugfest",
+      surface: "Pro Gridiron Surface",
+      lore: "High-stakes weekly action where official NFL box scores automatically tally every passing yard, catch, rush, sack, and kick.",
+      smack1: "Our offense is rolling and the numbers don't lie!",
+      smack2: "Wait until our second-half surge flips the leaderboard!"
+    }
+  ];
+
+  // =========================================================================
+  // ESPN BOX SCORE & FANTASY PARSING HELPERS
+  // =========================================================================
+
+  function parseNumeric(val) {
+    if (val === null || val === undefined || val === '') return 0;
+    const n = parseFloat(String(val).replace(/[^0-9.\-]/g, ''));
+    return isNaN(n) ? 0 : n;
+  }
+
+  function parseMadeAttempt(str) {
+    if (!str) return { made: 0, att: 0 };
+    const parts = String(str).split(/[\/\-]/);
+    return {
+      made: parseInt(parts[0], 10) || 0,
+      att: parseInt(parts[1], 10) || 0
+    };
+  }
+
+  function getStatByKey(group, athlete, keyName) {
+    if (!group || !athlete || !Array.isArray(group.keys) || !Array.isArray(athlete.stats)) return '';
+    const idx = group.keys.indexOf(keyName);
+    if (idx === -1) return '';
+    return athlete.stats[idx] ?? '';
+  }
+
+  function getTeamBoxStat(teamBox, statName) {
+    if (!teamBox || !Array.isArray(teamBox.statistics)) return '';
+    const item = teamBox.statistics.find(s => s.name === statName);
+    return item ? item.displayValue : '';
+  }
+
+  function calcDefensePointsAllowedBonus(pointsAllowed) {
+    if (pointsAllowed === 0) return 10;
+    if (pointsAllowed <= 6) return 7;
+    if (pointsAllowed <= 13) return 4;
+    if (pointsAllowed <= 20) return 1;
+    if (pointsAllowed <= 27) return 0;
+    if (pointsAllowed <= 34) return -1;
+    return -4;
+  }
+
+  /**
+   * Computes real NFL box score metrics and automated 5-category Fantasy Points
+   * directly from an official ESPN /summary?event={id} response.
+   */
+  function extractTeamStatsAndFantasy(summary, teamAbbr) {
+    const normAbbr = normalizeAbbr(teamAbbr);
+    const comp = summary?.header?.competitions?.[0];
+    if (!comp) return null;
+
+    const competitors = comp.competitors || [];
+    const teamComp = competitors.find(c => normalizeAbbr(c.team?.abbreviation) === normAbbr);
+    const oppComp = competitors.find(c => normalizeAbbr(c.team?.abbreviation) !== normAbbr);
+    if (!teamComp) return null;
+
+    const state = comp.status?.type?.state || 'pre';
+    const completed = !!comp.status?.type?.completed;
+    const pointsScored = parseInt(teamComp.score || 0, 10);
+    const pointsAllowed = parseInt(oppComp?.score || 0, 10);
+    const teamDisplayName = teamComp.team?.name || teamComp.team?.displayName || normAbbr;
+
+    if (state === 'pre') {
+      const kick = formatArizonaDayTime(comp.date);
+      return {
+        state: 'pre',
+        completed: false,
+        won: false,
+        pointsScored: 0,
+        pointsAllowed: 0,
+        totalYards: 0,
+        totalTDs: 0,
+        sacks: 0,
+        fieldGoals: 0,
+        longFG: 0,
+        qbName: 'TBD (Pregame)',
+        fantasy: createEmptyFantasy('Pregame', `Kickoff: ${kick}`)
+      };
+    }
+
+    const boxTeams = summary?.boxscore?.teams || [];
+    const teamBox = boxTeams.find(t => normalizeAbbr(t.team?.abbreviation) === normAbbr);
+    const oppBox = boxTeams.find(t => normalizeAbbr(t.team?.abbreviation) !== normAbbr);
+
+    const boxPlayers = summary?.boxscore?.players || [];
+    const teamPlayerBlock = boxPlayers.find(p => normalizeAbbr(p.team?.abbreviation) === normAbbr);
+    const groups = teamPlayerBlock?.statistics || [];
+    const findGroup = (name) => groups.find(g => g.name === name);
+
+    // 1. QB (Passing + that QB's rushing)
+    const passGroup = findGroup('passing');
+    const rushGroup = findGroup('rushing');
+    const recGroup = findGroup('receiving');
+    const defGroup = findGroup('defensive');
+    const intGroup = findGroup('interceptions');
+    const kickGroup = findGroup('kicking');
+    const krGroup = findGroup('kickReturns');
+    const prGroup = findGroup('puntReturns');
+
+    let qbObj = { player: `${teamDisplayName} QB`, stats: 'No passing stats yet', points: 0 };
+    let qbId = null;
+    let qbDisplayName = null;
+    let totalPassTDs = 0;
+
+    if (passGroup && passGroup.athletes && passGroup.athletes.length > 0) {
+      let bestQb = null;
+      let bestQbScore = -999;
+
+      passGroup.athletes.forEach(ath => {
+        const pYds = parseNumeric(getStatByKey(passGroup, ath, 'passingYards'));
+        const pTds = parseNumeric(getStatByKey(passGroup, ath, 'passingTouchdowns'));
+        const pInt = parseNumeric(getStatByKey(passGroup, ath, 'interceptions'));
+        totalPassTDs += pTds;
+
+        let rYds = 0, rTds = 0;
+        if (rushGroup?.athletes) {
+          const rMatch = rushGroup.athletes.find(ra => ra.athlete?.id === ath.athlete?.id);
+          if (rMatch) {
+            rYds = parseNumeric(getStatByKey(rushGroup, rMatch, 'rushingYards'));
+            rTds = parseNumeric(getStatByKey(rushGroup, rMatch, 'rushingTouchdowns'));
+          }
+        }
+
+        const pts = (pYds * 0.04) + (pTds * 4) - (pInt * 2) + (rYds * 0.1) + (rTds * 6);
+        const rankMetric = pYds + (pTds * 40);
+        if (!bestQb || rankMetric > bestQbScore) {
+          bestQbScore = rankMetric;
+          bestQb = { ath, pYds, pTds, pInt, rYds, rTds, pts };
+        }
+      });
+
+      if (bestQb) {
+        qbId = bestQb.ath.athlete?.id;
+        qbDisplayName = bestQb.ath.athlete?.displayName || `${teamDisplayName} QB`;
+        const parts = [`${bestQb.pYds} Pass Yds`, `${bestQb.pTds} TD`];
+        if (bestQb.pInt > 0) parts.push(`${bestQb.pInt} INT`);
+        if (bestQb.rYds !== 0 || bestQb.rTds > 0) {
+          parts.push(`${bestQb.rYds} Rush Yds${bestQb.rTds > 0 ? `, ${bestQb.rTds} Rush TD` : ''}`);
+        }
+        qbObj = {
+          player: `${qbDisplayName} (QB)`,
+          stats: parts.join(', '),
+          points: Math.round(bestQb.pts * 10) / 10
+        };
+      }
+    }
+
+    // 2. Top Receiver (WR/TE/RB in receiving, 1.0 PPR + 0.1/yd + 6/TD)
+    let recObj = { player: `${teamDisplayName} Top Receiver`, stats: 'No receiving stats yet', points: 0 };
+    if (recGroup && recGroup.athletes && recGroup.athletes.length > 0) {
+      let bestRec = null;
+      recGroup.athletes.forEach(ath => {
+        const catches = parseNumeric(getStatByKey(recGroup, ath, 'receptions'));
+        const yds = parseNumeric(getStatByKey(recGroup, ath, 'receivingYards'));
+        const tds = parseNumeric(getStatByKey(recGroup, ath, 'receivingTouchdowns'));
+        const pts = (catches * 1.0) + (yds * 0.1) + (tds * 6);
+        if (!bestRec || pts > bestRec.pts) {
+          bestRec = { ath, catches, yds, tds, pts };
+        }
+      });
+      if (bestRec) {
+        const name = bestRec.ath.athlete?.displayName || 'Top Receiver';
+        recObj = {
+          player: `${name} (REC)`,
+          stats: `${bestRec.catches} Rec, ${bestRec.yds} Yds, ${bestRec.tds} TD`,
+          points: Math.round(bestRec.pts * 10) / 10
+        };
+      }
+    }
+
+    // 3. Top Rusher (RB/Offense, prefer non-QB if available; 0.1/yd + 6/TD)
+    let rushObj = { player: `${teamDisplayName} Top Rusher`, stats: 'No rushing stats yet', points: 0 };
+    let totalRushTDs = 0;
+    if (rushGroup && rushGroup.athletes && rushGroup.athletes.length > 0) {
+      let bestRush = null;
+      const nonQbRushers = rushGroup.athletes.filter(a => a.athlete?.id !== qbId);
+      const pool = nonQbRushers.length > 0 ? nonQbRushers : rushGroup.athletes;
+
+      rushGroup.athletes.forEach(ath => {
+        totalRushTDs += parseNumeric(getStatByKey(rushGroup, ath, 'rushingTouchdowns'));
+      });
+
+      pool.forEach(ath => {
+        const car = parseNumeric(getStatByKey(rushGroup, ath, 'rushingAttempts'));
+        const yds = parseNumeric(getStatByKey(rushGroup, ath, 'rushingYards'));
+        const tds = parseNumeric(getStatByKey(rushGroup, ath, 'rushingTouchdowns'));
+        const pts = (yds * 0.1) + (tds * 6);
+        if (!bestRush || pts > bestRush.pts) {
+          bestRush = { ath, car, yds, tds, pts };
+        }
+      });
+      if (bestRush) {
+        const name = bestRush.ath.athlete?.displayName || 'Top Rusher';
+        rushObj = {
+          player: `${name} (RB)`,
+          stats: `${bestRush.car} Car, ${bestRush.yds} Rush Yds, ${bestRush.tds} TD`,
+          points: Math.round(bestRush.pts * 10) / 10
+        };
+      }
+    }
+
+    // 4. Team Defense (Sacks +1, Takeaways +2, Def TD +6, PA Bonus)
+    let sacks = 0;
+    let defTDs = 0;
+    if (defGroup && defGroup.athletes) {
+      defGroup.athletes.forEach(ath => {
+        sacks += parseNumeric(getStatByKey(defGroup, ath, 'sacks'));
+        defTDs += parseNumeric(getStatByKey(defGroup, ath, 'defensiveTouchdowns'));
+      });
+    }
+    // Fallback sacks from opponent sacksYardsLost if defensive player table is empty
+    if (sacks === 0 && oppBox) {
+      const oppSacked = parseMadeAttempt(getTeamBoxStat(oppBox, 'sacksYardsLost'));
+      sacks = oppSacked.made;
+    }
+
+    let ints = 0;
+    if (intGroup && intGroup.athletes) {
+      intGroup.athletes.forEach(ath => {
+        ints += parseNumeric(getStatByKey(intGroup, ath, 'interceptions'));
+      });
+    }
+    const oppTurnovers = parseNumeric(getTeamBoxStat(oppBox, 'turnovers'));
+    const oppFumblesLost = parseNumeric(getTeamBoxStat(oppBox, 'fumblesLost'));
+    const oppInts = parseNumeric(getTeamBoxStat(oppBox, 'interceptions'));
+    const totalTakeaways = Math.max(oppTurnovers, ints + oppFumblesLost, oppInts + oppFumblesLost);
+    const paBonus = calcDefensePointsAllowedBonus(pointsAllowed);
+    const defPts = (sacks * 1.0) + (totalTakeaways * 2.0) + (defTDs * 6.0) + paBonus;
+
+    const defStatParts = [`${sacks} Sacks`, `${totalTakeaways} TO`];
+    if (defTDs > 0) defStatParts.push(`${defTDs} Def TD`);
+    defStatParts.push(`${pointsAllowed} PA`);
+
+    const defObj = {
+      player: `${teamDisplayName} Defense (DEF)`,
+      stats: defStatParts.join(', '),
+      points: Math.round(defPts * 10) / 10
+    };
+
+    // 5. Special Teams (Kicking FGs +3/+4 for 50+, XPs +1, Return TDs +6)
+    let fgMade = 0, fgAtt = 0, xpMade = 0, xpAtt = 0, longFG = 0, retTDs = 0;
+    let kickerName = `${teamDisplayName} Special Teams`;
+    if (kickGroup && kickGroup.athletes && kickGroup.athletes.length > 0) {
+      const k = kickGroup.athletes[0];
+      kickerName = `${k.athlete?.displayName || 'Kicker'} (K/ST)`;
+      kickGroup.athletes.forEach(ath => {
+        const fg = parseMadeAttempt(getStatByKey(kickGroup, ath, 'fieldGoalsMade/fieldGoalAttempts'));
+        const xp = parseMadeAttempt(getStatByKey(kickGroup, ath, 'extraPointsMade/extraPointAttempts'));
+        const lg = parseNumeric(getStatByKey(kickGroup, ath, 'longFieldGoalMade'));
+        fgMade += fg.made;
+        fgAtt += fg.att;
+        xpMade += xp.made;
+        xpAtt += xp.att;
+        if (lg > longFG) longFG = lg;
+      });
+    }
+    if (krGroup?.athletes) {
+      krGroup.athletes.forEach(ath => { retTDs += parseNumeric(getStatByKey(krGroup, ath, 'kickReturnTouchdowns')); });
+    }
+    if (prGroup?.athletes) {
+      prGroup.athletes.forEach(ath => { retTDs += parseNumeric(getStatByKey(prGroup, ath, 'puntReturnTouchdowns')); });
+    }
+
+    const longBonus = (fgMade > 0 && longFG >= 50) ? 1.0 : 0;
+    const stPts = (fgMade * 3.0) + longBonus + (xpMade * 1.0) + (retTDs * 6.0);
+    const stStatParts = [`${fgMade}/${fgAtt} FG`, `${xpMade}/${xpAtt} XP`];
+    if (longFG > 0) stStatParts.push(`Long ${longFG}y`);
+    if (retTDs > 0) stStatParts.push(`${retTDs} Ret TD`);
+
+    const stObj = {
+      player: kickerName,
+      stats: stStatParts.join(', '),
+      points: Math.round(stPts * 10) / 10
+    };
+
+    const totalPoints = Math.round((qbObj.points + recObj.points + rushObj.points + defObj.points + stObj.points) * 10) / 10;
+    const totalYards = parseNumeric(getTeamBoxStat(teamBox, 'totalYards'));
+    const totalTDs = totalPassTDs + totalRushTDs + defTDs + retTDs;
+
+    return {
+      state,
+      completed,
+      won: completed && pointsScored > pointsAllowed,
+      pointsScored,
+      pointsAllowed,
+      totalYards,
+      totalTDs,
+      sacks,
+      fieldGoals: fgMade,
+      longFG,
+      qbName: qbDisplayName || `${teamDisplayName} QB`,
+      fantasy: {
+        totalPoints,
+        hasStats: true,
+        qb: qbObj,
+        rec: recObj,
+        rush: rushObj,
+        def: defObj,
+        st: stObj
+      }
+    };
+  }
+
+  // =========================================================================
   // 2. MAIN APPLICATION CLASS
+  // =========================================================================
+
   class DugoutEndzoneApp {
     constructor() {
       this.teams = TEAMS;
-      this.roster = ROSTER;
-      this.currentTickerMode = 'TODAY'; // TODAY | YESTERDAY
+      this.roster = createInitialRoster();
+
+      // Live ESPN Season & Week State
+      this.currentSeason = new Date().getFullYear();
+      this.currentSeasonType = 2; // 1=Pre, 2=Reg, 3=Post
+      this.currentWeek = 1;
+      this.prevWeekNumber = 1;
+      this.hasInitializedWeekSelection = false;
+      this.hasLoadedSchedules = false;
+
+      // Live Data Stores
+      this.currentWeekGames = [];
+      this.lastWeekGames = [];
+      this.standingsByDivision = {};
+      this.standingsByTeam = {};
+      this.divisionLastPlace = {};
+      this.nflLastPlaceTeam = null;
+      this.summaryCache = {}; // eventId -> { data, fetchedAt, isFinal }
+      this.weekScoreboardCache = {}; // weekNum -> { events, scoresByTeam }
+      this.weeklyBracketData = null;
+
+      // UI State
+      this.currentTickerMode = 'TODAY'; // TODAY (Current Week) | YESTERDAY (Last Week)
+      this.activeDrawer = null; // null | 'FANTASY' | 'BRACKETS' | 'CHALLENGES' | 'STANDINGS'
       this.selectedMember = null;
       this.isGifActive = false;
       this.activeBracketTab = 'WEEKLY'; // WEEKLY | SEASON
-      this.selectedWeekIndex = 1; // Week 2 is the Active 2026 Regular Season Game Week
+      this.selectedWeekIndex = 0;
       this.selectedContenderFilter = 'ALL';
       this.selectedDayFilter = 'ALL';
       this.userPicks = JSON.parse(localStorage.getItem('office_endzone_picks') || '{}');
@@ -1077,14 +693,14 @@
         'PHI': 'char_mariah'
       };
 
-      // DOM Elements
+      // DOM Elements (including fixed fantasy-*-name IDs!)
       this.dom = {
         mstClock: document.getElementById('current-mst-clock'),
         tabTodayTicker: document.getElementById('tab-today-ticker'),
         tabYesterdayTicker: document.getElementById('tab-yesterday-ticker'),
         tickerGrid: document.getElementById('ticker-grid'),
         rosterGrid: document.getElementById('roster-grid'),
-        
+
         // Member Modal elements
         modalOverlay: document.getElementById('member-modal-overlay'),
         modalContent: document.getElementById('member-modal-content'),
@@ -1102,6 +718,7 @@
         picksStreak: document.getElementById('picks-streak'),
         trophyCount: document.getElementById('trophy-count'),
         trophyLabel: document.getElementById('trophy-label'),
+        matchupSectionTitle: document.getElementById('matchup-section-title'),
         todayMatchupCard: document.getElementById('today-matchup-card'),
         matchupLiveTag: document.getElementById('matchup-live-tag'),
         matchupAwayCode: document.getElementById('matchup-away-code'),
@@ -1118,6 +735,7 @@
         standingsDivisionTitle: document.getElementById('standings-division-title'),
         divisionStandingsTbody: document.getElementById('division-standings-tbody'),
         dailyLeadersTbody: document.getElementById('daily-leaders-tbody'),
+        leaderTableTitle: document.getElementById('leader-table-title'),
         btnOpenBoxScore: document.getElementById('btn-open-box-score'),
 
         // Showdown Reveal Modal elements
@@ -1147,29 +765,51 @@
         drawerBody: document.getElementById('drawer-body'),
         btnCloseDrawer: document.getElementById('btn-close-drawer'),
 
-        // Fantasy Category Elements in Modal
+        // Fantasy Category Elements in Modal (matched to index.html IDs!)
+        fantasyHeaderTotalBadge: document.getElementById('fantasy-header-total-badge'),
+        fantasyTotalLabel: document.getElementById('fantasy-total-label'),
         fantasyTotalVal: document.getElementById('fantasy-total-val'),
-        fantasyQbPlayer: document.getElementById('fantasy-qb-player'),
+        fantasyQbName: document.getElementById('fantasy-qb-name'),
         fantasyQbStats: document.getElementById('fantasy-qb-stats'),
         fantasyQbPts: document.getElementById('fantasy-qb-pts'),
-        fantasyRecPlayer: document.getElementById('fantasy-rec-player'),
+        fantasyRecName: document.getElementById('fantasy-rec-name'),
         fantasyRecStats: document.getElementById('fantasy-rec-stats'),
         fantasyRecPts: document.getElementById('fantasy-rec-pts'),
-        fantasyRushPlayer: document.getElementById('fantasy-rush-player'),
+        fantasyRushName: document.getElementById('fantasy-rush-name'),
         fantasyRushStats: document.getElementById('fantasy-rush-stats'),
         fantasyRushPts: document.getElementById('fantasy-rush-pts'),
-        fantasyDefPlayer: document.getElementById('fantasy-def-player'),
+        fantasyDefName: document.getElementById('fantasy-def-name'),
         fantasyDefStats: document.getElementById('fantasy-def-stats'),
         fantasyDefPts: document.getElementById('fantasy-def-pts'),
-        fantasyStPlayer: document.getElementById('fantasy-st-player'),
+        fantasyStName: document.getElementById('fantasy-st-name'),
         fantasyStStats: document.getElementById('fantasy-st-stats'),
         fantasyStPts: document.getElementById('fantasy-st-pts')
       };
     }
 
+    getSeasonTypeLabel() {
+      if (this.currentSeasonType === 1) return 'Preseason';
+      if (this.currentSeasonType === 3) return 'Postseason';
+      return 'Regular Season';
+    }
+
+    getTeamMeta(abbr) {
+      const norm = normalizeAbbr(abbr);
+      return this.teams.find(t => t.abbreviation === norm || t.id === norm) || {
+        id: norm,
+        city: norm,
+        name: norm,
+        abbreviation: norm,
+        color: '#38bdf8',
+        secondaryColor: '#0b1322',
+        logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${norm.toLowerCase()}.png`,
+        stadium: 'NFL Stadium',
+        division: 'NFL'
+      };
+    }
+
     init() {
       this.startClock();
-      this.renderTicker();
       this.renderRosterGrid();
       this.bindEvents();
       this.fetchLiveEspnFeed();
@@ -1179,67 +819,920 @@
     startClock() {
       const update = () => {
         if (this.dom.mstClock) {
-          this.dom.mstClock.textContent = getArizonaDateString();
+          this.dom.mstClock.textContent = getArizonaClockString();
         }
       };
       update();
       setInterval(update, 1000);
     }
 
+    // =========================================================================
+    // LIVE ESPN DATA SYNC ENGINE
+    // =========================================================================
+
+    parseScoreboardEvents(events) {
+      return (events || []).map(ev => {
+        const comp = ev.competitions?.[0] || {};
+        const competitors = comp.competitors || [];
+        const away = competitors.find(c => c.homeAway === 'away') || competitors[1] || {};
+        const home = competitors.find(c => c.homeAway === 'home') || competitors[0] || {};
+        const state = ev.status?.type?.state || 'pre';
+        const completed = !!ev.status?.type?.completed;
+        const awayAbbr = normalizeAbbr(away.team?.abbreviation);
+        const homeAbbr = normalizeAbbr(home.team?.abbreviation);
+
+        let statusText = formatArizonaDayTime(ev.date);
+        if (completed) {
+          statusText = ev.status?.type?.shortDetail || 'FINAL';
+        } else if (state === 'in') {
+          statusText = `${ev.status?.type?.shortDetail || 'LIVE'} • ${formatArizonaTime(ev.date)}`;
+        }
+
+        const isOfficeGame = !!(this.teamToMemberMap[awayAbbr] || this.teamToMemberMap[homeAbbr]);
+
+        return {
+          eventId: ev.id,
+          date: ev.date,
+          away: awayAbbr,
+          awayName: away.team?.name || away.team?.shortDisplayName || awayAbbr,
+          awayRec: away.records?.[0]?.summary || '',
+          awayScore: state === 'pre' ? '-' : String(away.score ?? '0'),
+          home: homeAbbr,
+          homeName: home.team?.name || home.team?.shortDisplayName || homeAbbr,
+          homeRec: home.records?.[0]?.summary || '',
+          homeScore: state === 'pre' ? '-' : String(home.score ?? '0'),
+          status: statusText,
+          state,
+          completed,
+          isLive: state === 'in',
+          isOfficeGame,
+          venue: comp.venue?.fullName || this.getTeamMeta(homeAbbr).stadium || 'NFL Stadium',
+          broadcast: comp.broadcasts?.[0]?.names?.[0] || '',
+          odds: comp.odds?.[0]?.details || '',
+          leaders: comp.leaders || [],
+          rawEvent: ev
+        };
+      }).sort((a, b) => {
+        // Put office games first, then live games, then chronological
+        if (a.isOfficeGame !== b.isOfficeGame) return a.isOfficeGame ? -1 : 1;
+        if (a.isLive !== b.isLive) return a.isLive ? -1 : 1;
+        return new Date(a.date) - new Date(b.date);
+      });
+    }
+
+    async fetchGameSummary(eventId, forceRefresh = false) {
+      if (!eventId) return null;
+      const cached = this.summaryCache[eventId];
+      if (cached && !forceRefresh) {
+        if (cached.isFinal || (Date.now() - cached.fetchedAt < 35000)) {
+          return cached.data;
+        }
+      }
+      try {
+        const res = await fetch(`${ESPN_BASE}/summary?event=${eventId}`, { cache: 'no-cache' });
+        if (!res.ok) return cached?.data || null;
+        const data = await res.json();
+        const isFinal = !!data?.header?.competitions?.[0]?.status?.type?.completed;
+        this.summaryCache[eventId] = { data, fetchedAt: Date.now(), isFinal };
+        return data;
+      } catch (e) {
+        return cached?.data || null;
+      }
+    }
+
+    async fetchStandings() {
+      try {
+        const res = await fetch(ESPN_STANDINGS_URL, { cache: 'no-cache' });
+        if (!res.ok) return;
+        const data = await res.json();
+
+        const byDiv = {};
+        const byTeam = {};
+        const allTeams = [];
+
+        (data.children || []).forEach(conf => {
+          (conf.children || []).forEach(div => {
+            const divName = div.name || 'Division';
+            const entries = (div.standings?.entries || []).map(entry => {
+              const abbr = normalizeAbbr(entry.team?.abbreviation);
+              const statMap = {};
+              (entry.stats || []).forEach(s => {
+                statMap[s.name] = s;
+              });
+
+              const wins = parseInt(statMap.wins?.value ?? 0, 10);
+              const losses = parseInt(statMap.losses?.value ?? 0, 10);
+              const ties = parseInt(statMap.ties?.value ?? 0, 10);
+              const winPercent = parseFloat(statMap.winPercent?.value ?? 0);
+              const pctDisplay = statMap.winPercent?.displayValue || formatRecordPct(wins, losses, ties);
+              const gb = statMap.gamesBehind?.displayValue || '—';
+              const streak = statMap.streak?.displayValue || '--';
+              const overall = statMap.overall?.displayValue || (ties > 0 ? `${wins}-${losses}-${ties}` : `${wins}-${losses}`);
+              const pointDiff = parseFloat(statMap.pointDifferential?.value ?? statMap.differential?.value ?? 0);
+
+              const rec = {
+                abbr,
+                team: entry.team?.name || entry.team?.shortDisplayName || abbr,
+                displayName: entry.team?.displayName || abbr,
+                logo: entry.team?.logos?.[0]?.href || this.getTeamMeta(abbr).logo,
+                division: divName,
+                w: wins,
+                l: losses,
+                t: ties,
+                overall,
+                winPercent,
+                pct: pctDisplay,
+                gb: (gb === '-' || gb === '0' || gb === '0.0') ? '—' : gb,
+                streak,
+                pointDiff
+              };
+              byTeam[abbr] = rec;
+              allTeams.push(rec);
+              return rec;
+            });
+
+            // Sort each division properly by winPercent desc, wins desc, pointDiff desc
+            entries.sort((a, b) => {
+              if (b.winPercent !== a.winPercent) return b.winPercent - a.winPercent;
+              if (b.w !== a.w) return b.w - a.w;
+              return b.pointDiff - a.pointDiff;
+            });
+
+            byDiv[divName] = entries;
+            if (entries.length > 0) {
+              this.divisionLastPlace[divName] = entries[entries.length - 1];
+            }
+          });
+        });
+
+        // Determine actual NFL #32 Last-Place team across all 32 teams
+        if (allTeams.length > 0) {
+          const sortedWorst = [...allTeams].sort((a, b) => {
+            if (a.winPercent !== b.winPercent) return a.winPercent - b.winPercent;
+            if (a.w !== b.w) return a.w - b.w;
+            return a.pointDiff - b.pointDiff;
+          });
+          this.nflLastPlaceTeam = sortedWorst[0];
+        }
+
+        this.standingsByDivision = byDiv;
+        this.standingsByTeam = byTeam;
+
+        // Hydrate every office member's record, streak, and real division standings
+        this.roster.forEach(member => {
+          const st = byTeam[member.teamId];
+          if (st) {
+            member.picks = {
+              record: st.overall,
+              pct: st.pct,
+              streak: st.streak,
+              wins: st.w,
+              losses: st.l,
+              ties: st.t,
+              winPercent: st.winPercent
+            };
+            member.division = st.division;
+            member.divisionTitle = `${st.division.toUpperCase()} STANDINGS`;
+            const divEntries = byDiv[st.division] || [];
+            member.standings = divEntries.map(row => ({
+              team: row.team,
+              abbr: row.abbr,
+              w: row.w,
+              l: row.l,
+              t: row.t,
+              pct: row.pct,
+              gb: row.gb,
+              highlight: row.abbr === member.teamId
+            }));
+          }
+        });
+      } catch (e) {
+        console.warn('Could not load ESPN standings:', e);
+      }
+    }
+
+    async fetchAllTeamSchedules() {
+      if (this.hasLoadedSchedules) return;
+      this.hasLoadedSchedules = true;
+
+      await Promise.all(this.roster.map(async member => {
+        try {
+          const res = await fetch(`${ESPN_BASE}/teams/${member.teamId.toLowerCase()}/schedule`, { cache: 'no-cache' });
+          if (!res.ok) return;
+          const data = await res.json();
+          const events = data.events || [];
+
+          const upcoming = [];
+          events.forEach(ev => {
+            const comp = ev.competitions?.[0];
+            if (!comp) return;
+            const state = comp.status?.type?.state || 'pre';
+            if (state === 'post') return;
+
+            const competitors = comp.competitors || [];
+            const away = competitors.find(c => c.homeAway === 'away') || competitors[1];
+            const home = competitors.find(c => c.homeAway === 'home') || competitors[0];
+            if (!away || !home) return;
+
+            const awayAbbr = normalizeAbbr(away.team?.abbreviation);
+            const homeAbbr = normalizeAbbr(home.team?.abbreviation);
+            const wkNum = ev.week?.number;
+            const dateShort = formatArizonaShortDate(ev.date);
+
+            upcoming.push({
+              weekNumber: wkNum,
+              date: wkNum ? `Wk ${wkNum} • ${dateShort}` : dateShort,
+              away: awayAbbr,
+              home: homeAbbr,
+              time: formatArizonaTime(ev.date),
+              isHome: homeAbbr === member.teamId,
+              rawDate: ev.date
+            });
+          });
+
+          member.schedule = upcoming.slice(0, 5);
+        } catch (e) {
+          console.warn(`Schedule fetch failed for ${member.teamId}:`, e);
+        }
+      }));
+    }
+
+    async fetchLiveEspnFeed() {
+      try {
+        // 1. Fetch Current Scoreboard
+        const sbRes = await fetch(`${ESPN_BASE}/scoreboard`, { cache: 'no-cache' });
+        if (!sbRes.ok) throw new Error(`ESPN scoreboard HTTP ${sbRes.status}`);
+        const sbData = await sbRes.json();
+
+        this.currentSeason = sbData.season?.year || new Date().getFullYear();
+        this.currentSeasonType = sbData.season?.type || 2;
+        this.currentWeek = sbData.week?.number || 1;
+        this.prevWeekNumber = this.currentWeek > 1 ? this.currentWeek - 1 : 18;
+
+        if (!this.hasInitializedWeekSelection) {
+          const regWeek = this.currentSeasonType === 2 ? this.currentWeek : 18;
+          this.selectedWeekIndex = Math.max(0, Math.min(17, regWeek - 1));
+          this.hasInitializedWeekSelection = true;
+        }
+
+        // Update Ticker Tab Labels with real Week numbers
+        if (this.dom.tabTodayTicker) {
+          const wkPrefix = this.currentSeasonType === 1 ? 'PRE WK' : (this.currentSeasonType === 3 ? 'PLAYOFF WK' : 'WEEK');
+          this.dom.tabTodayTicker.textContent = `${wkPrefix} ${this.currentWeek}`;
+        }
+        if (this.dom.tabYesterdayTicker) {
+          this.dom.tabYesterdayTicker.textContent = this.currentWeek > 1
+            ? `LAST WEEK (WK ${this.prevWeekNumber})`
+            : 'LAST WEEK';
+        }
+
+        this.currentWeekGames = this.parseScoreboardEvents(sbData.events || []);
+        this.weekScoreboardCache[this.currentWeek] = {
+          games: this.currentWeekGames,
+          fetchedAt: Date.now()
+        };
+
+        // Render ticker right away so user sees real scores immediately
+        if (this.currentTickerMode === 'TODAY') {
+          this.renderTicker();
+        }
+
+        // 2. Fetch Previous Week Scoreboard, Standings, and Schedules in parallel
+        const prevType = (this.currentWeek === 1 && this.currentSeasonType === 3) ? 2 : this.currentSeasonType;
+        const prevUrl = `${ESPN_BASE}/scoreboard?seasontype=${prevType}&week=${this.prevWeekNumber}`;
+
+        const prevPromise = (this.currentWeek > 1 || this.currentSeasonType === 3)
+          ? fetch(prevUrl, { cache: 'no-cache' })
+              .then(r => r.ok ? r.json() : null)
+              .then(d => {
+                if (d?.events) {
+                  this.lastWeekGames = this.parseScoreboardEvents(d.events);
+                  this.weekScoreboardCache[this.prevWeekNumber] = {
+                    games: this.lastWeekGames,
+                    fetchedAt: Date.now()
+                  };
+                  if (this.currentTickerMode === 'YESTERDAY') {
+                    this.renderTicker();
+                  }
+                }
+              }).catch(() => {})
+          : Promise.resolve();
+
+        await Promise.all([
+          prevPromise,
+          this.fetchStandings(),
+          this.fetchAllTeamSchedules()
+        ]);
+
+        // 3. Synchronize each Office Staff Member's current-week game & real ESPN summary/fantasy stats
+        await Promise.all(this.roster.map(async member => {
+          const game = this.currentWeekGames.find(g => g.away === member.teamId || g.home === member.teamId);
+
+          if (!game) {
+            // BYE WEEK!
+            const nextGame = member.schedule[0];
+            const nextLabel = nextGame
+              ? `Next: ${nextGame.away} @ ${nextGame.home} (${nextGame.date})`
+              : 'Season schedule syncing...';
+            member.matchup = {
+              eventId: null,
+              isBye: true,
+              away: { code: member.teamId, name: member.teamName, rec: member.picks.record, score: 'BYE' },
+              home: { code: 'BYE', name: `Week ${this.currentWeek}`, rec: 'OFF', score: '--' },
+              status: `BYE WEEK • ${this.currentSeason} WEEK ${this.currentWeek}`,
+              state: 'bye',
+              isLive: false,
+              venue: nextLabel,
+              awayStarter: 'Bye Week',
+              homeStarter: 'Rest & Prep'
+            };
+            member.fantasy = createEmptyFantasy('BYE WEEK', `No game in Week ${this.currentWeek}`);
+            member.liveStats = {
+              yards: 0,
+              tds: 0,
+              sacks: 0,
+              fieldGoals: 0,
+              longFG: 0,
+              pointsScored: 0,
+              pointsAllowed: 0,
+              won: false,
+              hasPlayed: false,
+              isBye: true,
+              status: 'Bye Week'
+            };
+            return;
+          }
+
+          // Active week matchup exists!
+          const awayMeta = this.getTeamMeta(game.away);
+          const homeMeta = this.getTeamMeta(game.home);
+          const awayRec = game.awayRec || this.standingsByTeam[game.away]?.overall || '--';
+          const homeRec = game.homeRec || this.standingsByTeam[game.home]?.overall || '--';
+
+          member.matchup = {
+            eventId: game.eventId,
+            isBye: false,
+            away: { code: game.away, name: awayMeta.name, rec: awayRec, score: game.awayScore },
+            home: { code: game.home, name: homeMeta.name, rec: homeRec, score: game.homeScore },
+            status: game.status,
+            state: game.state,
+            isLive: game.isLive,
+            venue: game.venue,
+            awayStarter: game.state === 'pre' ? 'Scheduled' : 'Loading...',
+            homeStarter: game.state === 'pre' ? 'Scheduled' : 'Loading...'
+          };
+
+          // Fetch real ESPN Summary for accurate Box Score + Automated Fantasy Points
+          const summary = await this.fetchGameSummary(game.eventId);
+          if (summary) {
+            const memberStats = extractTeamStatsAndFantasy(summary, member.teamId);
+            const awayStats = extractTeamStatsAndFantasy(summary, game.away);
+            const homeStats = extractTeamStatsAndFantasy(summary, game.home);
+
+            if (awayStats?.qbName) member.matchup.awayStarter = awayStats.qbName;
+            if (homeStats?.qbName) member.matchup.homeStarter = homeStats.qbName;
+
+            if (memberStats) {
+              member.fantasy = memberStats.fantasy;
+              member.liveStats = {
+                yards: memberStats.totalYards,
+                tds: memberStats.totalTDs,
+                sacks: memberStats.sacks,
+                fieldGoals: memberStats.fieldGoals,
+                longFG: memberStats.longFG,
+                pointsScored: memberStats.pointsScored,
+                pointsAllowed: memberStats.pointsAllowed,
+                won: memberStats.won,
+                hasPlayed: memberStats.state !== 'pre',
+                isBye: false,
+                status: memberStats.state === 'in'
+                  ? `Live (${game.status.split('•')[0].trim()})`
+                  : (memberStats.completed ? (memberStats.won ? 'Final (W)' : 'Final (L)') : formatArizonaDayTime(game.date))
+              };
+            }
+          }
+        }));
+
+        // 4. Calculate real Weekly Yards & Touchdowns Leader + Weekly Fantasy Leader
+        let maxComposite = -1;
+        let leaderMember = null;
+        this.roster.forEach(m => {
+          if (!m.liveStats.hasPlayed) return;
+          const score = (m.liveStats.yards || 0) + ((m.liveStats.tds || 0) * 50);
+          if (score > maxComposite) {
+            maxComposite = score;
+            leaderMember = m;
+          }
+        });
+
+        this.roster.forEach(m => {
+          const earnedCount = this.getMemberChallengeBadges(m).length;
+          m.trophy.count = earnedCount;
+          if (leaderMember && m.id === leaderMember.id) {
+            m.trophy.label = `WEEK ${this.currentWeek} YARDS & TDS LEADER (${m.liveStats.yards} YDS • ${m.liveStats.tds} TD)`;
+          } else if (m.liveStats.isBye) {
+            m.trophy.label = `WEEK ${this.currentWeek} BYE WEEK • ${m.picks.record} OVERALL`;
+          } else if (!m.liveStats.hasPlayed) {
+            m.trophy.label = `${this.currentSeason} WEEK ${this.currentWeek} CONTENDER • ${m.picks.record}`;
+          } else {
+            m.trophy.label = `WEEK ${this.currentWeek}: ${m.liveStats.yards} YDS • ${m.liveStats.tds} TD • ${m.fantasy.totalPoints.toFixed(1)} FPTS`;
+          }
+        });
+
+        // 5. Rebuild Weekly Bracket Data dynamically around real currentWeek & live stats
+        this.weeklyBracketData = this.buildWeeklyTournamentData();
+
+        // 6. Refresh any currently visible UI components (ticker, open modal, open drawer)
+        this.renderTicker();
+        if (this.selectedMember && this.dom.modalOverlay?.classList.contains('open')) {
+          this.populateMemberModalData(this.selectedMember.id);
+        }
+        if (this.activeDrawer === 'FANTASY') this.openFantasyDrawer(false);
+        else if (this.activeDrawer === 'BRACKETS') this.renderBracketsHub();
+        else if (this.activeDrawer === 'CHALLENGES') this.openChallengesDrawer(false);
+        else if (this.activeDrawer === 'STANDINGS') this.openStandingsDrawer(false);
+
+      } catch (err) {
+        console.warn('Live ESPN data sync error:', err);
+        if (this.dom.tickerGrid && this.currentWeekGames.length === 0) {
+          this.dom.tickerGrid.innerHTML = `<div class="ticker-loading-placeholder">Unable to reach live ESPN NFL feed. Retrying automatically...</div>`;
+        }
+      }
+    }
+
+    async fetchPastWeekScoreboard(weekNum) {
+      if (this.weekScoreboardCache[weekNum]) {
+        return this.weekScoreboardCache[weekNum].games;
+      }
+      try {
+        const res = await fetch(`${ESPN_BASE}/scoreboard?seasontype=2&week=${weekNum}`, { cache: 'no-cache' });
+        if (!res.ok) return [];
+        const data = await res.json();
+        const games = this.parseScoreboardEvents(data.events || []);
+        this.weekScoreboardCache[weekNum] = { games, fetchedAt: Date.now() };
+        return games;
+      } catch (e) {
+        return [];
+      }
+    }
+
+    // =========================================================================
+    // CONTENDERS, SEEDING & BRACKETS BUILDERS (100% DYNAMIC)
+    // =========================================================================
+
+    getSeededContenders() {
+      const sorted = [...this.roster].sort((a, b) => {
+        if (b.picks.winPercent !== a.picks.winPercent) return b.picks.winPercent - a.picks.winPercent;
+        if (b.picks.wins !== a.picks.wins) return b.picks.wins - a.picks.wins;
+        return (b.fantasy?.totalPoints || 0) - (a.fantasy?.totalPoints || 0);
+      });
+
+      return sorted.map((m, idx) => {
+        const meta = this.getTeamMeta(m.teamId);
+        return {
+          id: m.id,
+          name: m.shortName || m.name,
+          fullName: m.name,
+          team: m.teamId,
+          teamName: meta.name,
+          avatar: m.image,
+          bannerGif: m.bannerGif,
+          seed: `#${idx + 1}`,
+          color: m.color || meta.color,
+          record: m.picks.record,
+          winPercent: m.picks.winPercent,
+          yards: m.liveStats.yards || 0,
+          fantasyPoints: m.fantasy?.totalPoints || 0,
+          isBye: m.liveStats.isBye
+        };
+      });
+    }
+
+    getDivisionCellarTeam(memberTeamAbbr) {
+      const meta = this.getTeamMeta(memberTeamAbbr);
+      const div = meta.division || 'NFC North';
+      const divList = this.standingsByDivision[div] || [];
+      const nonSelf = divList.filter(t => t.abbr !== memberTeamAbbr);
+      const cellar = nonSelf.length > 0 ? nonSelf[nonSelf.length - 1] : divList[divList.length - 1];
+
+      if (cellar) {
+        const cMeta = this.getTeamMeta(cellar.abbr);
+        return {
+          team: cellar.abbr,
+          name: cellar.team,
+          displayName: cellar.displayName,
+          record: cellar.overall,
+          logo: cellar.logo || cMeta.logo,
+          color: cMeta.color,
+          venue: cMeta.stadium,
+          division: div
+        };
+      }
+      return {
+        team: 'NFL',
+        name: 'Division Rival',
+        displayName: 'Division Rival',
+        record: '--',
+        logo: 'https://a.espncdn.com/i/teamlogos/nfl/500/nfl.png',
+        color: '#64748b',
+        venue: 'NFL Stadium',
+        division: div
+      };
+    }
+
+    getNflLastPlaceContender() {
+      const worst = this.nflLastPlaceTeam;
+      if (worst) {
+        const meta = this.getTeamMeta(worst.abbr);
+        return {
+          name: worst.displayName,
+          team: worst.abbr,
+          teamName: `${worst.team} (NFL #32)`,
+          avatar: worst.logo || meta.logo,
+          bannerGif: worst.logo || meta.logo,
+          seed: 'NFL #32',
+          color: meta.color,
+          record: worst.overall,
+          yards: 0,
+          score: 0,
+          pick: `${worst.abbr} ${worst.team} (${worst.overall})`
+        };
+      }
+      return {
+        name: 'NFL #32 Team',
+        team: 'TBD',
+        teamName: 'NFL #32 Last-Place Team',
+        avatar: 'https://a.espncdn.com/i/teamlogos/nfl/500/nfl.png',
+        bannerGif: 'https://a.espncdn.com/i/teamlogos/nfl/500/nfl.png',
+        seed: 'NFL #32',
+        color: '#64748b',
+        record: '--',
+        yards: 0,
+        score: 0,
+        pick: 'TBD (Syncing Standings)'
+      };
+    }
+
+    buildWeeklyTournamentData() {
+      const activeWk = this.currentSeasonType === 2 ? this.currentWeek : 18;
+      const contenders = this.getSeededContenders();
+
+      return {
+        activeWeek: activeWk,
+        weeks: Array.from({ length: 18 }, (_, idx) => {
+          const wNum = idx + 1;
+          const isPast = wNum < activeWk;
+          const isActive = wNum === activeWk;
+          const status = isPast ? 'FINAL' : (isActive ? 'ACTIVE' : 'UPCOMING');
+
+          // Rotate pairings deterministically across all 18 weeks
+          const p1 = contenders[idx % 7];
+          const p2 = contenders[(idx + 1) % 7];
+          const p3 = contenders[(idx + 2) % 7];
+          const p4 = contenders[(idx + 3) % 7];
+          const p5 = contenders[(idx + 4) % 7];
+          const p6 = contenders[(idx + 5) % 7];
+          const p7 = contenders[(idx + 6) % 7];
+
+          const divCellar = this.getDivisionCellarTeam(p7.team);
+          const pastGames = this.weekScoreboardCache[wNum]?.games || [];
+
+          const getTeamWeekScore = (teamAbbr) => {
+            const g = pastGames.find(gm => gm.away === teamAbbr || gm.home === teamAbbr);
+            if (!g) return null;
+            const sc = g.away === teamAbbr ? parseInt(g.awayScore, 10) : parseInt(g.homeScore, 10);
+            return isNaN(sc) ? null : sc;
+          };
+
+          const isTeamByeThisWeek = (contender) => {
+            if (!contender) return false;
+            if (isActive) return !!contender.isBye;
+            if (isPast && pastGames.length > 0) return getTeamWeekScore(contender.team) === null;
+            return false;
+          };
+
+          const getScore = (contender) => {
+            if (!contender) return 0;
+            if (isActive) return contender.fantasyPoints || 0;
+            if (isPast) {
+              const realPts = getTeamWeekScore(contender.team);
+              return realPts !== null ? realPts : 0;
+            }
+            return 0;
+          };
+
+          const getActiveTeamFantasy = (teamAbbr) => {
+            const g = this.currentWeekGames.find(gm => gm.away === teamAbbr || gm.home === teamAbbr);
+            if (!g) return { score: 0, isBye: true };
+            const cached = this.summaryCache[g.eventId]?.data;
+            if (cached) {
+              const st = extractTeamStatsAndFantasy(cached, teamAbbr);
+              if (st?.fantasy) return { score: st.fantasy.totalPoints, isBye: false };
+            }
+            const rawPts = g.away === teamAbbr ? parseInt(g.awayScore, 10) : parseInt(g.homeScore, 10);
+            return { score: isNaN(rawPts) ? 0 : rawPts, isBye: false };
+          };
+
+          const scoreUnit = isActive ? 'PTS' : (isPast && pastGames.length > 0 ? 'NFL PTS' : 'PTS');
+
+          const s1 = getScore(p1);
+          const s2 = getScore(p2);
+          const s3 = getScore(p3);
+          const s4 = getScore(p4);
+          const s5 = getScore(p5);
+          const s6 = getScore(p6);
+          const s7 = getScore(p7);
+          const cellarActive = isActive ? getActiveTeamFantasy(divCellar.team) : null;
+          const sCellar = isActive
+            ? (cellarActive?.score || 0)
+            : (isPast ? (getTeamWeekScore(divCellar.team) || 0) : 0);
+          const isCellarBye = isActive
+            ? !!cellarActive?.isBye
+            : (isPast && pastGames.length > 0 && getTeamWeekScore(divCellar.team) === null);
+
+          // Winners of Stage 1 advance cleanly
+          const w1 = s1 >= s2 ? p1 : p2;
+          const w2 = s3 >= s4 ? p3 : p4;
+          const w3 = s5 >= s6 ? p5 : p6;
+          const w4 = p7;
+
+          const lore1 = LORE_DATABASE[idx % LORE_DATABASE.length];
+          const lore2 = LORE_DATABASE[(idx + 1) % LORE_DATABASE.length];
+          const lore3 = LORE_DATABASE[(idx + 2) % LORE_DATABASE.length];
+          const loreSemi1 = LORE_DATABASE[(idx + 3) % LORE_DATABASE.length];
+          const loreSemi2 = LORE_DATABASE[(idx + 4) % LORE_DATABASE.length];
+          const loreFinal = LORE_DATABASE[(idx + 5) % LORE_DATABASE.length];
+
+          const scoreReady = isActive || (isPast && pastGames.length > 0);
+          const weekLeader = isActive
+            ? [...contenders].sort((a, b) => b.fantasyPoints - a.fantasyPoints)[0]
+            : (isPast && pastGames.length > 0
+                ? [...contenders].sort((a, b) => getScore(b) - getScore(a))[0]
+                : null);
+
+          const wrapStaff = (c, sc) => ({
+            ...c,
+            isBye: isTeamByeThisWeek(c),
+            score: sc,
+            pick: `${c.team} ${c.teamName} (${c.record})`
+          });
+
+          const matches = [
+            {
+              id: `w${wNum}_q1`,
+              round: 1,
+              roundName: 'Stage 1 • Opening Matchup',
+              title: `Matchup 1: ${p1.name} (${p1.team}) vs ${p2.name} (${p2.team})`,
+              rivalryName: `${p1.name} (${p1.team}) vs ${p2.name} (${p2.team})`,
+              day: 'Week Slate',
+              venue: this.getTeamMeta(p1.team).stadium,
+              kickoff: `${this.currentSeason} Week ${wNum}`,
+              surface: lore1.surface,
+              spread: `${p1.record} vs ${p2.record}`,
+              scoreUnit,
+              staff1: wrapStaff(p1, s1),
+              staff2: wrapStaff(p2, s2),
+              lore: lore1.lore,
+              smack1: lore1.smack1,
+              smack2: lore1.smack2,
+              status
+            },
+            {
+              id: `w${wNum}_q2`,
+              round: 1,
+              roundName: 'Stage 1 • Opening Matchup',
+              title: `Matchup 2: ${p3.name} (${p3.team}) vs ${p4.name} (${p4.team})`,
+              rivalryName: `${p3.name} (${p3.team}) vs ${p4.name} (${p4.team})`,
+              day: 'Week Slate',
+              venue: this.getTeamMeta(p3.team).stadium,
+              kickoff: `${this.currentSeason} Week ${wNum}`,
+              surface: lore2.surface,
+              spread: `${p3.record} vs ${p4.record}`,
+              scoreUnit,
+              staff1: wrapStaff(p3, s3),
+              staff2: wrapStaff(p4, s4),
+              lore: lore2.lore,
+              smack1: lore2.smack1,
+              smack2: lore2.smack2,
+              status
+            },
+            {
+              id: `w${wNum}_q3`,
+              round: 1,
+              roundName: 'Stage 1 • Opening Matchup',
+              title: `Matchup 3: ${p5.name} (${p5.team}) vs ${p6.name} (${p6.team})`,
+              rivalryName: `${p5.name} (${p5.team}) vs ${p6.name} (${p6.team})`,
+              day: 'Week Slate',
+              venue: this.getTeamMeta(p5.team).stadium,
+              kickoff: `${this.currentSeason} Week ${wNum}`,
+              surface: lore3.surface,
+              spread: `${p5.record} vs ${p6.record}`,
+              scoreUnit,
+              staff1: wrapStaff(p5, s5),
+              staff2: wrapStaff(p6, s6),
+              lore: lore3.lore,
+              smack1: lore3.smack1,
+              smack2: lore3.smack2,
+              status
+            },
+            {
+              id: `w${wNum}_q4`,
+              round: 1,
+              roundName: 'Stage 1 • Division Cellar Challenge',
+              title: `Matchup 4: ${p7.name} (${p7.team}) vs ${divCellar.name} (${divCellar.division})`,
+              rivalryName: `${p7.name} vs ${divCellar.name} (${divCellar.division} Rival)`,
+              day: 'Week Slate',
+              venue: divCellar.venue,
+              kickoff: `${this.currentSeason} Week ${wNum}`,
+              surface: 'Natural Grass / Turf',
+              spread: `${p7.record} vs ${divCellar.record}`,
+              scoreUnit,
+              staff1: wrapStaff(p7, s7),
+              staff2: {
+                name: divCellar.name,
+                team: divCellar.team,
+                teamName: `${divCellar.name} (${divCellar.record})`,
+                avatar: divCellar.logo,
+                bannerGif: divCellar.logo,
+                seed: 'DIV-LAST',
+                color: divCellar.color,
+                record: divCellar.record,
+                yards: 0,
+                isBye: isCellarBye,
+                score: sCellar,
+                pick: `${divCellar.team} ${divCellar.name} (${divCellar.record})`
+              },
+              lore: `${p7.name}'s ${p7.teamName} face ${divCellar.displayName} (${divCellar.record}) from the ${divCellar.division} in this week's odd-player matchup!`,
+              smack1: `Taking care of business in the ${divCellar.division}!`,
+              smack2: `Don't overlook the ${divCellar.name}—ready to play spoiler!`,
+              status
+            },
+            {
+              id: `w${wNum}_s1`,
+              round: 2,
+              roundName: 'Stage 2 • Semifinal 1',
+              title: scoreReady ? `Semifinal 1: ${w1.name} vs ${w2.name}` : 'Semifinal 1: Match 1 Winner vs Match 2 Winner',
+              rivalryName: scoreReady ? `${w1.name} vs ${w2.name} (Semifinal 1)` : 'Awaiting Stage 1 Results',
+              day: 'Semifinals',
+              venue: this.getTeamMeta(w1.team).stadium,
+              kickoff: `Week ${wNum} Semifinal`,
+              surface: loreSemi1.surface,
+              spread: scoreReady ? `${w1.record} vs ${w2.record}` : 'TBD',
+              scoreUnit,
+              staff1: scoreReady
+                ? wrapStaff(w1, getScore(w1))
+                : { name: `TBD (${p1.name}/${p2.name})`, team: 'TBD', teamName: 'Match 1 Winner', avatar: p1.avatar, seed: 'ADV', score: 0, pick: 'Advances from Match 1' },
+              staff2: scoreReady
+                ? wrapStaff(w2, getScore(w2))
+                : { name: `TBD (${p3.name}/${p4.name})`, team: 'TBD', teamName: 'Match 2 Winner', avatar: p3.avatar, seed: 'ADV', score: 0, pick: 'Advances from Match 2' },
+              lore: loreSemi1.lore,
+              smack1: loreSemi1.smack1,
+              smack2: loreSemi1.smack2,
+              status: scoreReady ? status : 'PENDING'
+            },
+            {
+              id: `w${wNum}_s2`,
+              round: 2,
+              roundName: 'Stage 2 • Semifinal 2',
+              title: scoreReady ? `Semifinal 2: ${w3.name} vs ${w4.name}` : 'Semifinal 2: Match 3 Winner vs Match 4 Winner',
+              rivalryName: scoreReady ? `${w3.name} vs ${w4.name} (Semifinal 2)` : 'Awaiting Stage 1 Results',
+              day: 'Semifinals',
+              venue: this.getTeamMeta(w3.team).stadium,
+              kickoff: `Week ${wNum} Semifinal`,
+              surface: loreSemi2.surface,
+              spread: scoreReady ? `${w3.record} vs ${w4.record}` : 'TBD',
+              scoreUnit,
+              staff1: scoreReady
+                ? wrapStaff(w3, getScore(w3))
+                : { name: `TBD (${p5.name}/${p6.name})`, team: 'TBD', teamName: 'Match 3 Winner', avatar: p5.avatar, seed: 'ADV', score: 0, pick: 'Advances from Match 3' },
+              staff2: scoreReady
+                ? wrapStaff(w4, getScore(w4))
+                : { name: `TBD (${p7.name}/Rival)`, team: 'TBD', teamName: 'Match 4 Winner', avatar: p7.avatar, seed: 'ADV', score: 0, pick: 'Advances from Match 4' },
+              lore: loreSemi2.lore,
+              smack1: loreSemi2.smack1,
+              smack2: loreSemi2.smack2,
+              status: scoreReady ? status : 'PENDING'
+            },
+            {
+              id: `w${wNum}_f1`,
+              round: 3,
+              roundName: 'Stage 3 • Weekly Crown Finale',
+              title: scoreReady ? `Weekly Crown: ${w1.name} vs ${w3.name}` : 'Weekly Championship Finale',
+              rivalryName: scoreReady ? `👑 Week ${wNum} Championship` : '👑 Weekly Championship Finale',
+              day: 'Primetime Finale',
+              venue: 'Office Championship Arena',
+              kickoff: `Week ${wNum} Finale`,
+              surface: loreFinal.surface,
+              spread: scoreReady ? 'Live Automated Scoring' : 'TBD',
+              scoreUnit,
+              staff1: scoreReady
+                ? wrapStaff((getScore(w1) >= getScore(w2) ? w1 : w2), Math.max(getScore(w1), getScore(w2)))
+                : { name: 'TBD (Semifinal 1 Winner)', team: 'TBD', teamName: 'Finalist A', avatar: p1.avatar, seed: 'TOP', score: 0, pick: 'Advances to Championship' },
+              staff2: scoreReady
+                ? wrapStaff((getScore(w3) >= getScore(w4) ? w3 : w4), Math.max(getScore(w3), getScore(w4)))
+                : { name: 'TBD (Semifinal 2 Winner)', team: 'TBD', teamName: 'Finalist B', avatar: p5.avatar, seed: 'TOP', score: 0, pick: 'Advances to Championship' },
+              lore: loreFinal.lore,
+              smack1: loreFinal.smack1,
+              smack2: loreFinal.smack2,
+              status: scoreReady ? status : 'PENDING'
+            }
+          ];
+
+          return {
+            weekNumber: wNum,
+            label: `Week ${wNum}${isActive ? ' (Active)' : ''}`,
+            status,
+            winner: weekLeader
+              ? `${weekLeader.name} (${weekLeader.team}) — ${getScore(weekLeader).toFixed(isActive ? 1 : 0)} ${scoreUnit}`
+              : (isPast ? 'Loading ESPN Week Results...' : 'Upcoming'),
+            mvp: weekLeader
+              ? `${weekLeader.name} (${weekLeader.record})`
+              : (isPast ? 'Fetching...' : 'TBD'),
+            matchups: matches
+          };
+        })
+      };
+    }
+
+    // =========================================================================
+    // AUTOMATED CHALLENGES EVALUATOR (100% REAL WEEKLY STATS)
+    // =========================================================================
+
+    getMemberChallengeBadges(member) {
+      const st = member.liveStats || {};
+      if (!st.hasPlayed || st.isBye) return [];
+      const icons = [];
+      if (st.yards >= 400) icons.push({ icon: '🚀', label: `400+ Yds (${st.yards} YDS)` });
+      if (st.pointsScored >= 30) icons.push({ icon: '🔥', label: `30+ Pts (${st.pointsScored} PTS)` });
+      if (st.sacks >= 4) icons.push({ icon: '💥', label: `4+ Sacks (${st.sacks} SACKS)` });
+      if (st.fieldGoals >= 3 || st.longFG >= 50) icons.push({ icon: '🎯', label: `Clutch Kicker (${st.fieldGoals} FG, Long ${st.longFG}y)` });
+      if (st.won) icons.push({ icon: '🏆', label: `Week ${this.currentWeek} Victory` });
+      return icons;
+    }
+
+    // =========================================================================
+    // TICKER & ROSTER RENDERERS
+    // =========================================================================
+
     renderTicker() {
       if (!this.dom.tickerGrid) return;
-      const games = this.currentTickerMode === 'TODAY' ? TODAY_TICKER_GAMES : YESTERDAY_TICKER_GAMES;
+      const games = this.currentTickerMode === 'TODAY' ? this.currentWeekGames : this.lastWeekGames;
+
+      if (!games || games.length === 0) {
+        this.dom.tickerGrid.innerHTML = `<div class="ticker-loading-placeholder">Loading live ${this.currentSeason} NFL scores (MST)...</div>`;
+        return;
+      }
 
       this.dom.tickerGrid.innerHTML = games.map(game => {
-        const awayTeam = this.teams.find(t => t.abbreviation === game.away) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.away.toLowerCase()}.png` };
-        const homeTeam = this.teams.find(t => t.abbreviation === game.home) || { logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${game.home.toLowerCase()}.png` };
-        
+        const awayTeam = this.getTeamMeta(game.away);
+        const homeTeam = this.getTeamMeta(game.home);
+
         const awayMemberId = this.teamToMemberMap[game.away];
         const homeMemberId = this.teamToMemberMap[game.home];
         const awayMember = awayMemberId ? this.roster.find(m => m.id === awayMemberId) : null;
         const homeMember = homeMemberId ? this.roster.find(m => m.id === homeMemberId) : null;
         const hasOfficeMember = awayMember || homeMember;
 
-        const awayNum = parseInt(game.awayScore) || 0;
-        const homeNum = parseInt(game.homeScore) || 0;
+        const awayNum = parseInt(game.awayScore, 10);
+        const homeNum = parseInt(game.homeScore, 10);
+        const hasScores = !isNaN(awayNum) && !isNaN(homeNum);
 
         let statusClass = 'preview';
-        if (game.status.includes('FINAL')) statusClass = 'final';
-        else if (game.isLive || game.status.includes('QTR')) statusClass = 'live';
+        if (game.completed || game.status.toUpperCase().includes('FINAL')) statusClass = 'final';
+        else if (game.isLive) statusClass = 'live';
 
         return `
-          <div class="ticker-card ${hasOfficeMember ? 'office-game-card' : ''}" 
-               data-away="${game.away}" 
+          <div class="ticker-card ${hasOfficeMember ? 'office-game-card' : ''}"
+               data-event-id="${game.eventId || ''}"
+               data-away="${game.away}"
                data-home="${game.home}"
                data-away-member="${awayMemberId || ''}"
                data-home-member="${homeMemberId || ''}"
                role="button"
                tabindex="0"
-               title="${hasOfficeMember ? 'Click to open staff member card' : 'NFL Matchup • Click to view Box Score'}">
-            
+               title="${hasOfficeMember ? 'Click team row for staff card or card for Box Score' : 'NFL Matchup • Click to view real ESPN Box Score'}">
+
             <div class="ticker-game-meta">
-              <span class="ticker-status-tag ${statusClass}">${game.status}</span>
+              <span class="ticker-status-tag ${statusClass}">${escapeHtml(game.status)}</span>
               ${hasOfficeMember ? `<span class="ticker-office-tag">🏈 OFFICE GAME</span>` : ''}
             </div>
 
-            <!-- Away Team Row -->
             <div class="ticker-team-row ${awayMember ? 'has-member' : ''}" data-member-id="${awayMemberId || ''}">
               <div class="ticker-team-info">
                 <img src="${awayTeam.logo}" class="ticker-team-logo" alt="${game.away}" onerror="this.src='https://ui-avatars.com/api/?name=${game.away}&background=0b0f19&color=fff'">
                 <span class="ticker-team-name">${game.away}</span>
-                ${awayMember ? `<span class="ticker-member-pill" title="Office: ${awayMember.name}"><img src="${awayMember.image}" class="ticker-avatar-mini" alt="${awayMember.name}">${awayMember.name}</span>` : ''}
+                ${awayMember ? `<span class="ticker-member-pill" title="Office: ${awayMember.name}"><img src="${awayMember.image}" class="ticker-avatar-mini" alt="${awayMember.name}">${awayMember.shortName || awayMember.name}</span>` : ''}
               </div>
-              <span class="ticker-team-score ${awayNum > homeNum ? 'winning' : ''}">${game.awayScore}</span>
+              <span class="ticker-team-score ${hasScores && awayNum > homeNum ? 'winning' : ''}">${game.awayScore}</span>
             </div>
 
-            <!-- Home Team Row -->
             <div class="ticker-team-row ${homeMember ? 'has-member' : ''}" data-member-id="${homeMemberId || ''}">
               <div class="ticker-team-info">
                 <img src="${homeTeam.logo}" class="ticker-team-logo" alt="${game.home}" onerror="this.src='https://ui-avatars.com/api/?name=${game.home}&background=0b0f19&color=fff'">
                 <span class="ticker-team-name">${game.home}</span>
-                ${homeMember ? `<span class="ticker-member-pill" title="Office: ${homeMember.name}"><img src="${homeMember.image}" class="ticker-avatar-mini" alt="${homeMember.name}">${homeMember.name}</span>` : ''}
+                ${homeMember ? `<span class="ticker-member-pill" title="Office: ${homeMember.name}"><img src="${homeMember.image}" class="ticker-avatar-mini" alt="${homeMember.name}">${homeMember.shortName || homeMember.name}</span>` : ''}
               </div>
-              <span class="ticker-team-score ${homeNum > awayNum ? 'winning' : ''}">${game.homeScore}</span>
+              <span class="ticker-team-score ${hasScores && homeNum > awayNum ? 'winning' : ''}">${game.homeScore}</span>
             </div>
           </div>
         `;
@@ -1248,30 +1741,38 @@
 
     renderRosterGrid() {
       if (!this.dom.rosterGrid) return;
-      this.dom.rosterGrid.innerHTML = this.roster.map(member => {
-        return `
-          <div class="roster-member-card" data-id="${member.id}" role="button" tabindex="0" aria-label="Open ${member.name} Details">
-            <div class="avatar-frame ${member.frameClass}">
-              <div class="avatar-inner-img-wrap">
-                <img src="${member.image}" alt="${member.name}" class="roster-avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=${member.name}&background=0b1322&color=fff'">
-              </div>
+      this.dom.rosterGrid.innerHTML = this.roster.map(member => `
+        <div class="roster-member-card" data-id="${member.id}" role="button" tabindex="0" aria-label="Open ${member.name} Details">
+          <div class="avatar-frame ${member.frameClass}">
+            <div class="avatar-inner-img-wrap">
+              <img src="${member.image}" alt="${member.name}" class="roster-avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=0b1322&color=fff'">
             </div>
-            <div class="roster-member-name ${member.nameClass}">${member.name}</div>
           </div>
-        `;
-      }).join('');
+          <div class="roster-member-name ${member.nameClass}">${member.name}</div>
+        </div>
+      `).join('');
     }
+
+    // =========================================================================
+    // MEMBER DETAIL MODAL
+    // =========================================================================
 
     openMemberModal(memberId) {
       const member = this.roster.find(m => m.id === memberId) || this.roster[0];
       this.selectedMember = member;
       this.isGifActive = true;
 
-      const team = this.teams.find(t => t.id === member.teamId) || this.teams[0];
-
-      // Update avatar card with banner
       this.dom.modalAvatarCard.className = `modal-avatar-card ${member.frameClass}`;
       this.renderModalMedia(member, true);
+      this.populateMemberModalData(member.id);
+
+      this.dom.modalOverlay.classList.add('open');
+      this.dom.modalOverlay.setAttribute('aria-hidden', 'false');
+    }
+
+    populateMemberModalData(memberId) {
+      const member = this.roster.find(m => m.id === memberId) || this.roster[0];
+      const team = this.getTeamMeta(member.teamId);
 
       // Identity
       this.dom.modalMemberName.textContent = member.name;
@@ -1280,14 +1781,17 @@
       this.dom.modalTeamName.textContent = member.teamName;
       this.dom.modalTeamName.style.color = team.color;
 
-      // Picks & Trophy
+      // Real Record, Win Pct & Streak
       this.dom.picksRecord.textContent = member.picks.record;
       this.dom.picksPct.textContent = member.picks.pct;
       this.dom.picksStreak.textContent = member.picks.streak;
       this.dom.trophyCount.textContent = `× ${member.trophy.count}`;
-      this.dom.trophyLabel.textContent = "WEEKLY YARDS & TOUCHDOWNS LEADER";
+      this.dom.trophyLabel.textContent = member.trophy.label;
 
       // This Week's Matchup
+      if (this.dom.matchupSectionTitle) {
+        this.dom.matchupSectionTitle.textContent = `WEEK ${this.currentWeek} MATCHUP (${this.currentSeason})`;
+      }
       const m = member.matchup;
       this.dom.matchupAwayCode.textContent = m.away.code;
       this.dom.matchupAwayRec.textContent = m.away.rec;
@@ -1300,70 +1804,89 @@
       this.dom.starterAway.textContent = m.awayStarter;
       this.dom.starterHome.textContent = m.homeStarter;
       this.dom.matchupLiveTag.style.display = m.isLive ? 'block' : 'none';
-
-      // Schedule Next 5 Games
-      this.dom.scheduleList.innerHTML = member.schedule.map(s => {
-        const isSelectedTeamHome = s.isHome;
-        const awayCode = isSelectedTeamHome ? s.away : `<strong style="color:${team.color}">${s.away}</strong>`;
-        const homeCode = isSelectedTeamHome ? `<strong style="color:${team.color}">${s.home}</strong>` : s.home;
-        return `
-          <div class="schedule-row">
-            <span class="schedule-date">${s.date}</span>
-            <span class="schedule-matchup">${awayCode} @ ${homeCode}</span>
-            <span class="schedule-time">${s.time}</span>
-          </div>
-        `;
-      }).join('');
-
-      // Division Standings
-      this.dom.standingsDivisionTitle.textContent = member.division;
-      this.dom.divisionStandingsTbody.innerHTML = member.standings.map(row => `
-        <tr class="${row.highlight ? 'highlight-team-row' : ''}">
-          <td class="col-team">${row.team}</td>
-          <td class="col-stat">${row.w}</td>
-          <td class="col-stat">${row.l}</td>
-          <td class="col-stat">${row.pct}</td>
-          <td class="col-stat">${row.gb}</td>
-        </tr>
-      `).join('');
-
-      // Weekly Yards & TDs Leader Table
-      this.dom.dailyLeadersTbody.innerHTML = this.roster.map(r => `
-        <tr class="${r.id === member.id ? 'highlight-team-row' : ''}">
-          <td class="col-team" style="font-weight:700;">${r.name} (${r.teamId})</td>
-          <td class="col-stat">${r.liveStats.yards} YDS</td>
-          <td class="col-stat">${r.liveStats.tds} TD</td>
-          <td class="col-stat">${r.liveStats.status}</td>
-        </tr>
-      `).join('');
-
-      // Dynamic Fantasy Football Breakdown Hydration
-      if (member.fantasy) {
-        if (this.dom.fantasyTotalVal) this.dom.fantasyTotalVal.textContent = `${member.fantasy.totalPoints.toFixed(1)} PTS`;
-        if (this.dom.fantasyQbPlayer) this.dom.fantasyQbPlayer.textContent = member.fantasy.qb.player;
-        if (this.dom.fantasyQbStats) this.dom.fantasyQbStats.textContent = member.fantasy.qb.stats;
-        if (this.dom.fantasyQbPts) this.dom.fantasyQbPts.textContent = `+${member.fantasy.qb.points.toFixed(1)} PTS`;
-
-        if (this.dom.fantasyRecPlayer) this.dom.fantasyRecPlayer.textContent = member.fantasy.rec.player;
-        if (this.dom.fantasyRecStats) this.dom.fantasyRecStats.textContent = member.fantasy.rec.stats;
-        if (this.dom.fantasyRecPts) this.dom.fantasyRecPts.textContent = `+${member.fantasy.rec.points.toFixed(1)} PTS`;
-
-        if (this.dom.fantasyRushPlayer) this.dom.fantasyRushPlayer.textContent = member.fantasy.rush.player;
-        if (this.dom.fantasyRushStats) this.dom.fantasyRushStats.textContent = member.fantasy.rush.stats;
-        if (this.dom.fantasyRushPts) this.dom.fantasyRushPts.textContent = `+${member.fantasy.rush.points.toFixed(1)} PTS`;
-
-        if (this.dom.fantasyDefPlayer) this.dom.fantasyDefPlayer.textContent = member.fantasy.def.player;
-        if (this.dom.fantasyDefStats) this.dom.fantasyDefStats.textContent = member.fantasy.def.stats;
-        if (this.dom.fantasyDefPts) this.dom.fantasyDefPts.textContent = `+${member.fantasy.def.points.toFixed(1)} PTS`;
-
-        if (this.dom.fantasyStPlayer) this.dom.fantasyStPlayer.textContent = member.fantasy.st.player;
-        if (this.dom.fantasyStStats) this.dom.fantasyStStats.textContent = member.fantasy.st.stats;
-        if (this.dom.fantasyStPts) this.dom.fantasyStPts.textContent = `+${member.fantasy.st.points.toFixed(1)} PTS`;
+      if (this.dom.btnOpenBoxScore) {
+        this.dom.btnOpenBoxScore.style.display = m.isBye ? 'none' : 'inline-flex';
       }
 
-      // Show Modal
-      this.dom.modalOverlay.classList.add('open');
-      this.dom.modalOverlay.setAttribute('aria-hidden', 'false');
+      // Upcoming Schedule (Next 5 Games from live ESPN team schedule)
+      if (member.schedule && member.schedule.length > 0) {
+        this.dom.scheduleList.innerHTML = member.schedule.map(s => {
+          const awayCode = s.isHome ? s.away : `<strong style="color:${team.color}">${s.away}</strong>`;
+          const homeCode = s.isHome ? `<strong style="color:${team.color}">${s.home}</strong>` : s.home;
+          return `
+            <div class="schedule-row">
+              <span class="schedule-date">${escapeHtml(s.date)}</span>
+              <span class="schedule-matchup">${awayCode} @ ${homeCode}</span>
+              <span class="schedule-time">${escapeHtml(s.time)}</span>
+            </div>
+          `;
+        }).join('');
+      } else {
+        this.dom.scheduleList.innerHTML = `<div class="schedule-row"><span class="schedule-date">No remaining regular-season games scheduled.</span></div>`;
+      }
+
+      // Real Division Standings
+      this.dom.standingsDivisionTitle.textContent = member.divisionTitle || `${member.division.toUpperCase()} STANDINGS`;
+      if (member.standings && member.standings.length > 0) {
+        this.dom.divisionStandingsTbody.innerHTML = member.standings.map(row => `
+          <tr class="${row.highlight ? 'highlight-team-row' : ''}">
+            <td class="col-team">${escapeHtml(row.team)}</td>
+            <td class="col-stat">${row.w}</td>
+            <td class="col-stat">${row.t > 0 ? `${row.l}-${row.t}` : row.l}</td>
+            <td class="col-stat">${row.pct}</td>
+            <td class="col-stat">${row.gb}</td>
+          </tr>
+        `).join('');
+      } else {
+        this.dom.divisionStandingsTbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8;">Loading live NFL standings...</td></tr>`;
+      }
+
+      // Weekly Yards & TDs Leader Table
+      if (this.dom.leaderTableTitle) {
+        this.dom.leaderTableTitle.textContent = `WEEK ${this.currentWeek} YARDS & TOUCHDOWNS LEADER`;
+      }
+      const sortedLeaders = [...this.roster].sort((a, b) => {
+        if (a.liveStats.isBye !== b.liveStats.isBye) return a.liveStats.isBye ? 1 : -1;
+        return (b.liveStats.yards - a.liveStats.yards) || (b.liveStats.tds - a.liveStats.tds);
+      });
+      this.dom.dailyLeadersTbody.innerHTML = sortedLeaders.map(r => `
+        <tr class="${r.id === member.id ? 'highlight-team-row' : ''}">
+          <td class="col-team" style="font-weight:700;">${escapeHtml(r.shortName || r.name)} (${r.teamId})</td>
+          <td class="col-stat">${r.liveStats.hasPlayed ? `${r.liveStats.yards} YDS` : '—'}</td>
+          <td class="col-stat">${r.liveStats.hasPlayed ? `${r.liveStats.tds} TD` : '—'}</td>
+          <td class="col-stat">${escapeHtml(r.liveStats.status)}</td>
+        </tr>
+      `).join('');
+
+      // Real Automated Fantasy Football Breakdown (fixed DOM IDs!)
+      if (member.fantasy) {
+        const f = member.fantasy;
+        const fmtPts = (p) => `${p >= 0 ? '+' : ''}${p.toFixed(1)} PTS`;
+
+        if (this.dom.fantasyHeaderTotalBadge) this.dom.fantasyHeaderTotalBadge.textContent = `${f.totalPoints.toFixed(1)} PTS`;
+        if (this.dom.fantasyTotalLabel) this.dom.fantasyTotalLabel.textContent = `AUTOMATED WEEK ${this.currentWeek} FANTASY TOTAL:`;
+        if (this.dom.fantasyTotalVal) this.dom.fantasyTotalVal.textContent = `${f.totalPoints.toFixed(1)} PTS`;
+
+        if (this.dom.fantasyQbName) this.dom.fantasyQbName.textContent = f.qb.player;
+        if (this.dom.fantasyQbStats) this.dom.fantasyQbStats.textContent = f.qb.stats;
+        if (this.dom.fantasyQbPts) this.dom.fantasyQbPts.textContent = fmtPts(f.qb.points);
+
+        if (this.dom.fantasyRecName) this.dom.fantasyRecName.textContent = f.rec.player;
+        if (this.dom.fantasyRecStats) this.dom.fantasyRecStats.textContent = f.rec.stats;
+        if (this.dom.fantasyRecPts) this.dom.fantasyRecPts.textContent = fmtPts(f.rec.points);
+
+        if (this.dom.fantasyRushName) this.dom.fantasyRushName.textContent = f.rush.player;
+        if (this.dom.fantasyRushStats) this.dom.fantasyRushStats.textContent = f.rush.stats;
+        if (this.dom.fantasyRushPts) this.dom.fantasyRushPts.textContent = fmtPts(f.rush.points);
+
+        if (this.dom.fantasyDefName) this.dom.fantasyDefName.textContent = f.def.player;
+        if (this.dom.fantasyDefStats) this.dom.fantasyDefStats.textContent = f.def.stats;
+        if (this.dom.fantasyDefPts) this.dom.fantasyDefPts.textContent = fmtPts(f.def.points);
+
+        if (this.dom.fantasyStName) this.dom.fantasyStName.textContent = f.st.player;
+        if (this.dom.fantasyStStats) this.dom.fantasyStStats.textContent = f.st.stats;
+        if (this.dom.fantasyStPts) this.dom.fantasyStPts.textContent = fmtPts(f.st.points);
+      }
     }
 
     renderModalMedia(member, isBannerActive) {
@@ -1418,22 +1941,11 @@
       this.renderModalMedia(this.selectedMember, this.isGifActive);
     }
 
-    spawnConfetti() {
-      const colors = ['#facc15', '#ef4444', '#38bdf8', '#10b981', '#fb923c', '#e11d48'];
-      for (let i = 0; i < 40; i++) {
-        const p = document.createElement('div');
-        p.className = 'confetti-particle';
-        p.style.left = `${Math.random() * 100}vw`;
-        p.style.top = `${Math.random() * 20}vh`;
-        p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        p.style.animationDuration = `${1.5 + Math.random() * 2}s`;
-        document.body.appendChild(p);
-        setTimeout(() => p.remove(), 3500);
-      }
-    }
+    // =========================================================================
+    // EVENT BINDINGS
+    // =========================================================================
 
     bindEvents() {
-      // Ticker card & team row interactive clicks
       this.dom.tickerGrid?.addEventListener('click', (e) => {
         const teamRow = e.target.closest('.ticker-team-row');
         if (teamRow && teamRow.dataset.memberId) {
@@ -1445,24 +1957,13 @@
         const card = e.target.closest('.ticker-card');
         if (!card) return;
 
-        const awayMemberId = card.dataset.awayMember;
-        const homeMemberId = card.dataset.homeMember;
+        const eventId = card.dataset.eventId;
         const away = card.dataset.away;
         const home = card.dataset.home;
-
-        if (awayMemberId && !homeMemberId) {
-          this.openMemberModal(awayMemberId);
-        } else if (homeMemberId && !awayMemberId) {
-          this.openMemberModal(homeMemberId);
-        } else if (awayMemberId && homeMemberId) {
-          this.openMemberModal(homeMemberId);
-        } else {
-          // Open box score for this marquee game!
-          this.openBoxScoreModal({ away: { code: away }, home: { code: home } }, this.currentTickerMode === 'YESTERDAY' ? 'LAST_WEEK' : 'CURRENT');
-        }
+        const mode = this.currentTickerMode === 'YESTERDAY' ? 'LAST_WEEK' : 'CURRENT';
+        this.openBoxScoreModal({ eventId, away: { code: away }, home: { code: home } }, mode);
       });
 
-      // Ticker tab toggles (Week vs Last Week)
       this.dom.tabTodayTicker?.addEventListener('click', () => {
         this.currentTickerMode = 'TODAY';
         this.dom.tabTodayTicker.classList.add('active');
@@ -1477,44 +1978,36 @@
         this.renderTicker();
       });
 
-      // Roster item clicks
       this.dom.rosterGrid?.addEventListener('click', (e) => {
         const card = e.target.closest('.roster-member-card');
-        if (card) {
-          this.openMemberModal(card.dataset.id);
-        }
+        if (card) this.openMemberModal(card.dataset.id);
       });
 
-      // Modal close events
       this.dom.modalCloseBtn?.addEventListener('click', () => this.closeModal());
       this.dom.modalOverlay?.addEventListener('click', (e) => {
         if (e.target === this.dom.modalOverlay) this.closeModal();
       });
 
-      // GIF / Banner Toggle
       this.dom.modalAvatarCard?.addEventListener('click', () => this.toggleGifMode());
       this.dom.modalGifToggle?.addEventListener('click', (e) => {
         e.stopPropagation();
         this.toggleGifMode();
       });
 
-      // Box score button inside member detail modal
       this.dom.btnOpenBoxScore?.addEventListener('click', () => {
-        if (this.selectedMember && this.selectedMember.matchup) {
-          this.openBoxScoreModal(this.selectedMember.matchup);
+        if (this.selectedMember?.matchup && !this.selectedMember.matchup.isBye) {
+          this.openBoxScoreModal(this.selectedMember.matchup, 'CURRENT');
         } else {
           this.openBoxScoreModal(null, 'CURRENT');
         }
       });
 
-      // Header "LAST WEEK'S BOX SCORES" button
       this.dom.btnYesterdayModal?.addEventListener('click', () => {
         this.openBoxScoreModal(null, 'LAST_WEEK');
       });
 
       this.dom.btnSignIn?.addEventListener('click', () => {
-        // Sign-in confirmation
-        alert('Welcome to Office Endzone! You are signed in as an Active Gridiron Predictor.');
+        alert(`Welcome to Office Endzone! Live ${this.currentSeason} NFL Week ${this.currentWeek} feed is active.`);
       });
 
       // Quick Nav Buttons
@@ -1527,25 +2020,25 @@
       this.dom.btnNavFantasy?.addEventListener('click', () => {
         this.closeModal();
         this.setActiveNav(this.dom.btnNavFantasy);
-        this.openFantasyDrawer();
+        this.openFantasyDrawer(true);
       });
 
       this.dom.btnNavBracket?.addEventListener('click', () => {
         this.closeModal();
         this.setActiveNav(this.dom.btnNavBracket);
-        this.openBracketsDrawer();
+        this.openBracketsDrawer(true);
       });
 
       this.dom.btnNavChallenges?.addEventListener('click', () => {
         this.closeModal();
         this.setActiveNav(this.dom.btnNavChallenges);
-        this.openChallengesDrawer();
+        this.openChallengesDrawer(true);
       });
 
       this.dom.btnNavStandings?.addEventListener('click', () => {
         this.closeModal();
         this.setActiveNav(this.dom.btnNavStandings);
-        this.openStandingsDrawer();
+        this.openStandingsDrawer(true);
       });
 
       this.dom.btnCloseDrawer?.addEventListener('click', () => {
@@ -1553,37 +2046,21 @@
         this.setActiveNav(this.dom.btnNavRoster);
       });
 
-      // Showdown Modal close events
-      this.dom.showdownModalClose?.addEventListener('click', () => {
-        this.closeShowdownModal();
-      });
-
+      this.dom.showdownModalClose?.addEventListener('click', () => this.closeShowdownModal());
       this.dom.showdownModalOverlay?.addEventListener('click', (e) => {
-        if (e.target === this.dom.showdownModalOverlay) {
-          this.closeShowdownModal();
-        }
+        if (e.target === this.dom.showdownModalOverlay) this.closeShowdownModal();
       });
 
-      // Box Score Modal close events
-      this.dom.boxScoreModalClose?.addEventListener('click', () => {
-        this.closeBoxScoreModal();
-      });
-
+      this.dom.boxScoreModalClose?.addEventListener('click', () => this.closeBoxScoreModal());
       this.dom.boxScoreModalOverlay?.addEventListener('click', (e) => {
-        if (e.target === this.dom.boxScoreModalOverlay) {
-          this.closeBoxScoreModal();
-        }
+        if (e.target === this.dom.boxScoreModalOverlay) this.closeBoxScoreModal();
       });
 
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-          if (this.dom.boxScoreModalOverlay?.classList.contains('open')) {
-            this.closeBoxScoreModal();
-          } else if (this.dom.showdownModalOverlay?.classList.contains('open')) {
-            this.closeShowdownModal();
-          } else if (this.dom.modalOverlay?.classList.contains('open')) {
-            this.closeModal();
-          }
+          if (this.dom.boxScoreModalOverlay?.classList.contains('open')) this.closeBoxScoreModal();
+          else if (this.dom.showdownModalOverlay?.classList.contains('open')) this.closeShowdownModal();
+          else if (this.dom.modalOverlay?.classList.contains('open')) this.closeModal();
         }
       });
     }
@@ -1593,31 +2070,37 @@
       if (btn) btn.classList.add('active');
     }
 
-    openBracketsDrawer() {
+    // =========================================================================
+    // BRACKETS HUB (DYNAMIC WEEK + ON-DEMAND PAST WEEK ESPN SYNC)
+    // =========================================================================
+
+    openBracketsDrawer(scroll = true) {
       if (!this.dom.drawerBody || !this.dom.secondaryDrawer) return;
-      this.dom.drawerTitle.textContent = "🌲 Office Brackets Hub";
+      this.activeDrawer = 'BRACKETS';
+      this.dom.drawerTitle.textContent = `🌲 Office Brackets Hub (${this.currentSeason} • Week ${this.currentWeek})`;
       this.renderBracketsHub();
       this.dom.secondaryDrawer.style.display = 'flex';
-      this.dom.secondaryDrawer.scrollIntoView({ behavior: 'smooth' });
+      if (scroll) this.dom.secondaryDrawer.scrollIntoView({ behavior: 'smooth' });
     }
 
     renderBracketsHub() {
+      if (!this.dom.drawerBody) return;
+      if (!this.weeklyBracketData) {
+        this.weeklyBracketData = this.buildWeeklyTournamentData();
+      }
       const isWeekly = this.activeBracketTab === 'WEEKLY';
-      const curWeek = WEEKLY_BRACKET_DATA.weeks[this.selectedWeekIndex] || WEEKLY_BRACKET_DATA.weeks[0];
+      const curWeek = this.weeklyBracketData.weeks[this.selectedWeekIndex] || this.weeklyBracketData.weeks[0];
 
       this.dom.drawerBody.innerHTML = `
         <div class="brackets-container">
-          <!-- Bracket Mode Switcher -->
           <div class="bracket-mode-tabs">
             <button class="bracket-mode-btn ${isWeekly ? 'active' : ''}" id="tab-mode-weekly">⚡ WEEKLY MATCHUP BRACKETS</button>
             <button class="bracket-mode-btn ${!isWeekly ? 'active' : ''}" id="tab-mode-season">🏆 18-WEEK SEASON TOURNAMENT</button>
           </div>
-
           ${isWeekly ? this.renderWeeklyBracketsContent(curWeek) : this.renderSeasonLadderContent()}
         </div>
       `;
 
-      // Bind tabs
       document.getElementById('tab-mode-weekly')?.addEventListener('click', () => {
         this.activeBracketTab = 'WEEKLY';
         this.renderBracketsHub();
@@ -1628,26 +2111,29 @@
         this.renderBracketsHub();
       });
 
-      // Bind weekly controls
       if (isWeekly) {
         document.querySelectorAll('.week-pill-btn').forEach(pill => {
-          pill.addEventListener('click', () => {
+          pill.addEventListener('click', async () => {
             this.selectedWeekIndex = parseInt(pill.dataset.weekIndex, 10);
+            const targetWeekNum = this.selectedWeekIndex + 1;
             this.renderBracketsHub();
+            // Load real ESPN scores for any past week on demand!
+            if (targetWeekNum < this.currentWeek && !this.weekScoreboardCache[targetWeekNum]) {
+              await this.fetchPastWeekScoreboard(targetWeekNum);
+              this.weeklyBracketData = this.buildWeeklyTournamentData();
+              if (this.activeDrawer === 'BRACKETS' && this.activeBracketTab === 'WEEKLY') {
+                this.renderBracketsHub();
+              }
+            }
           });
         });
 
         document.querySelectorAll('.contender-filter-pill').forEach(pill => {
           pill.addEventListener('click', () => {
-            this.selectedContenderFilter = pill.dataset.contender;
-            this.renderBracketsHub();
-          });
-        });
-
-        document.querySelectorAll('.day-pill-btn').forEach(pill => {
-          pill.addEventListener('click', () => {
-            this.selectedDayFilter = pill.dataset.day;
-            this.renderBracketsHub();
+            if (pill.dataset.contender) {
+              this.selectedContenderFilter = pill.dataset.contender;
+              this.renderBracketsHub();
+            }
           });
         });
 
@@ -1655,31 +2141,15 @@
           elem.addEventListener('click', (e) => {
             if (e.target.closest('.btn-bracket-pick')) return;
             const matchId = elem.dataset.matchId;
-            if (matchId) {
-              this.openShowdownModal(matchId);
-            }
-          });
-        });
-
-        document.querySelectorAll('.btn-bracket-pick').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const matchId = btn.dataset.matchId;
-            const staff = btn.dataset.staff;
-            this.userPicks[matchId] = staff;
-            localStorage.setItem('office_endzone_picks', JSON.stringify(this.userPicks));
-            this.renderBracketsHub();
+            if (matchId) this.openShowdownModal(matchId);
           });
         });
       } else {
-        // Bind Season Tournament controls
-        document.querySelectorAll('.btn-season-reveal-showdown, .season-bracket-card').forEach(elem => {
+        document.querySelectorAll('.btn-season-reveal-showdown, .bracket-matchup-node').forEach(elem => {
           elem.addEventListener('click', (e) => {
             if (e.target.closest('.btn-season-pick') || e.target.closest('.btn-reset-season-picks')) return;
             const matchId = elem.dataset.matchId;
-            if (matchId) {
-              this.openShowdownModal(matchId);
-            }
+            if (matchId) this.openShowdownModal(matchId);
           });
         });
 
@@ -1688,16 +2158,9 @@
             e.stopPropagation();
             const matchId = btn.dataset.matchId;
             const staff = btn.dataset.staff;
-            
-            // If user changes a Quarterfinal pick, invalidate subsequent rounds if needed
-            if (matchId.startsWith('st_q')) {
-              // Check if previous pick in semi or final needs cleanup
+            if (matchId.startsWith('st_q') || matchId.startsWith('st_s')) {
               delete this.seasonPicks['st_final'];
             }
-            if (matchId.startsWith('st_s')) {
-              delete this.seasonPicks['st_final'];
-            }
-
             this.seasonPicks[matchId] = staff;
             localStorage.setItem('office_endzone_season_picks', JSON.stringify(this.seasonPicks));
             this.renderBracketsHub();
@@ -1716,139 +2179,79 @@
     }
 
     renderWeeklyBracketsContent(curWeek) {
+      const contenders = this.getSeededContenders();
       const r1Matches = curWeek.matchups.filter(m => m.round === 1);
       const r2Matches = curWeek.matchups.filter(m => m.round === 2);
       const r3Matches = curWeek.matchups.filter(m => m.round === 3);
 
-      const allWeekMatches = curWeek.matchups;
-      const pickedThisWeek = allWeekMatches.filter(m => this.userPicks[m.id]);
-      const totalUserPicksCount = Object.keys(this.userPicks).length;
-
       const renderNode = (m, isChampionship = false) => {
-        const userPick = this.userPicks[m.id];
-        const staff1Won = m.staff1.score > m.staff2.score;
-        const staff2Won = m.staff2.score > m.staff1.score;
-
-        const isFilteredContender = this.selectedContenderFilter !== 'ALL' && 
-          (m.staff1.name.includes(this.selectedContenderFilter) || m.staff2.name.includes(this.selectedContenderFilter));
-
-        const isFilteredDay = this.selectedDayFilter !== 'ALL' && m.day.toLowerCase().includes(this.selectedDayFilter.toLowerCase());
-
-        const isHighlighted = (this.selectedContenderFilter !== 'ALL' && isFilteredContender) || 
-                              (this.selectedDayFilter !== 'ALL' && isFilteredDay);
-
         const isUpcoming = m.status === 'UPCOMING';
         const isPending = m.status === 'PENDING';
+        const staff1Won = !isUpcoming && !isPending && m.staff1.score > m.staff2.score;
+        const staff2Won = !isUpcoming && !isPending && m.staff2.score > m.staff1.score;
 
-        if (isPending) {
-          return `
-            <div class="bracket-matchup-node ${isChampionship ? 'championship-node' : ''} ${isHighlighted ? 'highlighted' : ''}" data-match-id="${m.id}" role="button" tabindex="0" style="border-style:dashed; border-color:rgba(250,204,21,0.35);">
-              <div class="match-node-top">
-                <span class="match-rivalry-name" style="color:#facc15;">${m.rivalryName}</span>
-                <span class="matchup-status-pill preview" style="background:rgba(250,204,21,0.15); color:#facc15; border:1px solid rgba(250,204,21,0.3);">🔒 AWAITING STAGE 1</span>
-              </div>
+        const isHighlighted = this.selectedContenderFilter !== 'ALL' &&
+          (m.staff1.name.includes(this.selectedContenderFilter) || m.staff2.name.includes(this.selectedContenderFilter));
 
-              <div style="font-size:0.62rem; color:#94a3b8; display:flex; justify-content:space-between;">
-                <span>📍 ${m.venue.split('•')[0]}</span>
-                <span>⏰ ${m.kickoff.split('•')[1] || m.kickoff}</span>
-              </div>
-
-              <div class="match-node-contenders" style="opacity:0.85;">
-                <div class="bracket-contestant-row" style="background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.12);">
-                  <div class="contestant-identity">
-                    <div class="contestant-name-box">
-                      <span class="contestant-staff-name" style="color:#cbd5e1;">${m.staff1.name}</span>
-                      <span class="contestant-team-pick" style="color:#64748b;">${m.staff1.pick || 'Awaiting Stage 1 Scores'}</span>
-                    </div>
-                  </div>
-                  <div class="contestant-score-action">
-                    <span class="contestant-score-num" style="color:#64748b; font-size:0.68rem;">TBD</span>
-                  </div>
-                </div>
-
-                <div class="bracket-vs-divider">VS</div>
-
-                <div class="bracket-contestant-row" style="background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.12);">
-                  <div class="contestant-identity">
-                    <div class="contestant-name-box">
-                      <span class="contestant-staff-name" style="color:#cbd5e1;">${m.staff2.name}</span>
-                      <span class="contestant-team-pick" style="color:#64748b;">${m.staff2.pick || 'Awaiting Stage 1 Scores'}</span>
-                    </div>
-                  </div>
-                  <div class="contestant-score-action">
-                    <span class="contestant-score-num" style="color:#64748b; font-size:0.68rem;">TBD</span>
-                  </div>
-                </div>
-              </div>
-
-              <div style="font-size:0.62rem; color:#facc15; text-align:center; padding:4px 0 2px; font-weight:700; background:rgba(250,204,21,0.06); border-radius:4px; margin-top:4px;">
-                ⚡ ${isChampionship ? 'Unlocks for Sunday/Monday Night Primetime to crown the weekly champion!' : 'Unlocks after Stage 1 games conclude on Sunday!'}
-              </div>
-            </div>
-          `;
-        }
+        const fmtVal = (staff) => {
+          if (isUpcoming || isPending) return 'TBD';
+          if (staff.isBye) return 'BYE';
+          const unit = m.scoreUnit || 'PTS';
+          return unit === 'PTS' ? `${(staff.score || 0).toFixed(1)} PTS` : `${Math.round(staff.score || 0)} ${unit}`;
+        };
 
         return `
           <div class="bracket-matchup-node ${isChampionship ? 'championship-node' : ''} ${isHighlighted ? 'highlighted' : ''}" data-match-id="${m.id}" role="button" tabindex="0">
             <div class="match-node-top">
-              <span class="match-rivalry-name">${m.rivalryName}</span>
-              <span class="matchup-status-pill ${m.status.toLowerCase()}">${m.status}</span>
+              <span class="match-rivalry-name">${escapeHtml(m.rivalryName)}</span>
+              <span class="matchup-status-pill ${m.status === 'ACTIVE' ? 'live' : m.status.toLowerCase()}">${m.status}</span>
             </div>
 
             <div style="font-size:0.62rem; color:#94a3b8; display:flex; justify-content:space-between;">
-              <span>📍 ${m.venue.split('•')[0]}</span>
-              <span>⏰ ${m.kickoff.split('•')[1] || m.kickoff}</span>
+              <span>📍 ${escapeHtml(m.venue)}</span>
+              <span>🗓️ ${escapeHtml(m.kickoff)}</span>
             </div>
 
             <div class="match-node-contenders">
-              <div class="bracket-contestant-row ${staff1Won && !isUpcoming ? 'winning' : ''} ${userPick === m.staff1.name ? 'user-picked' : ''}">
+              <div class="bracket-contestant-row ${staff1Won ? 'winning' : ''}">
                 <div class="contestant-identity">
                   <div class="contestant-name-box">
-                    <span class="contestant-staff-name">${m.staff1.seed ? m.staff1.seed + ' ' : ''}${m.staff1.name} (${m.staff1.team})</span>
-                    <span class="contestant-team-pick">${m.staff1.pick}</span>
+                    <span class="contestant-staff-name">${m.staff1.seed ? m.staff1.seed + ' ' : ''}${escapeHtml(m.staff1.name)} (${m.staff1.team})</span>
+                    <span class="contestant-team-pick">${escapeHtml(m.staff1.pick)}</span>
                   </div>
                 </div>
                 <div class="contestant-score-action" style="display:flex; flex-direction:column; align-items:flex-end; gap:2px;">
-                  <span class="contestant-score-num" style="color:#facc15; font-weight:900; font-family:'JetBrains Mono',monospace;">${m.staff1.score ? m.staff1.score.toFixed(1) + ' PTS' : (isUpcoming ? 'PROJ: ' + m.spread.split('•')[0] : '0 PTS')}</span>
-                  <span style="font-size:0.6rem; color:#10b981; font-weight:800; background:rgba(16,185,129,0.12); padding:1px 6px; border-radius:4px; border:1px solid rgba(16,185,129,0.3);">⚡ TEAM STATS</span>
+                  <span class="contestant-score-num" style="color:#facc15; font-weight:900; font-family:'JetBrains Mono',monospace;">${fmtVal(m.staff1)}</span>
                 </div>
               </div>
 
               <div class="bracket-vs-divider">VS</div>
 
-              <div class="bracket-contestant-row ${staff2Won && !isUpcoming ? 'winning' : ''}">
+              <div class="bracket-contestant-row ${staff2Won ? 'winning' : ''}">
                 <div class="contestant-identity">
                   <div class="contestant-name-box">
-                    <span class="contestant-staff-name">${m.staff2.seed ? m.staff2.seed + ' ' : ''}${m.staff2.name} (${m.staff2.team})</span>
-                    <span class="contestant-team-pick">${m.staff2.pick}</span>
+                    <span class="contestant-staff-name">${m.staff2.seed ? m.staff2.seed + ' ' : ''}${escapeHtml(m.staff2.name)} (${m.staff2.team})</span>
+                    <span class="contestant-team-pick">${escapeHtml(m.staff2.pick)}</span>
                   </div>
                 </div>
                 <div class="contestant-score-action" style="display:flex; flex-direction:column; align-items:flex-end; gap:2px;">
-                  <span class="contestant-score-num" style="color:#facc15; font-weight:900; font-family:'JetBrains Mono',monospace;">${m.staff2.score ? m.staff2.score.toFixed(1) + ' PTS' : (isUpcoming ? 'PROJ: ' + (m.spread.split('•')[1] || '20 PTS') : '0 PTS')}</span>
-                  <span style="font-size:0.6rem; color:#10b981; font-weight:800; background:rgba(16,185,129,0.12); padding:1px 6px; border-radius:4px; border:1px solid rgba(16,185,129,0.3);">⚡ TEAM STATS</span>
+                  <span class="contestant-score-num" style="color:#facc15; font-weight:900; font-family:'JetBrains Mono',monospace;">${fmtVal(m.staff2)}</span>
                 </div>
               </div>
             </div>
 
-            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.25); border-radius:6px; padding:4px 8px; font-size:0.65rem; color:#94a3b8; font-family:'JetBrains Mono',monospace; margin-top:4px;">
-              <span>📊 POSITIONS:</span>
-              <span><strong style="color:#38bdf8;">QB</strong> • <strong style="color:#a78bfa;">REC</strong> • <strong style="color:#34d399;">RUSH</strong> • <strong style="color:#fb923c;">DEF</strong> • <strong style="color:#f472b6;">ST</strong></span>
-              <span style="color:#facc15; font-weight:700;">AUTO-CALCULATED</span>
-            </div>
-
             <button class="btn-reveal-showdown" data-match-id="${m.id}">
-              <span>📊</span> View Matchup Fantasy Stats Breakdown
+              <span>📊</span> View Matchup Details
             </button>
           </div>
         `;
       };
 
       return `
-        <!-- Week Selector Row -->
         <div class="week-selector-wrapper">
-          <span class="week-selector-label">Select NFL Week:</span>
+          <span class="week-selector-label">Select ${this.currentSeason} NFL Week:</span>
           <div class="week-pills-row">
-            ${WEEKLY_BRACKET_DATA.weeks.map((w, idx) => `
+            ${this.weeklyBracketData.weeks.map((w, idx) => `
               <button class="week-pill-btn ${idx === this.selectedWeekIndex ? 'active' : ''}" data-week-index="${idx}">
                 ${w.label}
               </button>
@@ -1856,94 +2259,44 @@
           </div>
         </div>
 
-        <!-- How Office Fantasy Works Helper Card -->
-        <div class="bracket-rules-card">
-          <div class="bracket-rules-title">
-            <span>📖 HOW THE FANTASY BRACKET WORKS</span>
-            <span style="color:#facc15;">AUTOMATED POSITION SCORING</span>
-          </div>
-          <div class="bracket-rules-steps">
-            <div class="bracket-rule-step">
-              <strong>1. Quarterback & Receiver</strong>
-              <span>Passing yards (0.04/yd), pass TDs (+4), catches (1.0 PPR), receiving yards (0.1/yd), and receiving TDs (+6).</span>
-            </div>
-            <div class="bracket-rule-step">
-              <strong>2. Offense & Running Yards</strong>
-              <span>Rushing yards (0.1/yd) and rushing touchdowns (+6) automatically count toward each member's total.</span>
-            </div>
-            <div class="bracket-rule-step">
-              <strong>3. Defense & Special Teams</strong>
-              <span>Sacks (+1.0), turnovers (+2.0), points allowed bonuses, field goals (+3.0 to +5.0), and extra points (+1.0).</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Fantasy Status Tracker Bar -->
         <div class="user-picks-tracker-bar" style="background:linear-gradient(90deg, rgba(250,204,21,0.15), rgba(16,185,129,0.15)); border-color:rgba(250,204,21,0.3);">
           <div class="user-picks-tracker-text" style="color:#facc15;">
-            ⚡ 100% AUTOMATED FANTASY SYSTEM: POINTS TALLIED DIRECTLY FROM TEAM STATS
+            ⚡ LIVE ${this.currentSeason} NFL SYNC • ACTIVE WEEK ${this.currentWeek} AUTOMATED SCORING
           </div>
           <div class="user-picks-tracker-badge" style="background:rgba(16,185,129,0.2); color:#10b981; border:1px solid rgba(16,185,129,0.4);">
-            ✓ NO PICKS NEEDED
+            ✓ REAL ESPN STATS
           </div>
         </div>
 
-        <!-- Contender Filter Bar -->
-        <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
+        <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px; margin-bottom:8px;">
           <div style="font-size:0.68rem; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px;">
-            Filter by Contender:
+            Highlight Contender:
           </div>
           <div class="contender-filter-bar">
             <button class="contender-filter-pill ${this.selectedContenderFilter === 'ALL' ? 'active' : ''}" data-contender="ALL">
               ⭐ All Contenders
             </button>
-            ${CONTENDERS_LIST.map(c => `
-              <button class="contender-filter-pill ${this.selectedContenderFilter === c.name ? 'active' : ''}" data-contender="${c.name}">
-                ${c.name} (${c.team})
+            ${contenders.map(c => `
+              <button class="contender-filter-pill ${this.selectedContenderFilter === c.name ? 'active' : ''}" data-contender="${escapeHtml(c.name)}">
+                ${escapeHtml(c.name)} (${c.team})
               </button>
             `).join('')}
           </div>
         </div>
 
-        <!-- Day Slate Filter Bar -->
-        <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px; margin-bottom:8px;">
-          <div style="font-size:0.68rem; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px;">
-            Filter by Slate:
-          </div>
-          <div class="contender-filter-bar">
-            <button class="contender-filter-pill ${this.selectedDayFilter === 'ALL' ? 'active' : ''}" data-day="ALL">
-              🏈 All Game Slates
-            </button>
-            <button class="contender-filter-pill ${this.selectedDayFilter === 'Thu' ? 'active' : ''}" data-day="Thu">
-              ⚡ Thursday Night
-            </button>
-            <button class="contender-filter-pill ${this.selectedDayFilter === 'Sun Early' ? 'active' : ''}" data-day="Sun Early">
-              ☀️ Sunday Early
-            </button>
-            <button class="contender-filter-pill ${this.selectedDayFilter === 'Sun Late' ? 'active' : ''}" data-day="Sun Late">
-              🏜️ Sunday Late
-            </button>
-            <button class="contender-filter-pill ${this.selectedDayFilter === 'Mon' ? 'active' : ''}" data-day="Mon">
-              🌙 Monday Night
-            </button>
-          </div>
-        </div>
-
-        <!-- Weekly Crown Leader -->
         <div class="weekly-crown-banner">
           <div class="crown-icon">👑</div>
           <div class="crown-details">
-            <div class="crown-title">${curWeek.label} Office Pacesetter: ${curWeek.winner}</div>
-            <div class="crown-sub">Weekly High Scorer MVP: ${curWeek.mvp} • Click any matchup node below to reveal battle lore!</div>
+            <div class="crown-title">${escapeHtml(curWeek.label)} Pacesetter: ${escapeHtml(curWeek.winner)}</div>
+            <div class="crown-sub">Top Seed / Record: ${escapeHtml(curWeek.mvp)} • Click any past week above to fetch real ${this.currentSeason} ESPN scores!</div>
           </div>
         </div>
 
-        <!-- 3-Round Interactive Tournament Bracket Tree -->
         <div class="tournament-bracket-tree">
           <div class="bracket-round-column">
             <div class="bracket-round-header">
               <span class="round-header-title">Stage 1 • Opening Slate</span>
-              <span class="round-header-badge">4 MATCHES (ALL 7 MEMBERS)</span>
+              <span class="round-header-badge">4 MATCHES</span>
             </div>
             ${r1Matches.map(m => renderNode(m)).join('')}
           </div>
@@ -1951,7 +2304,7 @@
           <div class="bracket-round-column">
             <div class="bracket-round-header">
               <span class="round-header-title">Stage 2 • Semifinals</span>
-              <span class="round-header-badge">2 MATCHES (SUN LATE)</span>
+              <span class="round-header-badge">2 MATCHES</span>
             </div>
             ${r2Matches.map(m => renderNode(m)).join('')}
           </div>
@@ -1959,7 +2312,7 @@
           <div class="bracket-round-column">
             <div class="bracket-round-header gold">
               <span class="round-header-title" style="color:#facc15;">👑 Weekly Grand Finale</span>
-              <span class="round-header-badge" style="background:rgba(250,204,21,0.2); color:#facc15;">PRIMETIME FINALE</span>
+              <span class="round-header-badge" style="background:rgba(250,204,21,0.2); color:#facc15;">CHAMPIONSHIP</span>
             </div>
             ${r3Matches.map(m => renderNode(m, true)).join('')}
           </div>
@@ -1967,139 +2320,177 @@
       `;
     }
 
-    openShowdownModal(matchId) {
-      let foundMatch = null;
-      let foundRoundLabel = null;
-      let isSeasonMatch = false;
+    renderSeasonLadderContent() {
+      const seeded = this.getSeededContenders();
+      const nflWorst = this.getNflLastPlaceContender();
 
-      for (const w of WEEKLY_BRACKET_DATA.weeks) {
-        const m = w.matchups.find(item => item.id === matchId);
-        if (m) {
-          foundMatch = m;
-          foundRoundLabel = `${w.label.toUpperCase()} • ${m.roundName.toUpperCase()}`;
-          break;
-        }
-      }
+      const c1 = seeded[0], c2 = seeded[1], c3 = seeded[2], c4 = seeded[3], c5 = seeded[4], c6 = seeded[5], c7 = seeded[6];
 
-      if (!foundMatch) {
-        for (const r of SEASON_TOURNAMENT_DATA.rounds) {
-          const m = r.matchups.find(item => item.id === matchId);
-          if (m) {
-            foundMatch = m;
-            foundRoundLabel = `18-WEEK SEASON TOURNAMENT • ${r.name.toUpperCase()}`;
-            isSeasonMatch = true;
-            break;
-          }
-        }
-      }
+      const findContender = (name) => {
+        if (!name) return null;
+        if (name === nflWorst.name) return nflWorst;
+        return seeded.find(c => c.name === name || c.fullName === name) || null;
+      };
 
-      if (!foundMatch || !this.dom.showdownModalContent || !this.dom.showdownModalOverlay) return;
+      const s1_c1 = findContender(this.seasonPicks['st_q1']) || { name: `TBD (Winner QF 1)`, team: '', seed: 'ADV', pick: `${c1.name} vs ${c6.name}` };
+      const s1_c2 = findContender(this.seasonPicks['st_q4']) || { name: `TBD (Winner QF 4)`, team: '', seed: 'ADV', pick: `${c7.name} vs ${nflWorst.team}` };
+      const s2_c1 = findContender(this.seasonPicks['st_q2']) || { name: `TBD (Winner QF 2)`, team: '', seed: 'ADV', pick: `${c2.name} vs ${c5.name}` };
+      const s2_c2 = findContender(this.seasonPicks['st_q3']) || { name: `TBD (Winner QF 3)`, team: '', seed: 'ADV', pick: `${c3.name} vs ${c4.name}` };
 
-      const m = foundMatch;
-      let s1 = m.staff1;
-      let s2 = m.staff2;
+      const f_c1 = findContender(this.seasonPicks['st_s1']) || { name: 'TBD (Winner SF 1)', team: '', seed: 'TOP', pick: 'Semifinal 1 Winner' };
+      const f_c2 = findContender(this.seasonPicks['st_s2']) || { name: 'TBD (Winner SF 2)', team: '', seed: 'TOP', pick: 'Semifinal 2 Winner' };
 
-      // For dynamic season rounds (Semis & Final), resolve staff1 and staff2 if based on prior picks
-      if (isSeasonMatch && (!s1 || !s2)) {
-        const findContender = (nameOrPick) => {
-          if (!nameOrPick) return null;
-          if (nameOrPick === 'Carolina Panthers' || nameOrPick.includes('Panthers')) {
-            return {
-              name: "Carolina Panthers",
-              team: "CAR",
-              teamName: "Panthers (NFL #32)",
-              avatar: "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
-              bannerGif: "https://a.espncdn.com/i/teamlogos/nfl/500/car.png",
-              seed: "NFL #32",
-              color: "#0085ca",
-              rating: 79,
-              yards: 280,
-              rzPct: "45%",
-              turnovers: "-8",
-              score: 0,
-              pick: "CAR Panthers (NFL #32)"
-            };
-          }
-          return CONTENDERS_LIST.find(c => 
-            c.name.toLowerCase() === nameOrPick.toLowerCase() || 
-            c.team.toLowerCase() === nameOrPick.toLowerCase() ||
-            (nameOrPick.toLowerCase().includes('cardinal') && c.team === 'ARI')
-          ) || null;
-        };
+      const seasonPicksCount = Object.keys(this.seasonPicks).length;
+      const crownedChamp = this.seasonPicks['st_final'];
 
-        if (m.id === 'st_s1') {
-          s1 = findContender(this.seasonPicks['st_q1']);
-          s2 = findContender(this.seasonPicks['st_q4']);
-        } else if (m.id === 'st_s2') {
-          s1 = findContender(this.seasonPicks['st_q2']);
-          s2 = findContender(this.seasonPicks['st_q3']);
-        } else if (m.id === 'st_final') {
-          s1 = findContender(this.seasonPicks['st_s1']);
-          s2 = findContender(this.seasonPicks['st_s2']);
-        }
-      }
+      const renderSeasonNode = (matchId, weekLabel, rivalryName, left, right, isFinal = false) => {
+        const userPick = this.seasonPicks[matchId];
+        const canPick1 = left && left.name && !left.name.startsWith('TBD');
+        const canPick2 = right && right.name && !right.name.startsWith('TBD');
 
-      // If one or both are still TBD in a future round
-      if (!s1 || !s2) {
-        this.dom.showdownModalContent.innerHTML = `
-          <div class="showdown-hero-banner">
-            <div style="font-size:0.68rem; font-weight:800; color:#38bdf8; letter-spacing:1px; margin-bottom:4px;">
-              ${foundRoundLabel}
+        return `
+          <div class="bracket-matchup-node ${isFinal ? 'championship-node' : ''}" data-match-id="${matchId}" role="button" tabindex="0">
+            <div class="match-node-top">
+              <span class="match-rivalry-name">${escapeHtml(rivalryName)}</span>
+              <span class="matchup-status-pill preview">${weekLabel}</span>
             </div>
-            <div class="showdown-hero-title">${m.title}</div>
-            <div class="showdown-hero-meta">
-              <span class="showdown-meta-item">📍 ${m.venue}</span>
-              <span class="showdown-meta-item">⏰ ${m.kickoff}</span>
-              <span class="showdown-meta-item">🏈 ${m.surface}</span>
-            </div>
-          </div>
-          <div style="padding: 24px 16px; text-align:center; background:var(--bg-card-inner); border-radius:var(--radius-md); border:1.5px dashed var(--border-card);">
-            <div style="font-size: 2.4rem; margin-bottom: 8px;">🔒</div>
-            <div style="font-family:'Outfit', sans-serif; font-size:1.1rem; font-weight:800; color:#facc15; margin-bottom:6px;">
-              Matchup TBD • Awaiting Previous Round Results
-            </div>
-            <div style="font-size:0.8rem; color:#cbd5e1; max-width:440px; margin:0 auto 16px auto; line-height:1.4;">
-              ${m.lore || 'This matchup unlocks once prior round games conclude in real-time or when you make your picks in the 18-Week Season Tournament tab!'}
-            </div>
-            <div style="font-size:0.72rem; color:#94a3b8; background:rgba(0,0,0,0.3); padding:8px 12px; border-radius:6px; display:inline-block;">
-              ⚡ Pro Tip: Select winning picks in earlier rounds to simulate and unlock projected showdown lore!
+
+            <div class="match-node-contenders">
+              <div class="bracket-contestant-row ${userPick === left?.name ? 'user-picked' : ''}">
+                <div class="contestant-identity">
+                  <div class="contestant-name-box">
+                    <span class="contestant-staff-name">${left?.seed ? left.seed + ' ' : ''}${escapeHtml(left?.name || 'TBD')} ${left?.team ? '(' + left.team + ')' : ''}</span>
+                    <span class="contestant-team-pick" style="color:#64748b;">${escapeHtml(left?.record ? `${left.teamName} • ${left.record}` : (left?.pick || 'Awaiting Previous Round'))}</span>
+                  </div>
+                </div>
+                <div class="contestant-score-action">
+                  ${canPick1 ? `
+                    <button class="btn-season-pick btn-bracket-pick ${userPick === left.name ? 'active' : ''}" data-match-id="${matchId}" data-staff="${escapeHtml(left.name)}">
+                      ${userPick === left.name ? '✓ Picked' : 'Pick'}
+                    </button>
+                  ` : `<span class="contestant-score-num" style="color:#64748b; font-size:0.68rem;">TBD</span>`}
+                </div>
+              </div>
+
+              <div class="bracket-vs-divider">VS</div>
+
+              <div class="bracket-contestant-row ${userPick === right?.name ? 'user-picked' : ''}">
+                <div class="contestant-identity">
+                  <div class="contestant-name-box">
+                    <span class="contestant-staff-name">${right?.seed ? right.seed + ' ' : ''}${escapeHtml(right?.name || 'TBD')} ${right?.team ? '(' + right.team + ')' : ''}</span>
+                    <span class="contestant-team-pick" style="color:#64748b;">${escapeHtml(right?.record ? `${right.teamName} • ${right.record}` : (right?.pick || 'Awaiting Previous Round'))}</span>
+                  </div>
+                </div>
+                <div class="contestant-score-action">
+                  ${canPick2 ? `
+                    <button class="btn-season-pick btn-bracket-pick ${userPick === right.name ? 'active' : ''}" data-match-id="${matchId}" data-staff="${escapeHtml(right.name)}">
+                      ${userPick === right.name ? '✓ Picked' : 'Pick'}
+                    </button>
+                  ` : `<span class="contestant-score-num" style="color:#64748b; font-size:0.68rem;">TBD</span>`}
+                </div>
+              </div>
             </div>
           </div>
         `;
-        this.dom.showdownModalOverlay.classList.add('open');
-        this.dom.showdownModalOverlay.style.display = 'flex';
-        return;
-      }
+      };
 
-      const userPick = isSeasonMatch ? this.seasonPicks[m.id] : this.userPicks[m.id];
+      return `
+        <div class="season-ladder-view">
+          <div class="ladder-explainer-card">
+            <span style="font-size:1.3rem;">🛡️</span>
+            <div class="ladder-info-text">
+              <strong>${this.currentSeason} Office Endzone Regular Season Championship (Weeks 16–18)</strong><br>
+              Live Playoff Seeding updated automatically from real ${this.currentSeason} NFL standings through Week ${this.currentWeek}! #7 faces the current NFL #32 team (${escapeHtml(nflWorst.name)} • ${escapeHtml(nflWorst.record)}).
+            </div>
+          </div>
+
+          <div class="user-picks-tracker-bar">
+            <div class="user-picks-tracker-text">🎯 SEASON BRACKET PICKS: ${seasonPicksCount}/7 ROUNDS LOCKED</div>
+            <button class="btn-reset-season-picks" title="Reset all season tournament picks">↺ Reset Season Picks</button>
+          </div>
+
+          ${crownedChamp ? `
+            <div class="weekly-crown-banner championship-crowned-banner" style="background:linear-gradient(90deg, #facc15, #f59e0b); color:#0b1322;">
+              <div class="crown-icon">🏆</div>
+              <div class="crown-details">
+                <div class="crown-title" style="color:#0b1322; font-size:0.95rem; font-weight:900;">${this.currentSeason} PROJECTED CHAMPION: ${escapeHtml(crownedChamp.toUpperCase())}</div>
+                <div class="crown-sub" style="color:#1e293b; font-weight:800;">Winner of the 18-Week Office Endzone Tournament!</div>
+              </div>
+            </div>
+          ` : ''}
+
+          <div class="tournament-bracket-tree">
+            <div class="bracket-round-column">
+              <div class="bracket-round-header">
+                <span class="round-header-title">Round 1 • Quarterfinals</span>
+                <span class="round-header-badge">WEEK 16</span>
+              </div>
+              ${renderSeasonNode('st_q1', 'WEEK 16', `#1 ${c1.name} vs #6 ${c6.name}`, c1, c6)}
+              ${renderSeasonNode('st_q2', 'WEEK 16', `#2 ${c2.name} vs #5 ${c5.name}`, c2, c5)}
+              ${renderSeasonNode('st_q3', 'WEEK 16', `#3 ${c3.name} vs #4 ${c4.name}`, c3, c4)}
+              ${renderSeasonNode('st_q4', 'WEEK 16', `#7 ${c7.name} vs NFL #32 ${nflWorst.team}`, c7, nflWorst)}
+            </div>
+
+            <div class="bracket-round-column">
+              <div class="bracket-round-header">
+                <span class="round-header-title">Round 2 • Semifinals</span>
+                <span class="round-header-badge">WEEK 17</span>
+              </div>
+              ${renderSeasonNode('st_s1', 'WEEK 17', 'Semifinal 1 (QF 1 vs QF 4)', s1_c1, s1_c2)}
+              ${renderSeasonNode('st_s2', 'WEEK 17', 'Semifinal 2 (QF 2 vs QF 3)', s2_c1, s2_c2)}
+            </div>
+
+            <div class="bracket-round-column">
+              <div class="bracket-round-header gold">
+                <span class="round-header-title" style="color:#facc15;">👑 Round 3 • Championship</span>
+                <span class="round-header-badge" style="background:rgba(250,204,21,0.2); color:#facc15;">WEEK 18 FINALE</span>
+              </div>
+              ${renderSeasonNode('st_final', 'WEEK 18', `👑 ${this.currentSeason} Season Grand Championship`, f_c1, f_c2, true)}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    openShowdownModal(matchId) {
+      if (!this.weeklyBracketData || !this.dom.showdownModalContent || !this.dom.showdownModalOverlay) return;
+      let foundMatch = null;
+      let foundRoundLabel = '';
+
+      for (const w of this.weeklyBracketData.weeks) {
+        const m = w.matchups.find(item => item.id === matchId);
+        if (m) {
+          foundMatch = m;
+          foundRoundLabel = `${this.currentSeason} ${w.label.toUpperCase()} • ${m.roundName.toUpperCase()}`;
+          break;
+        }
+      }
+      if (!foundMatch) return;
+
+      const s1 = foundMatch.staff1;
+      const s2 = foundMatch.staff2;
 
       this.dom.showdownModalContent.innerHTML = `
         <div class="showdown-hero-banner">
-          <div style="font-size:0.68rem; font-weight:800; color:#38bdf8; letter-spacing:1px; margin-bottom:4px;">
-            ${foundRoundLabel}
-          </div>
-          <div class="showdown-hero-title">${m.title}</div>
+          <div style="font-size:0.68rem; font-weight:800; color:#38bdf8; letter-spacing:1px; margin-bottom:4px;">${escapeHtml(foundRoundLabel)}</div>
+          <div class="showdown-hero-title">${escapeHtml(foundMatch.title)}</div>
           <div class="showdown-hero-meta">
-            <span class="showdown-meta-item">📍 ${m.venue}</span>
-            <span class="showdown-meta-item">⏰ ${m.kickoff}</span>
-            <span class="showdown-meta-item">🏈 ${m.surface}</span>
-            <span class="showdown-meta-item" style="color:#facc15; font-weight:800;">📊 ${m.spread}</span>
+            <span class="showdown-meta-item">📍 ${escapeHtml(foundMatch.venue)}</span>
+            <span class="showdown-meta-item">🗓️ ${escapeHtml(foundMatch.kickoff)}</span>
+            <span class="showdown-meta-item" style="color:#facc15; font-weight:800;">📊 ${escapeHtml(foundMatch.spread)}</span>
           </div>
         </div>
 
         <div class="showdown-tale-grid">
           <div class="showdown-contender-card">
-            <div class="showdown-contender-avatar-wrap" id="showdown-avatar-1" title="Click to toggle GIF banner">
-              <img src="${s1.avatar}" class="showdown-contender-avatar-img" id="showdown-img-1" alt="${s1.name}" onerror="this.src='https://ui-avatars.com/api/?name=${s1.name}&background=0b1322&color=fff'">
+            <div class="showdown-contender-avatar-wrap">
+              <img src="${s1.avatar}" class="showdown-contender-avatar-img" alt="${escapeHtml(s1.name)}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(s1.name)}&background=0b1322&color=fff'">
             </div>
-            <div class="showdown-contender-name">${s1.seed ? s1.seed + ' ' : ''}${s1.name}</div>
-            <div class="showdown-contender-team">
-              <span>${s1.teamName} (${s1.team})</span>
-            </div>
+            <div class="showdown-contender-name">${s1.seed ? s1.seed + ' ' : ''}${escapeHtml(s1.name)}</div>
+            <div class="showdown-contender-team"><span>${escapeHtml(s1.teamName)} (${s1.team})</span></div>
             <div class="showdown-contender-stats-mini">
-              <div><strong>Rating:</strong> ${s1.rating || 90} OVR</div>
-              <div><strong>Offensive Avg:</strong> ${s1.yards || 340} YDS/G</div>
-              <div><strong>Red Zone TD%:</strong> ${s1.rzPct || '65%'}</div>
+              <div><strong>Record:</strong> ${escapeHtml(s1.record || '--')}</div>
+              <div><strong>Score:</strong> ${(s1.score || 0).toFixed(1)} ${foundMatch.scoreUnit || 'PTS'}</div>
             </div>
           </div>
 
@@ -2109,162 +2500,41 @@
           </div>
 
           <div class="showdown-contender-card">
-            <div class="showdown-contender-avatar-wrap" id="showdown-avatar-2" title="Click to toggle GIF banner">
-              <img src="${s2.avatar}" class="showdown-contender-avatar-img" id="showdown-img-2" alt="${s2.name}" onerror="this.src='https://ui-avatars.com/api/?name=${s2.name}&background=0b1322&color=fff'">
+            <div class="showdown-contender-avatar-wrap">
+              <img src="${s2.avatar}" class="showdown-contender-avatar-img" alt="${escapeHtml(s2.name)}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(s2.name)}&background=0b1322&color=fff'">
             </div>
-            <div class="showdown-contender-name">${s2.seed ? s2.seed + ' ' : ''}${s2.name}</div>
-            <div class="showdown-contender-team">
-              <span>${s2.teamName} (${s2.team})</span>
-            </div>
+            <div class="showdown-contender-name">${s2.seed ? s2.seed + ' ' : ''}${escapeHtml(s2.name)}</div>
+            <div class="showdown-contender-team"><span>${escapeHtml(s2.teamName)} (${s2.team})</span></div>
             <div class="showdown-contender-stats-mini">
-              <div><strong>Rating:</strong> ${s2.rating || 90} OVR</div>
-              <div><strong>Offensive Avg:</strong> ${s2.yards || 340} YDS/G</div>
-              <div><strong>Red Zone TD%:</strong> ${s2.rzPct || '65%'}</div>
+              <div><strong>Record:</strong> ${escapeHtml(s2.record || '--')}</div>
+              <div><strong>Score:</strong> ${(s2.score || 0).toFixed(1)} ${foundMatch.scoreUnit || 'PTS'}</div>
             </div>
           </div>
         </div>
 
         <div class="showdown-lore-card">
-          <div class="showdown-card-section-title">
-            <span>📜</span> Rivalry Lore & Battle Backstory
-          </div>
-          <div class="showdown-card-text">${m.lore}</div>
+          <div class="showdown-card-section-title"><span>📜</span> Matchup Overview</div>
+          <div class="showdown-card-text">${escapeHtml(foundMatch.lore)}</div>
         </div>
 
         <div class="showdown-smack-wrap">
-          <div style="font-size:0.75rem; font-weight:800; color:#38bdf8;">
-            <span>💬 Matchup Smack Talk</span>
-          </div>
-
+          <div style="font-size:0.75rem; font-weight:800; color:#38bdf8;"><span>💬 Office Watercooler</span></div>
           <div class="smack-bubble">
-            <img src="${s1.avatar}" class="smack-avatar-mini" alt="${s1.name}" onerror="this.src='https://ui-avatars.com/api/?name=${s1.name}&background=0b1322&color=fff'">
+            <img src="${s1.avatar}" class="smack-avatar-mini" alt="${escapeHtml(s1.name)}">
             <div class="smack-content">
-              <span class="smack-author">${s1.name} (${s1.teamName}):</span>
-              <span class="smack-quote">"${m.smack1 || 'Ready to bring home the postseason win!'}"</span>
+              <span class="smack-author">${escapeHtml(s1.name)}:</span>
+              <span class="smack-quote">"${escapeHtml(foundMatch.smack1)}"</span>
             </div>
           </div>
-
           <div class="smack-bubble">
-            <img src="${s2.avatar}" class="smack-avatar-mini" alt="${s2.name}" onerror="this.src='https://ui-avatars.com/api/?name=${s2.name}&background=0b1322&color=fff'">
+            <img src="${s2.avatar}" class="smack-avatar-mini" alt="${escapeHtml(s2.name)}">
             <div class="smack-content">
-              <span class="smack-author">${s2.name} (${s2.teamName}):</span>
-              <span class="smack-quote">"${m.smack2 || 'We are marching all the way to Week 18!'}"</span>
+              <span class="smack-author">${escapeHtml(s2.name)}:</span>
+              <span class="smack-quote">"${escapeHtml(foundMatch.smack2)}"</span>
             </div>
           </div>
         </div>
-
-        <div class="showdown-stats-compare">
-          <div style="font-size:0.75rem; font-weight:800; color:#facc15; margin-bottom:4px;">
-            📊 Tale of the Tape Metrics
-          </div>
-
-          <div class="stat-compare-row">
-            <div class="stat-compare-labels">
-              <span style="color:#38bdf8;">${s1.name}: ${s1.rating || 90} OVR</span>
-              <span style="color:#94a3b8;">Franchise Rating</span>
-              <span style="color:#facc15;">${s2.name}: ${s2.rating || 90} OVR</span>
-            </div>
-            <div class="stat-bar-track">
-              <div class="stat-bar-fill-left" style="width:${((s1.rating || 90) / ((s1.rating || 90) + (s2.rating || 90))) * 100}%;"></div>
-              <div class="stat-bar-fill-right" style="width:${((s2.rating || 90) / ((s1.rating || 90) + (s2.rating || 90))) * 100}%;"></div>
-            </div>
-          </div>
-
-          <div class="stat-compare-row">
-            <div class="stat-compare-labels">
-              <span style="color:#38bdf8;">${s1.yards || 340} YDS</span>
-              <span style="color:#94a3b8;">Offensive Yards / Game</span>
-              <span style="color:#facc15;">${s2.yards || 340} YDS</span>
-            </div>
-            <div class="stat-bar-track">
-              <div class="stat-bar-fill-left" style="width:${((s1.yards || 340) / ((s1.yards || 340) + (s2.yards || 340) || 1)) * 100}%;"></div>
-              <div class="stat-bar-fill-right" style="width:${((s2.yards || 340) / ((s1.yards || 340) + (s2.yards || 340) || 1)) * 100}%;"></div>
-            </div>
-          </div>
-        </div>
-
-        ${isSeasonMatch ? `
-          <div style="margin-top:4px;">
-            <div style="font-size:0.75rem; font-weight:800; color:#fff; margin-bottom:6px; text-align:center;">
-              🎯 MAKE YOUR SEASON TOURNAMENT PICK FOR THIS SHOWDOWN:
-            </div>
-            <div class="showdown-picks-row">
-              <button class="btn-showdown-action ${userPick === s1.name ? 'active-pick' : ''}" id="btn-pick-contender-1">
-                ${userPick === s1.name ? '✓ Picked ' + s1.name : 'Pick ' + s1.name + ' (' + s1.team + ')'}
-              </button>
-              <button class="btn-showdown-action ${userPick === s2.name ? 'active-pick' : ''}" id="btn-pick-contender-2">
-                ${userPick === s2.name ? '✓ Picked ' + s2.name : 'Pick ' + s2.name + ' (' + s2.team + ')'}
-              </button>
-            </div>
-          </div>
-        ` : `
-          <div style="margin-top:10px; background:rgba(0,0,0,0.3); border:1.5px solid rgba(250,204,21,0.25); border-radius:10px; padding:12px;">
-            <div style="font-size:0.75rem; font-weight:800; color:#facc15; margin-bottom:8px; text-align:center;">
-              ⚡ AUTOMATED FANTASY STATS TALLY (NO PICKS REQUIRED)
-            </div>
-            <div style="display:flex; justify-content:space-around; align-items:center; margin-bottom:8px;">
-              <div style="text-align:center;">
-                <div style="font-size:0.8rem; font-weight:800; color:#38bdf8;">${s1.name}</div>
-                <div style="font-family:'JetBrains Mono',monospace; font-size:1.25rem; font-weight:900; color:#facc15;">${(s1.fantasyPoints || s1.score || 0).toFixed(1)} PTS</div>
-              </div>
-              <div style="font-weight:900; font-size:0.8rem; color:#64748b;">VS</div>
-              <div style="text-align:center;">
-                <div style="font-size:0.8rem; font-weight:800; color:#facc15;">${s2.name}</div>
-                <div style="font-family:'JetBrains Mono',monospace; font-size:1.25rem; font-weight:900; color:#facc15;">${(s2.fantasyPoints || s2.score || 0).toFixed(1)} PTS</div>
-              </div>
-            </div>
-            <div style="font-size:0.68rem; color:#94a3b8; text-align:center; line-height:1.4;">
-              Points are automatically calculated in real-time from official game performance across: <strong>QB</strong>, <strong>REC</strong>, <strong>RUSH</strong>, <strong>DEF</strong>, and <strong>ST</strong>.
-            </div>
-          </div>
-        `}
       `;
-
-      let isGif1 = false;
-      const avatarWrap1 = document.getElementById('showdown-avatar-1');
-      const img1 = document.getElementById('showdown-img-1');
-      avatarWrap1?.addEventListener('click', () => {
-        isGif1 = !isGif1;
-        img1.src = isGif1 ? (s1.bannerGif || s1.avatar) : s1.avatar;
-      });
-
-      let isGif2 = false;
-      const avatarWrap2 = document.getElementById('showdown-avatar-2');
-      const img2 = document.getElementById('showdown-img-2');
-      avatarWrap2?.addEventListener('click', () => {
-        isGif2 = !isGif2;
-        img2.src = isGif2 ? (s2.bannerGif || s2.avatar) : s2.avatar;
-      });
-
-      document.getElementById('btn-pick-contender-1')?.addEventListener('click', () => {
-        if (isSeasonMatch) {
-          if (m.id.startsWith('st_q')) {
-            delete this.seasonPicks['st_final'];
-          }
-          if (m.id.startsWith('st_s')) {
-            delete this.seasonPicks['st_final'];
-          }
-          this.seasonPicks[m.id] = s1.name;
-          localStorage.setItem('office_endzone_season_picks', JSON.stringify(this.seasonPicks));
-          this.openShowdownModal(m.id);
-          this.renderBracketsHub();
-        }
-      });
-
-      document.getElementById('btn-pick-contender-2')?.addEventListener('click', () => {
-        if (isSeasonMatch) {
-          if (m.id.startsWith('st_q')) {
-            delete this.seasonPicks['st_final'];
-          }
-          if (m.id.startsWith('st_s')) {
-            delete this.seasonPicks['st_final'];
-          }
-          this.seasonPicks[m.id] = s2.name;
-          localStorage.setItem('office_endzone_season_picks', JSON.stringify(this.seasonPicks));
-          this.openShowdownModal(m.id);
-          this.renderBracketsHub();
-        }
-      });
 
       this.dom.showdownModalOverlay.classList.add('open');
       this.dom.showdownModalOverlay.style.display = 'flex';
@@ -2276,298 +2546,170 @@
       this.dom.showdownModalOverlay.style.display = 'none';
     }
 
-    renderSeasonLadderContent() {
-      const findContender = (nameOrPick) => {
-        if (!nameOrPick) return null;
-        if (nameOrPick === 'Carolina Panthers' || nameOrPick.includes('Panthers')) {
-          return {
-            name: "Carolina Panthers",
-            team: "CAR",
-            teamName: "Panthers",
-            seed: "NFL #32",
-            score: 0,
-            pick: "CAR Panthers (NFL #32)"
-          };
-        }
-        return CONTENDERS_LIST.find(c => 
-          c.name.toLowerCase() === nameOrPick.toLowerCase() || 
-          c.team.toLowerCase() === nameOrPick.toLowerCase() ||
-          (nameOrPick.toLowerCase().includes('cardinal') && c.team === 'ARI')
-        ) || null;
-      };
-
-      // QF Contenders
-      const qf1_c1 = CONTENDERS_LIST.find(c => c.name === 'Andrea') || { name: 'Andrea', team: 'GB', seed: '#1', pick: 'GB Packers' };
-      const qf1_c2 = CONTENDERS_LIST.find(c => c.name === 'Saul') || { name: 'Saul', team: 'SF', seed: '#6', pick: 'SF 49ers' };
-
-      const qf2_c1 = CONTENDERS_LIST.find(c => c.name === 'Mariah') || { name: 'Mariah', team: 'PHI', seed: '#2', pick: 'PHI Eagles' };
-      const qf2_c2 = CONTENDERS_LIST.find(c => c.name === 'Nicole') || { name: 'Nicole', team: 'LV', seed: '#5', pick: 'LV Raiders' };
-
-      const qf3_c1 = CONTENDERS_LIST.find(c => c.name === 'CJ') || { name: 'CJ', team: 'CHI', seed: '#3', pick: 'CHI Bears' };
-      const qf3_c2 = CONTENDERS_LIST.find(c => c.name === 'Mario') || { name: 'Mario', team: 'CLE', seed: '#4', pick: 'CLE Browns' };
-
-      const qf4_c1 = CONTENDERS_LIST.find(c => c.name === 'Cardinals Flag') || { name: 'Cardinals Flag', team: 'ARI', seed: '#7', pick: 'ARI Cardinals' };
-      const qf4_c2 = { name: 'Carolina Panthers', team: 'CAR', teamName: 'Panthers', seed: 'NFL #32', pick: 'CAR Panthers (NFL #32)' };
-
-      // Semifinal Contenders (resolved from picks or placeholders)
-      const s1_c1 = findContender(this.seasonPicks['st_q1']) || { name: 'TBD (Winner QF 1: Andrea/Saul)', team: '', seed: 'ADV', pick: 'Winner QF 1' };
-      const s1_c2 = findContender(this.seasonPicks['st_q4']) || { name: 'TBD (Winner QF 4: Flag/Panthers)', team: '', seed: 'ADV', pick: 'Winner QF 4' };
-
-      const s2_c1 = findContender(this.seasonPicks['st_q2']) || { name: 'TBD (Winner QF 2: Mariah/Nicole)', team: '', seed: 'ADV', pick: 'Winner QF 2' };
-      const s2_c2 = findContender(this.seasonPicks['st_q3']) || { name: 'TBD (Winner QF 3: CJ/Mario)', team: '', seed: 'ADV', pick: 'Winner QF 3' };
-
-      // Finalist Contenders (resolved from semi picks or placeholders)
-      const f_c1 = findContender(this.seasonPicks['st_s1']) || { name: 'TBD (Winner Semifinal 1)', team: '', seed: 'TOP', pick: 'Winner SF 1' };
-      const f_c2 = findContender(this.seasonPicks['st_s2']) || { name: 'TBD (Winner Semifinal 2)', team: '', seed: 'TOP', pick: 'Winner SF 2' };
-
-      const seasonPicksCount = Object.keys(this.seasonPicks).length;
-      const crownedChamp = this.seasonPicks['st_final'];
-
-      const renderSeasonNode = (matchId, weekLabel, rivalryName, c1, c2, isFinal = false) => {
-        const userPick = this.seasonPicks[matchId];
-        const canPick1 = c1 && c1.name && !c1.name.startsWith('TBD');
-        const canPick2 = c2 && c2.name && !c2.name.startsWith('TBD');
-
-        return `
-          <div class="bracket-matchup-node ${isFinal ? 'championship-node' : ''}" data-match-id="${matchId}" role="button" tabindex="0">
-            <div class="match-node-top">
-              <span class="match-rivalry-name">${rivalryName}</span>
-              <span class="matchup-status-pill preview">${weekLabel}</span>
-            </div>
-
-            <div class="match-node-contenders">
-              <div class="bracket-contestant-row ${userPick === c1?.name ? 'user-picked' : ''}" style="${!canPick1 ? 'background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.12);' : ''}">
-                <div class="contestant-identity">
-                  <div class="contestant-name-box">
-                    <span class="contestant-staff-name" style="${!canPick1 ? 'color:#94a3b8; font-style:italic;' : ''}">${c1?.seed ? c1.seed + ' ' : ''}${c1?.name || 'TBD'} ${c1?.team ? '(' + c1.team + ')' : ''}</span>
-                    <span class="contestant-team-pick" style="color:#64748b;">${c1?.pick || (canPick1 ? c1?.teamName : 'Awaiting Previous Round')}</span>
-                  </div>
-                </div>
-                <div class="contestant-score-action">
-                  ${canPick1 ? `
-                    <button class="btn-season-pick btn-bracket-pick ${userPick === c1.name ? 'active' : ''}" data-match-id="${matchId}" data-staff="${c1.name}">
-                      ${userPick === c1.name ? '✓ Picked' : 'Pick'}
-                    </button>
-                  ` : `<span class="contestant-score-num" style="color:#64748b; font-size:0.68rem;">TBD</span>`}
-                </div>
-              </div>
-
-              <div class="bracket-vs-divider">VS</div>
-
-              <div class="bracket-contestant-row ${userPick === c2?.name ? 'user-picked' : ''}" style="${!canPick2 ? 'background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.12);' : ''}">
-                <div class="contestant-identity">
-                  <div class="contestant-name-box">
-                    <span class="contestant-staff-name" style="${!canPick2 ? 'color:#94a3b8; font-style:italic;' : ''}">${c2?.seed ? c2.seed + ' ' : ''}${c2?.name || 'TBD'} ${c2?.team ? '(' + c2.team + ')' : ''}</span>
-                    <span class="contestant-team-pick" style="color:#64748b;">${c2?.pick || (canPick2 ? c2?.teamName : 'Awaiting Previous Round')}</span>
-                  </div>
-                </div>
-                <div class="contestant-score-action">
-                  ${canPick2 ? `
-                    <button class="btn-season-pick btn-bracket-pick ${userPick === c2.name ? 'active' : ''}" data-match-id="${matchId}" data-staff="${c2.name}">
-                      ${userPick === c2.name ? '✓ Picked' : 'Pick'}
-                    </button>
-                  ` : `<span class="contestant-score-num" style="color:#64748b; font-size:0.68rem;">TBD</span>`}
-                </div>
-              </div>
-            </div>
-
-            <button class="btn-season-reveal-showdown btn-reveal-showdown" data-match-id="${matchId}">
-              <span>⚔️</span> Reveal Showdown Lore & Matchup Stats
-            </button>
-          </div>
-        `;
-      };
-
-      return `
-        <div class="season-ladder-view">
-          <!-- Explainer Card -->
-          <div class="ladder-explainer-card">
-            <span style="font-size:1.3rem;">🛡️</span>
-            <div class="ladder-info-text">
-              <strong>2026 Office Endzone Regular Season Championship (Weeks 16–18)</strong><br>
-              Featuring all 7 office contenders! Weeks 1–15 determine regular season seeding (#1 through #7). Tap "Pick" on any matchup below to simulate and advance your chosen contenders to the Week 18 Grand Finale!
-            </div>
-          </div>
-
-          <!-- User Season Pick Tracker Bar -->
-          <div class="user-picks-tracker-bar">
-            <div class="user-picks-tracker-text">
-              🎯 SEASON BRACKET PICKS: ${seasonPicksCount}/7 ROUNDS LOCKED
-            </div>
-            <button class="btn-reset-season-picks" title="Reset all season tournament picks">
-              ↺ Reset Season Picks
-            </button>
-          </div>
-
-          <!-- Crowned Champion Banner if Chosen -->
-          ${crownedChamp ? `
-            <div class="weekly-crown-banner championship-crowned-banner" style="background:linear-gradient(90deg, #facc15, #f59e0b); color:#0b1322;">
-              <div class="crown-icon">🏆</div>
-              <div class="crown-details">
-                <div class="crown-title" style="color:#0b1322; font-size:0.95rem; font-weight:900;">2026 REGULAR SEASON CHAMPION: ${crownedChamp.toUpperCase()}</div>
-                <div class="crown-sub" style="color:#1e293b; font-weight:800;">Winner of the 18-Week Tournament! Eternal office bragging rights & Lombardi Trophy!</div>
-              </div>
-            </div>
-          ` : ''}
-
-          <!-- 3-Round Interactive Tournament Bracket Tree (Names Only) -->
-          <div class="tournament-bracket-tree">
-            <!-- Column 1: Quarterfinals (Week 16) -->
-            <div class="bracket-round-column">
-              <div class="bracket-round-header">
-                <span class="round-header-title">Round 1 • Quarterfinals</span>
-                <span class="round-header-badge">WEEK 16 (4 MATCHES)</span>
-              </div>
-              ${renderSeasonNode('st_q1', 'WEEK 16', '#1 Andrea vs #6 Saul', qf1_c1, qf1_c2)}
-              ${renderSeasonNode('st_q2', 'WEEK 16', '#2 Mariah vs #5 Nicole', qf2_c1, qf2_c2)}
-              ${renderSeasonNode('st_q3', 'WEEK 16', '#3 CJ vs #4 Mario', qf3_c1, qf3_c2)}
-              ${renderSeasonNode('st_q4', 'WEEK 16', '#7 Cardinals Flag vs NFL #32 Panthers', qf4_c1, qf4_c2)}
-            </div>
-
-            <!-- Column 2: Semifinals (Week 17) -->
-            <div class="bracket-round-column">
-              <div class="bracket-round-header">
-                <span class="round-header-title">Round 2 • Semifinals</span>
-                <span class="round-header-badge">WEEK 17 (2 MATCHES)</span>
-              </div>
-              ${renderSeasonNode('st_s1', 'WEEK 17', 'Semifinal 1 (Winner QF 1 vs QF 4)', s1_c1, s1_c2)}
-              ${renderSeasonNode('st_s2', 'WEEK 17', 'Semifinal 2 (Winner QF 2 vs QF 3)', s2_c1, s2_c2)}
-            </div>
-
-            <!-- Column 3: Grand Championship Finale (Week 18) -->
-            <div class="bracket-round-column">
-              <div class="bracket-round-header gold">
-                <span class="round-header-title" style="color:#facc15;">👑 Round 3 • Championship</span>
-                <span class="round-header-badge" style="background:rgba(250,204,21,0.2); color:#facc15;">WEEK 18 FINALE</span>
-              </div>
-              ${renderSeasonNode('st_final', 'WEEK 18', '👑 2026 Season Grand Championship', f_c1, f_c2, true)}
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
     // =========================================================================
-    // FULL INTERACTIVE NFL BOX SCORE ENGINE
+    // FULL REAL-TIME ESPN BOX SCORE MODAL (ZERO FAKE DATA!)
     // =========================================================================
+
     openBoxScoreModal(matchupData, mode = 'CURRENT') {
       if (!this.dom.boxScoreModalContent || !this.dom.boxScoreModalOverlay) return;
 
-      // Auto-detect mode if matchupData belongs specifically to yesterday vs today
       let activeMode = mode;
       let selectedGame = null;
 
-      if (matchupData && matchupData.away && matchupData.home) {
-        const awayCode = (typeof matchupData.away === 'string' ? matchupData.away : matchupData.away.code || '').toUpperCase();
-        const homeCode = (typeof matchupData.home === 'string' ? matchupData.home : matchupData.home.code || '').toUpperCase();
-        
-        const todayMatch = TODAY_TICKER_GAMES.find(g => g.away.toUpperCase() === awayCode && g.home.toUpperCase() === homeCode);
-        const yestMatch = YESTERDAY_TICKER_GAMES.find(g => g.away.toUpperCase() === awayCode && g.home.toUpperCase() === homeCode);
-
-        if (yestMatch && !todayMatch) {
-          activeMode = 'LAST_WEEK';
-          selectedGame = yestMatch;
-        } else if (todayMatch) {
-          activeMode = 'CURRENT';
-          selectedGame = todayMatch;
-        } else {
-          selectedGame = {
-            away: awayCode,
-            awayScore: "24",
-            home: homeCode,
-            homeScore: "21",
-            status: "FINAL",
-            isLive: false
-          };
+      if (matchupData) {
+        if (matchupData.eventId) {
+          selectedGame = this.currentWeekGames.find(g => g.eventId === matchupData.eventId)
+            || this.lastWeekGames.find(g => g.eventId === matchupData.eventId);
+          if (selectedGame && this.lastWeekGames.includes(selectedGame) && !this.currentWeekGames.includes(selectedGame)) {
+            activeMode = 'LAST_WEEK';
+          }
+        }
+        if (!selectedGame && matchupData.away && matchupData.home) {
+          const awayCode = normalizeAbbr(typeof matchupData.away === 'string' ? matchupData.away : matchupData.away.code);
+          const homeCode = normalizeAbbr(typeof matchupData.home === 'string' ? matchupData.home : matchupData.home.code);
+          const cur = this.currentWeekGames.find(g => g.away === awayCode && g.home === homeCode);
+          const prev = this.lastWeekGames.find(g => g.away === awayCode && g.home === homeCode);
+          if (mode === 'LAST_WEEK' && prev) {
+            selectedGame = prev;
+            activeMode = 'LAST_WEEK';
+          } else if (cur) {
+            selectedGame = cur;
+            activeMode = 'CURRENT';
+          } else if (prev) {
+            selectedGame = prev;
+            activeMode = 'LAST_WEEK';
+          }
         }
       }
 
-      const gamesList = activeMode === 'LAST_WEEK' ? YESTERDAY_TICKER_GAMES : TODAY_TICKER_GAMES;
-      if (!selectedGame) {
+      const gamesList = activeMode === 'LAST_WEEK' ? this.lastWeekGames : this.currentWeekGames;
+      if (!selectedGame && gamesList.length > 0) {
         selectedGame = gamesList[0];
       }
 
-      this.renderBoxScoreModalContent(selectedGame, gamesList, activeMode);
-
       this.dom.boxScoreModalOverlay.classList.add('open');
       this.dom.boxScoreModalOverlay.style.display = 'flex';
+      this.renderBoxScoreModalContent(selectedGame, gamesList, activeMode);
     }
 
-    renderBoxScoreModalContent(activeGame, gamesList, mode) {
-      const awayCode = (activeGame.away || 'CHI').toUpperCase();
-      const homeCode = (activeGame.home || 'GB').toUpperCase();
+    async renderBoxScoreModalContent(activeGame, gamesList, mode) {
+      if (!activeGame) {
+        this.dom.boxScoreModalContent.innerHTML = `<div style="padding:2rem; text-align:center; color:#94a3b8;">No games loaded for this week yet.</div>`;
+        return;
+      }
 
-      const awayTeam = this.teams.find(t => t.abbreviation.toUpperCase() === awayCode || t.id.toUpperCase() === awayCode) || {
-        city: awayCode,
-        name: "Football Team",
-        abbreviation: awayCode,
-        color: "#38bdf8",
-        logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${awayCode.toLowerCase()}.png`,
-        qb: "Starting Quarterback",
-        stadium: "NFL Stadium"
-      };
-
-      const homeTeam = this.teams.find(t => t.abbreviation.toUpperCase() === homeCode || t.id.toUpperCase() === homeCode) || {
-        city: homeCode,
-        name: "Football Team",
-        abbreviation: homeCode,
-        color: "#facc15",
-        logo: `https://a.espncdn.com/i/teamlogos/nfl/500/${homeCode.toLowerCase()}.png`,
-        qb: "Starting Quarterback",
-        stadium: "NFL Stadium"
-      };
-
-      const awayNum = parseInt(activeGame.awayScore) || 20;
-      const homeNum = parseInt(activeGame.homeScore) || 19;
-
-      // Linescore quarter breakdown calculation
-      const q1Away = Math.max(0, Math.floor(awayNum * 0.2));
-      const q2Away = Math.max(0, Math.floor(awayNum * 0.35));
-      const q3Away = Math.max(0, Math.floor(awayNum * 0.2));
-      const q4Away = Math.max(0, awayNum - (q1Away + q2Away + q3Away));
-
-      const q1Home = Math.max(0, Math.floor(homeNum * 0.25));
-      const q2Home = Math.max(0, Math.floor(homeNum * 0.3));
-      const q3Home = Math.max(0, Math.floor(homeNum * 0.2));
-      const q4Home = Math.max(0, homeNum - (q1Home + q2Home + q3Home));
-
-      // Realistic team stats
-      const awayYards = 260 + (awayNum * 5);
-      const homeYards = 250 + (homeNum * 5);
-      const awayPass = Math.floor(awayYards * 0.68);
-      const awayRush = awayYards - awayPass;
-      const homePass = Math.floor(homeYards * 0.65);
-      const homeRush = homeYards - homePass;
+      const awayCode = normalizeAbbr(activeGame.away);
+      const homeCode = normalizeAbbr(activeGame.home);
+      const awayTeam = this.getTeamMeta(awayCode);
+      const homeTeam = this.getTeamMeta(homeCode);
 
       if (this.dom.boxScoreBadgeStatus) {
-        this.dom.boxScoreBadgeStatus.textContent = mode === 'LAST_WEEK' ? "📅 LAST WEEK'S BOX SCORE" : "📊 LIVE NFL BOX SCORE";
+        this.dom.boxScoreBadgeStatus.textContent = mode === 'LAST_WEEK'
+          ? `📅 WEEK ${this.prevWeekNumber} BOX SCORE`
+          : `📊 WEEK ${this.currentWeek} LIVE BOX SCORE`;
       }
       if (this.dom.boxScoreVenueTime) {
-        this.dom.boxScoreVenueTime.textContent = `${activeGame.status} • ${homeTeam.stadium || 'NFL Stadium'}`;
+        this.dom.boxScoreVenueTime.textContent = `${activeGame.status} • ${activeGame.venue || homeTeam.stadium}`;
       }
 
-      this.dom.boxScoreModalContent.innerHTML = `
-        <!-- Week Selector Tabs -->
+      // Render header + loading skeleton while fetching real ESPN summary
+      const selectorHtml = `
         <div class="box-score-week-tabs">
           <button class="box-week-tab-btn ${mode === 'CURRENT' ? 'active' : ''}" data-target-mode="CURRENT">
-            ⚡ THIS WEEK (8 GAMES)
+            ⚡ WEEK ${this.currentWeek} (${this.currentWeekGames.length} GAMES)
           </button>
           <button class="box-week-tab-btn ${mode === 'LAST_WEEK' ? 'active' : ''}" data-target-mode="LAST_WEEK">
-            📅 LAST WEEK (8 GAMES)
+            📅 LAST WEEK — WK ${this.prevWeekNumber} (${this.lastWeekGames.length} GAMES)
           </button>
         </div>
 
-        <!-- Game Selector Horizontal Pills -->
         <div class="box-score-game-selector">
           ${gamesList.map((g, idx) => {
-            const isActive = g.away.toUpperCase() === awayCode && g.home.toUpperCase() === homeCode;
+            const isActive = g.eventId ? (g.eventId === activeGame.eventId) : (g.away === awayCode && g.home === homeCode);
             return `
-              <button class="box-selector-btn ${isActive ? 'active' : ''}" data-idx="${idx}" title="${g.away} vs ${g.home}">
+              <button class="box-selector-btn ${isActive ? 'active' : ''}" data-idx="${idx}" title="${g.away} @ ${g.home}">
                 ${g.away} ${g.awayScore} @ ${g.home} ${g.homeScore}
               </button>
             `;
           }).join('')}
         </div>
+      `;
+
+      this.dom.boxScoreModalContent.innerHTML = `${selectorHtml}<div style="padding:2.5rem; text-align:center; color:#94a3b8;">Loading official ESPN box score for ${awayCode} @ ${homeCode}...</div>`;
+
+      const summary = await this.fetchGameSummary(activeGame.eventId);
+
+      // Extract real linescores, stats, leaders, and scoring drives from ESPN summary
+      const headerComp = summary?.header?.competitions?.[0];
+      const hAway = headerComp?.competitors?.find(c => c.homeAway === 'away');
+      const hHome = headerComp?.competitors?.find(c => c.homeAway === 'home');
+      const state = headerComp?.status?.type?.state || activeGame.state || 'pre';
+
+      const awayNum = state === 'pre' ? '-' : (hAway?.score ?? activeGame.awayScore);
+      const homeNum = state === 'pre' ? '-' : (hHome?.score ?? activeGame.homeScore);
+      const awayRec = hAway?.record?.[0]?.summary || activeGame.awayRec || '';
+      const homeRec = hHome?.record?.[0]?.summary || activeGame.homeRec || '';
+
+      const awayLines = (hAway?.linescores || []).map(l => l.displayValue ?? '-');
+      const homeLines = (hHome?.linescores || []).map(l => l.displayValue ?? '-');
+      const maxPeriods = Math.max(4, awayLines.length, homeLines.length);
+
+      const boxTeams = summary?.boxscore?.teams || [];
+      const awayBox = boxTeams.find(t => normalizeAbbr(t.team?.abbreviation) === awayCode);
+      const homeBox = boxTeams.find(t => normalizeAbbr(t.team?.abbreviation) === homeCode);
+
+      const awayYards = parseNumeric(getTeamBoxStat(awayBox, 'totalYards'));
+      const homeYards = parseNumeric(getTeamBoxStat(homeBox, 'totalYards'));
+      const awayPass = parseNumeric(getTeamBoxStat(awayBox, 'netPassingYards'));
+      const homePass = parseNumeric(getTeamBoxStat(homeBox, 'netPassingYards'));
+      const awayRush = parseNumeric(getTeamBoxStat(awayBox, 'rushingYards'));
+      const homeRush = parseNumeric(getTeamBoxStat(homeBox, 'rushingYards'));
+      const awayFD = getTeamBoxStat(awayBox, 'firstDowns') || '0';
+      const homeFD = getTeamBoxStat(homeBox, 'firstDowns') || '0';
+      const away3rd = getTeamBoxStat(awayBox, 'thirdDownEff') || '0-0';
+      const home3rd = getTeamBoxStat(homeBox, 'thirdDownEff') || '0-0';
+      const awayTO = getTeamBoxStat(awayBox, 'turnovers') || '0';
+      const homeTO = getTeamBoxStat(homeBox, 'turnovers') || '0';
+      const awayTOP = getTeamBoxStat(awayBox, 'possessionTime') || '--:--';
+      const homeTOP = getTeamBoxStat(homeBox, 'possessionTime') || '--:--';
+
+      // Extract real top passers & rushers/receivers
+      const getTopPlayer = (abbr, groupName, formatter) => {
+        const blk = (summary?.boxscore?.players || []).find(p => normalizeAbbr(p.team?.abbreviation) === abbr);
+        const grp = blk?.statistics?.find(s => s.name === groupName);
+        const top = grp?.athletes?.[0];
+        if (!top) return { name: '—', line: 'No stats recorded' };
+        return { name: top.athlete?.displayName || '—', line: formatter(grp, top) };
+      };
+
+      const awayPasser = getTopPlayer(awayCode, 'passing', (g, a) =>
+        `${getStatByKey(g, a, 'completions/passingAttempts')}, ${getStatByKey(g, a, 'passingYards')} YDS, ${getStatByKey(g, a, 'passingTouchdowns')} TD, ${getStatByKey(g, a, 'interceptions')} INT`);
+      const homePasser = getTopPlayer(homeCode, 'passing', (g, a) =>
+        `${getStatByKey(g, a, 'completions/passingAttempts')}, ${getStatByKey(g, a, 'passingYards')} YDS, ${getStatByKey(g, a, 'passingTouchdowns')} TD, ${getStatByKey(g, a, 'interceptions')} INT`);
+      const awayRusher = getTopPlayer(awayCode, 'rushing', (g, a) =>
+        `${getStatByKey(g, a, 'rushingAttempts')} CAR, ${getStatByKey(g, a, 'rushingYards')} YDS, ${getStatByKey(g, a, 'rushingTouchdowns')} TD`);
+      const homeRusher = getTopPlayer(homeCode, 'rushing', (g, a) =>
+        `${getStatByKey(g, a, 'rushingAttempts')} CAR, ${getStatByKey(g, a, 'rushingYards')} YDS, ${getStatByKey(g, a, 'rushingTouchdowns')} TD`);
+      const awayReceiver = getTopPlayer(awayCode, 'receiving', (g, a) =>
+        `${getStatByKey(g, a, 'receptions')} REC, ${getStatByKey(g, a, 'receivingYards')} YDS, ${getStatByKey(g, a, 'receivingTouchdowns')} TD`);
+      const homeReceiver = getTopPlayer(homeCode, 'receiving', (g, a) =>
+        `${getStatByKey(g, a, 'receptions')} REC, ${getStatByKey(g, a, 'receivingYards')} YDS, ${getStatByKey(g, a, 'receivingTouchdowns')} TD`);
+
+      const scoringPlays = summary?.scoringPlays || [];
+      const pctBar = (a, b) => {
+        const tot = (a || 0) + (b || 0);
+        if (tot <= 0) return [50, 50];
+        return [(a / tot) * 100, (b / tot) * 100];
+      };
+      const [yBarA, yBarH] = pctBar(awayYards, homeYards);
+      const [pBarA, pBarH] = pctBar(awayPass, homePass);
+      const [rBarA, rBarH] = pctBar(awayRush, homeRush);
+      const [fdBarA, fdBarH] = pctBar(parseNumeric(awayFD), parseNumeric(homeFD));
+
+      const periodHeaders = Array.from({ length: maxPeriods }, (_, i) => i < 4 ? `Q${i + 1}` : `OT${i > 4 ? i - 3 : ''}`);
+
+      this.dom.boxScoreModalContent.innerHTML = `
+        ${selectorHtml}
 
         <!-- Hero Scoreboard -->
         <div class="box-score-hero">
@@ -2575,216 +2717,214 @@
             <img src="${awayTeam.logo}" class="box-hero-logo" alt="${awayTeam.name}" onerror="this.src='https://ui-avatars.com/api/?name=${awayTeam.abbreviation}&background=0b1322&color=fff'">
             <div class="box-hero-info">
               <span class="box-hero-name" style="color:${awayTeam.color};">${awayTeam.city}</span>
-              <span class="box-hero-sub">${awayTeam.name}</span>
+              <span class="box-hero-sub">${awayTeam.name} ${awayRec ? `(${awayRec})` : ''}</span>
             </div>
           </div>
 
           <div class="box-hero-score-center">
             <div class="box-hero-score-nums">
-              <span class="${awayNum >= homeNum ? 'winner-score' : ''}">${awayNum}</span>
+              <span class="${parseInt(awayNum, 10) > parseInt(homeNum, 10) ? 'winner-score' : ''}">${awayNum}</span>
               <span style="color:#64748b; font-size:1.3rem;">-</span>
-              <span class="${homeNum >= awayNum ? 'winner-score' : ''}">${homeNum}</span>
+              <span class="${parseInt(homeNum, 10) > parseInt(awayNum, 10) ? 'winner-score' : ''}">${homeNum}</span>
             </div>
-            <div class="box-hero-status-pill">${activeGame.status}</div>
+            <div class="box-hero-status-pill">${escapeHtml(activeGame.status)}</div>
           </div>
 
           <div class="box-hero-team home">
             <img src="${homeTeam.logo}" class="box-hero-logo" alt="${homeTeam.name}" onerror="this.src='https://ui-avatars.com/api/?name=${homeTeam.abbreviation}&background=0b1322&color=fff'">
             <div class="box-hero-info">
               <span class="box-hero-name" style="color:${homeTeam.color};">${homeTeam.city}</span>
-              <span class="box-hero-sub">${homeTeam.name}</span>
+              <span class="box-hero-sub">${homeTeam.name} ${homeRec ? `(${homeRec})` : ''}</span>
             </div>
           </div>
         </div>
 
-        <!-- Linescore Table -->
-        <div>
-          <div class="box-section-title"><span>📋</span> Line Score (Quarter Breakdown)</div>
-          <div class="box-linescore-wrap">
-            <table class="box-linescore-table">
-              <thead>
-                <tr>
-                  <th style="text-align:left; padding-left:14px;">Team</th>
-                  <th>Q1</th>
-                  <th>Q2</th>
-                  <th>Q3</th>
-                  <th>Q4</th>
-                  <th>TOTAL</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="team-cell" style="padding-left:14px;">
-                    <img src="${awayTeam.logo}" style="width:16px; height:16px; object-fit:contain;" alt="">
-                    <span style="font-weight:800; color:${awayTeam.color};">${awayTeam.abbreviation}</span>
-                  </td>
-                  <td>${q1Away}</td>
-                  <td>${q2Away}</td>
-                  <td>${q3Away}</td>
-                  <td>${q4Away}</td>
-                  <td class="total-cell">${awayNum}</td>
-                </tr>
-                <tr>
-                  <td class="team-cell" style="padding-left:14px;">
-                    <img src="${homeTeam.logo}" style="width:16px; height:16px; object-fit:contain;" alt="">
-                    <span style="font-weight:800; color:${homeTeam.color};">${homeTeam.abbreviation}</span>
-                  </td>
-                  <td>${q1Home}</td>
-                  <td>${q2Home}</td>
-                  <td>${q3Home}</td>
-                  <td>${q4Home}</td>
-                  <td class="total-cell">${homeNum}</td>
-                </tr>
-              </tbody>
-            </table>
+        ${state === 'pre' ? `
+          <div style="padding:1.5rem; text-align:center; background:rgba(0,0,0,0.25); border-radius:10px; border:1px solid rgba(255,255,255,0.08); color:#cbd5e1;">
+            <div style="font-size:1rem; font-weight:800; color:#facc15; margin-bottom:6px;">⏰ Kickoff: ${escapeHtml(formatArizonaDayTime(activeGame.date))}</div>
+            <div style="font-size:0.82rem; color:#94a3b8;">📍 ${escapeHtml(activeGame.venue)} ${activeGame.broadcast ? `• 📺 ${escapeHtml(activeGame.broadcast)}` : ''} ${activeGame.odds ? `• 📊 ${escapeHtml(activeGame.odds)}` : ''}</div>
+            <div style="font-size:0.78rem; color:#64748b; margin-top:8px;">Official live box score, player stats, and scoring drives will populate automatically once the game kicks off.</div>
           </div>
-        </div>
-
-        <!-- Team Comparison Stats -->
-        <div>
-          <div class="box-section-title"><span>📊</span> Team Matchup Statistics</div>
-          <div class="box-stats-card">
-            <!-- 1st Downs -->
-            <div class="box-stat-row">
-              <div class="box-stat-labels">
-                <span class="box-stat-val-away">${Math.floor(awayYards / 18)}</span>
-                <span class="box-stat-name">First Downs</span>
-                <span class="box-stat-val-home">${Math.floor(homeYards / 18)}</span>
-              </div>
-              <div class="box-stat-bar-track">
-                <div class="box-stat-bar-away" style="width:50%;"></div>
-                <div class="box-stat-bar-home" style="width:50%;"></div>
-              </div>
+        ` : `
+          <!-- Real Linescore Table -->
+          <div>
+            <div class="box-section-title"><span>📋</span> Official Line Score</div>
+            <div class="box-linescore-wrap">
+              <table class="box-linescore-table">
+                <thead>
+                  <tr>
+                    <th style="text-align:left; padding-left:14px;">Team</th>
+                    ${periodHeaders.map(h => `<th>${h}</th>`).join('')}
+                    <th>TOTAL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="team-cell" style="padding-left:14px;">
+                      <img src="${awayTeam.logo}" style="width:16px; height:16px; object-fit:contain;" alt="">
+                      <span style="font-weight:800; color:${awayTeam.color};">${awayTeam.abbreviation}</span>
+                    </td>
+                    ${periodHeaders.map((_, i) => `<td>${awayLines[i] ?? '-'}</td>`).join('')}
+                    <td class="total-cell">${awayNum}</td>
+                  </tr>
+                  <tr>
+                    <td class="team-cell" style="padding-left:14px;">
+                      <img src="${homeTeam.logo}" style="width:16px; height:16px; object-fit:contain;" alt="">
+                      <span style="font-weight:800; color:${homeTeam.color};">${homeTeam.abbreviation}</span>
+                    </td>
+                    ${periodHeaders.map((_, i) => `<td>${homeLines[i] ?? '-'}</td>`).join('')}
+                    <td class="total-cell">${homeNum}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+          </div>
 
-            <!-- Total Yards -->
-            <div class="box-stat-row">
-              <div class="box-stat-labels">
-                <span class="box-stat-val-away">${awayYards}</span>
-                <span class="box-stat-name">Total Net Yards</span>
-                <span class="box-stat-val-home">${homeYards}</span>
+          <!-- Real Team Comparison Stats -->
+          <div>
+            <div class="box-section-title"><span>📊</span> Official Team Statistics</div>
+            <div class="box-stats-card">
+              <div class="box-stat-row">
+                <div class="box-stat-labels">
+                  <span class="box-stat-val-away">${awayFD}</span>
+                  <span class="box-stat-name">First Downs</span>
+                  <span class="box-stat-val-home">${homeFD}</span>
+                </div>
+                <div class="box-stat-bar-track">
+                  <div class="box-stat-bar-away" style="width:${fdBarA}%;"></div>
+                  <div class="box-stat-bar-home" style="width:${fdBarH}%;"></div>
+                </div>
               </div>
-              <div class="box-stat-bar-track">
-                <div class="box-stat-bar-away" style="width:${(awayYards / (awayYards + homeYards)) * 100}%;"></div>
-                <div class="box-stat-bar-home" style="width:${(homeYards / (awayYards + homeYards)) * 100}%;"></div>
-              </div>
-            </div>
 
-            <!-- Passing Yards -->
-            <div class="box-stat-row">
-              <div class="box-stat-labels">
-                <span class="box-stat-val-away">${awayPass}</span>
-                <span class="box-stat-name">Passing Yards</span>
-                <span class="box-stat-val-home">${homePass}</span>
+              <div class="box-stat-row">
+                <div class="box-stat-labels">
+                  <span class="box-stat-val-away">${awayYards}</span>
+                  <span class="box-stat-name">Total Net Yards</span>
+                  <span class="box-stat-val-home">${homeYards}</span>
+                </div>
+                <div class="box-stat-bar-track">
+                  <div class="box-stat-bar-away" style="width:${yBarA}%;"></div>
+                  <div class="box-stat-bar-home" style="width:${yBarH}%;"></div>
+                </div>
               </div>
-              <div class="box-stat-bar-track">
-                <div class="box-stat-bar-away" style="width:${(awayPass / (awayPass + homePass)) * 100}%;"></div>
-                <div class="box-stat-bar-home" style="width:${(homePass / (awayPass + homePass)) * 100}%;"></div>
-              </div>
-            </div>
 
-            <!-- Rushing Yards -->
-            <div class="box-stat-row">
-              <div class="box-stat-labels">
-                <span class="box-stat-val-away">${awayRush}</span>
-                <span class="box-stat-name">Rushing Yards</span>
-                <span class="box-stat-val-home">${homeRush}</span>
+              <div class="box-stat-row">
+                <div class="box-stat-labels">
+                  <span class="box-stat-val-away">${awayPass}</span>
+                  <span class="box-stat-name">Net Passing Yards</span>
+                  <span class="box-stat-val-home">${homePass}</span>
+                </div>
+                <div class="box-stat-bar-track">
+                  <div class="box-stat-bar-away" style="width:${pBarA}%;"></div>
+                  <div class="box-stat-bar-home" style="width:${pBarH}%;"></div>
+                </div>
               </div>
-              <div class="box-stat-bar-track">
-                <div class="box-stat-bar-away" style="width:${(awayRush / (awayRush + homeRush)) * 100}%;"></div>
-                <div class="box-stat-bar-home" style="width:${(homeRush / (awayRush + homeRush)) * 100}%;"></div>
-              </div>
-            </div>
 
-            <!-- 3rd Down Efficiency -->
-            <div class="box-stat-row">
-              <div class="box-stat-labels">
-                <span class="box-stat-val-away">6/12</span>
-                <span class="box-stat-name">3rd Down Efficiency</span>
-                <span class="box-stat-val-home">5/11</span>
+              <div class="box-stat-row">
+                <div class="box-stat-labels">
+                  <span class="box-stat-val-away">${awayRush}</span>
+                  <span class="box-stat-name">Rushing Yards</span>
+                  <span class="box-stat-val-home">${homeRush}</span>
+                </div>
+                <div class="box-stat-bar-track">
+                  <div class="box-stat-bar-away" style="width:${rBarA}%;"></div>
+                  <div class="box-stat-bar-home" style="width:${rBarH}%;"></div>
+                </div>
               </div>
-              <div class="box-stat-bar-track">
-                <div class="box-stat-bar-away" style="width:52%;"></div>
-                <div class="box-stat-bar-home" style="width:48%;"></div>
-              </div>
-            </div>
 
-            <!-- Turnovers -->
-            <div class="box-stat-row">
-              <div class="box-stat-labels">
-                <span class="box-stat-val-away">${awayNum > homeNum ? '0' : '2'}</span>
-                <span class="box-stat-name">Turnovers Lost</span>
-                <span class="box-stat-val-home">${homeNum > awayNum ? '0' : '1'}</span>
+              <div class="box-stat-row">
+                <div class="box-stat-labels">
+                  <span class="box-stat-val-away">${escapeHtml(away3rd)}</span>
+                  <span class="box-stat-name">3rd Down Efficiency</span>
+                  <span class="box-stat-val-home">${escapeHtml(home3rd)}</span>
+                </div>
+              </div>
+
+              <div class="box-stat-row">
+                <div class="box-stat-labels">
+                  <span class="box-stat-val-away">${escapeHtml(awayTO)}</span>
+                  <span class="box-stat-name">Turnovers</span>
+                  <span class="box-stat-val-home">${escapeHtml(homeTO)}</span>
+                </div>
+              </div>
+
+              <div class="box-stat-row">
+                <div class="box-stat-labels">
+                  <span class="box-stat-val-away">${escapeHtml(awayTOP)}</span>
+                  <span class="box-stat-name">Possession Time</span>
+                  <span class="box-stat-val-home">${escapeHtml(homeTOP)}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Key Player Leaders -->
-        <div>
-          <div class="box-section-title"><span>⭐</span> Key Individual Leaders</div>
-          <div class="box-leaders-grid">
-            <div class="box-leader-card">
-              <span class="box-leader-cat">${awayTeam.abbreviation} Passing</span>
-              <span class="box-leader-player">${awayTeam.qb || 'Franchise QB'}</span>
-              <span class="box-leader-stat">${Math.floor(awayPass / 12)}/28, ${awayPass} YDS, 2 TD</span>
-            </div>
-            <div class="box-leader-card">
-              <span class="box-leader-cat">${homeTeam.abbreviation} Passing</span>
-              <span class="box-leader-player">${homeTeam.qb || 'Franchise QB'}</span>
-              <span class="box-leader-stat">${Math.floor(homePass / 11)}/26, ${homePass} YDS, 2 TD</span>
-            </div>
-            <div class="box-leader-card">
-              <span class="box-leader-cat">${awayTeam.abbreviation} Rushing</span>
-              <span class="box-leader-player">Lead Tailback</span>
-              <span class="box-leader-stat">16 CAR, ${awayRush} YDS, 1 TD</span>
-            </div>
-            <div class="box-leader-card">
-              <span class="box-leader-cat">${homeTeam.abbreviation} Rushing</span>
-              <span class="box-leader-player">Lead Tailback</span>
-              <span class="box-leader-stat">18 CAR, ${homeRush} YDS, 1 TD</span>
+          <!-- Real Key Player Leaders -->
+          <div>
+            <div class="box-section-title"><span>⭐</span> Official Individual Leaders</div>
+            <div class="box-leaders-grid">
+              <div class="box-leader-card">
+                <span class="box-leader-cat">${awayTeam.abbreviation} Passing</span>
+                <span class="box-leader-player">${escapeHtml(awayPasser.name)}</span>
+                <span class="box-leader-stat">${escapeHtml(awayPasser.line)}</span>
+              </div>
+              <div class="box-leader-card">
+                <span class="box-leader-cat">${homeTeam.abbreviation} Passing</span>
+                <span class="box-leader-player">${escapeHtml(homePasser.name)}</span>
+                <span class="box-leader-stat">${escapeHtml(homePasser.line)}</span>
+              </div>
+              <div class="box-leader-card">
+                <span class="box-leader-cat">${awayTeam.abbreviation} Rushing</span>
+                <span class="box-leader-player">${escapeHtml(awayRusher.name)}</span>
+                <span class="box-leader-stat">${escapeHtml(awayRusher.line)}</span>
+              </div>
+              <div class="box-leader-card">
+                <span class="box-leader-cat">${homeTeam.abbreviation} Rushing</span>
+                <span class="box-leader-player">${escapeHtml(homeRusher.name)}</span>
+                <span class="box-leader-stat">${escapeHtml(homeRusher.line)}</span>
+              </div>
+              <div class="box-leader-card">
+                <span class="box-leader-cat">${awayTeam.abbreviation} Receiving</span>
+                <span class="box-leader-player">${escapeHtml(awayReceiver.name)}</span>
+                <span class="box-leader-stat">${escapeHtml(awayReceiver.line)}</span>
+              </div>
+              <div class="box-leader-card">
+                <span class="box-leader-cat">${homeTeam.abbreviation} Receiving</span>
+                <span class="box-leader-player">${escapeHtml(homeReceiver.name)}</span>
+                <span class="box-leader-stat">${escapeHtml(homeReceiver.line)}</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Scoring Drives Summary -->
-        <div>
-          <div class="box-section-title"><span>🎯</span> Scoring Drives Breakdown</div>
-          <div class="box-drives-list">
-            <div class="box-drive-item">
-              <span class="box-drive-desc"><strong>Q1 09:14</strong> • ${awayTeam.abbreviation} - 28-yard field goal</span>
-              <span class="box-drive-score">3 - 0</span>
-            </div>
-            <div class="box-drive-item home-score">
-              <span class="box-drive-desc"><strong>Q2 11:20</strong> • ${homeTeam.abbreviation} - 12-yard TD pass by ${homeTeam.qb} (XP Good)</span>
-              <span class="box-drive-score">3 - 7</span>
-            </div>
-            <div class="box-drive-item">
-              <span class="box-drive-desc"><strong>Q2 01:45</strong> • ${awayTeam.abbreviation} - 35-yard TD pass by ${awayTeam.qb} (XP Good)</span>
-              <span class="box-drive-score">10 - 7</span>
-            </div>
-            <div class="box-drive-item home-score">
-              <span class="box-drive-desc"><strong>Q3 04:30</strong> • ${homeTeam.abbreviation} - 4-yard rushing TD (XP Good)</span>
-              <span class="box-drive-score">10 - 14</span>
-            </div>
-            <div class="box-drive-item">
-              <span class="box-drive-desc"><strong>Q4 02:15</strong> • ${awayTeam.abbreviation} - Go-ahead 18-yard TD pass (XP Good)</span>
-              <span class="box-drive-score">${awayNum} - ${homeNum}</span>
+          <!-- Real Scoring Drives Summary -->
+          <div>
+            <div class="box-section-title"><span>🎯</span> Official Scoring Summary</div>
+            <div class="box-drives-list">
+              ${scoringPlays.length > 0 ? scoringPlays.map(sp => {
+                const spAbbr = normalizeAbbr(sp.team?.abbreviation);
+                const isHomePlay = spAbbr === homeCode;
+                const qLabel = sp.period?.number > 4 ? 'OT' : `Q${sp.period?.number || 1}`;
+                const clk = sp.clock?.displayValue || '';
+                return `
+                  <div class="box-drive-item ${isHomePlay ? 'home-score' : ''}">
+                    <span class="box-drive-desc"><strong>${qLabel} ${escapeHtml(clk)}</strong> • ${escapeHtml(spAbbr)} — ${escapeHtml(sp.text || '')}</span>
+                    <span class="box-drive-score">${sp.awayScore} - ${sp.homeScore}</span>
+                  </div>
+                `;
+              }).join('') : `<div class="box-drive-item"><span class="box-drive-desc" style="color:#94a3b8;">No scoring plays recorded yet.</span></div>`}
             </div>
           </div>
-        </div>
+        `}
       `;
 
-      // Bind week toggle buttons inside the modal
+      // Bind week toggle & game switcher buttons
       this.dom.boxScoreModalContent.querySelectorAll('.box-week-tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const targetMode = btn.dataset.targetMode;
-          const targetList = targetMode === 'LAST_WEEK' ? YESTERDAY_TICKER_GAMES : TODAY_TICKER_GAMES;
+          const targetList = targetMode === 'LAST_WEEK' ? this.lastWeekGames : this.currentWeekGames;
           this.renderBoxScoreModalContent(targetList[0], targetList, targetMode);
         });
       });
 
-      // Bind matchup switcher buttons
       this.dom.boxScoreModalContent.querySelectorAll('.box-selector-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const idx = parseInt(btn.dataset.idx, 10);
@@ -2799,196 +2939,172 @@
       this.dom.boxScoreModalOverlay.style.display = 'none';
     }
 
-    openChallengesDrawer() {
+    // =========================================================================
+    // CHALLENGES DRAWER (REAL LIVE WEEK EVALUATION)
+    // =========================================================================
+
+    openChallengesDrawer(scroll = true) {
       if (!this.dom.drawerBody || !this.dom.secondaryDrawer) return;
-      this.dom.drawerTitle.textContent = "🏆 2026 Active Office Football Challenges";
-      
-      const contendersBadges = [
-        { name: "Andrea", team: "GB", color: "#facc15", badges: ["🧀 Lambeau Scout", "🏆 Wk 1 Contender"], icons: ["🔥", "🚀", "🏆"] },
-        { name: "Mariah", team: "PHI", color: "#2dd4bf", badges: ["🦅 Midnight Green", "🏆 Wk 1 Contender"], icons: ["🚀", "🎯", "🏆"] },
-        { name: "CJ", team: "CHI", color: "#f87171", badges: ["🐻 Bear Down", "🏆 Wk 1 Contender"], icons: ["🚀", "🔥", "🏆"] },
-        { name: "Mario", team: "CLE", color: "#fb923c", badges: ["🐶 Dawg Pound", "🏆 Wk 1 Contender"], icons: ["💥", "🎯", "🏆"] },
-        { name: "Nicole", team: "LV", color: "#38bdf8", badges: ["☠️ Raider Nation", "🏆 Wk 1 Contender"], icons: ["🔥", "🚀", "🏆"] },
-        { name: "Saul", team: "SF", color: "#fb7185", badges: ["⛏️ Faithful 49ers", "🏆 Wk 1 Contender"], icons: ["💥", "🎯", "🏆"] },
-        { name: "Cardinals Flag", team: "ARI", color: "#f43f5e", badges: ["🚩 Desert Flag", "🏆 Wk 1 Contender"], icons: ["🎯", "🔥", "🏆"] }
-      ];
+      this.activeDrawer = 'CHALLENGES';
+      this.dom.drawerTitle.textContent = `🏆 ${this.currentSeason} Week ${this.currentWeek} Office Football Challenges`;
+
+      const sortedRoster = [...this.roster].sort((a, b) => {
+        const bCount = this.getMemberChallengeBadges(b).length;
+        const aCount = this.getMemberChallengeBadges(a).length;
+        if (bCount !== aCount) return bCount - aCount;
+        return (b.liveStats.yards || 0) - (a.liveStats.yards || 0);
+      });
 
       this.dom.drawerBody.innerHTML = `
         <div style="display:flex; flex-direction:column; gap:16px;">
-          <!-- 100% Automatic Explainer Banner -->
           <div class="ladder-explainer-card" style="border-left:4px solid #10b981; background:linear-gradient(135deg, rgba(16,185,129,0.1), rgba(15,23,42,0.9));">
             <span style="font-size:1.4rem;">⚡</span>
             <div class="ladder-info-text">
-              <strong style="color:#10b981;">100% Automated Weekly Milestones — Zero Manual Picks Required!</strong><br>
-              Every week, the app automatically tracks your team's real NFL game stats (Yards, Points, Sacks & Field Goals). Whenever your team hits a milestone in their game, you automatically win that challenge's achievement icon!
+              <strong style="color:#10b981;">100% Live ESPN Week ${this.currentWeek} Milestones</strong><br>
+              Automatically scored from your team's real ${this.currentSeason} Week ${this.currentWeek} ESPN box score (400+ Yards, 30+ Points, 4+ Sacks, 3+ FGs or 50+ yd Kick, and Game Win).
             </div>
           </div>
 
-          <!-- Automated Weekly Badge Board -->
           <div class="standings-table-wrap">
             <div style="padding:10px 14px; background:rgba(0,0,0,0.3); font-family:'Outfit',sans-serif; font-size:0.8rem; font-weight:800; color:#facc15; display:flex; justify-content:space-between; align-items:center;">
-              <span>🎖️ AUTOMATED WEEKLY BADGE SHOWCASE</span>
-              <span style="font-size:0.68rem; color:#94a3b8; font-weight:600;">Auto-awarded from weekly NFL games</span>
+              <span>🎖️ WEEK ${this.currentWeek} EARNED ACHIEVEMENTS</span>
+              <span style="font-size:0.68rem; color:#94a3b8; font-weight:600;">Live ESPN box score telemetry</span>
             </div>
             <table class="dugout-standings-table">
               <thead>
                 <tr>
                   <th class="col-team">STAFF MEMBER</th>
                   <th class="col-stat">TEAM</th>
+                  <th class="col-stat">WEEK ${this.currentWeek} STATS</th>
                   <th style="text-align:center;">EARNED ICONS</th>
-                  <th class="col-stat">STATUS</th>
                 </tr>
               </thead>
               <tbody>
-                ${contendersBadges.map(c => `
-                  <tr>
-                    <td style="color:#fff; font-weight:800;">${c.name}</td>
-                    <td style="color:${c.color}; font-weight:800;">${c.team}</td>
-                    <td style="text-align:center; font-size:1.15rem; letter-spacing:4px;">
-                      ${c.icons.map(ic => `<span title="Automated Weekly Award" style="cursor:help;">${ic}</span>`).join(' ')}
-                    </td>
-                    <td class="col-stat" style="color:#10b981; font-weight:800; font-size:0.7rem;">AUTO-ACTIVE</td>
-                  </tr>
-                `).join('')}
+                ${sortedRoster.map(m => {
+                  const badges = this.getMemberChallengeBadges(m);
+                  const st = m.liveStats;
+                  const statSummary = st.isBye
+                    ? 'BYE WEEK'
+                    : (!st.hasPlayed ? 'PREGAME' : `${st.pointsScored} PTS • ${st.yards} YDS • ${st.sacks} SCK • ${st.fieldGoals} FG`);
+                  return `
+                    <tr>
+                      <td style="color:#fff; font-weight:800;">${escapeHtml(m.shortName || m.name)}</td>
+                      <td style="color:${m.color}; font-weight:800;">${m.teamId}</td>
+                      <td class="col-stat" style="font-size:0.7rem; color:#cbd5e1;">${escapeHtml(statSummary)}</td>
+                      <td style="text-align:center; font-size:1.1rem; letter-spacing:3px;">
+                        ${badges.length > 0
+                          ? badges.map(b => `<span title="${escapeHtml(b.label)}" style="cursor:help;">${b.icon}</span>`).join(' ')
+                          : `<span style="font-size:0.7rem; color:#64748b; letter-spacing:0;">${st.isBye ? 'Bye' : (st.hasPlayed ? 'None yet' : 'Pending')}</span>`}
+                      </td>
+                    </tr>
+                  `;
+                }).join('')}
               </tbody>
             </table>
           </div>
 
-          <!-- Active Milestone Challenge Cards -->
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;">
-            <!-- Rocket Challenge -->
-            <div style="background:#0b1322; padding:14px; border-radius:12px; border-top:4px solid #10b981; border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:1.3rem;">🚀</span>
-                <span style="font-size:0.68rem; color:#10b981; background:rgba(16,185,129,0.15); padding:2px 8px; border-radius:10px; font-weight:800;">OFFENSE • 400+ YDS</span>
-              </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:12px;">
+            <div style="background:#0b1322; padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.08); border-top:4px solid #10b981;">
+              <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:1.3rem;">🚀</span><span style="font-size:0.68rem; color:#10b981; font-weight:800;">OFFENSE • 400+ YDS</span></div>
               <strong style="color:#10b981; font-size:0.9rem;">400-Yard Aerial Assault</strong>
-              <p style="color:#94a3b8; font-size:0.75rem; line-height:1.3;">Automatically awarded when a contender's team records 400+ total passing and rushing yards in their weekly game.</p>
-              <div style="margin-top:4px; font-size:0.72rem; color:#facc15; font-weight:700;">🎁 Reward: 🚀 Rocket Icon + 150 Office Pts</div>
+              <p style="color:#94a3b8; font-size:0.75rem; margin-top:4px;">Awarded when a contender's team reaches 400+ total net yards in Week ${this.currentWeek}.</p>
             </div>
-
-            <!-- Flame Challenge -->
-            <div style="background:#0b1322; padding:14px; border-radius:12px; border-top:4px solid #facc15; border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:1.3rem;">🔥</span>
-                <span style="font-size:0.68rem; color:#facc15; background:rgba(250,204,21,0.15); padding:2px 8px; border-radius:10px; font-weight:800;">SCORING • 30+ PTS</span>
-              </div>
+            <div style="background:#0b1322; padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.08); border-top:4px solid #facc15;">
+              <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:1.3rem;">🔥</span><span style="font-size:0.68rem; color:#facc15; font-weight:800;">SCORING • 30+ PTS</span></div>
               <strong style="color:#facc15; font-size:0.9rem;">High-Octane Shootout</strong>
-              <p style="color:#94a3b8; font-size:0.75rem; line-height:1.3;">Automatically awarded when a contender's team scores 30+ points or participates in a 50+ total point weekly game.</p>
-              <div style="margin-top:4px; font-size:0.72rem; color:#facc15; font-weight:700;">🎁 Reward: 🔥 Flame Icon + 200 Office Pts</div>
+              <p style="color:#94a3b8; font-size:0.75rem; margin-top:4px;">Awarded when a contender's team scores 30+ points in Week ${this.currentWeek}.</p>
             </div>
-
-            <!-- Explosion Challenge -->
-            <div style="background:#0b1322; padding:14px; border-radius:12px; border-top:4px solid #f97316; border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:1.3rem;">💥</span>
-                <span style="font-size:0.68rem; color:#fb923c; background:rgba(249,115,22,0.15); padding:2px 8px; border-radius:10px; font-weight:800;">DEFENSE • 4+ SACKS</span>
-              </div>
+            <div style="background:#0b1322; padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.08); border-top:4px solid #f97316;">
+              <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:1.3rem;">💥</span><span style="font-size:0.68rem; color:#fb923c; font-weight:800;">DEFENSE • 4+ SACKS</span></div>
               <strong style="color:#fb923c; font-size:0.9rem;">Sack City Blitz Patrol</strong>
-              <p style="color:#94a3b8; font-size:0.75rem; line-height:1.3;">Automatically awarded when a contender's defense forces 4+ QB sacks in their weekly game.</p>
-              <div style="margin-top:4px; font-size:0.72rem; color:#facc15; font-weight:700;">🎁 Reward: 💥 Explosion Icon + 175 Office Pts</div>
+              <p style="color:#94a3b8; font-size:0.75rem; margin-top:4px;">Awarded when a contender's defense records 4+ QB sacks in Week ${this.currentWeek}.</p>
             </div>
-
-            <!-- Target Challenge -->
-            <div style="background:#0b1322; padding:14px; border-radius:12px; border-top:4px solid #38bdf8; border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:1.3rem;">🎯</span>
-                <span style="font-size:0.68rem; color:#38bdf8; background:rgba(56,189,248,0.15); padding:2px 8px; border-radius:10px; font-weight:800;">SPECIAL TEAMS • 3+ FG</span>
-              </div>
-              <strong style="color:#38bdf8; font-size:0.9rem;">Clutch Kicker 50+ Showdown</strong>
-              <p style="color:#94a3b8; font-size:0.75rem; line-height:1.3;">Automatically awarded when a contender's kicker converts 3+ field goals or a 45+ yard kick.</p>
-              <div style="margin-top:4px; font-size:0.72rem; color:#facc15; font-weight:700;">🎁 Reward: 🎯 Target Icon + 125 Office Pts</div>
+            <div style="background:#0b1322; padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.08); border-top:4px solid #38bdf8;">
+              <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:1.3rem;">🎯</span><span style="font-size:0.68rem; color:#38bdf8; font-weight:800;">SPECIAL TEAMS • 3+ FG / 50+ YD</span></div>
+              <strong style="color:#38bdf8; font-size:0.9rem;">Clutch Kicker Showdown</strong>
+              <p style="color:#94a3b8; font-size:0.75rem; margin-top:4px;">Awarded for 3+ made field goals or a 50+ yard clutch kick in Week ${this.currentWeek}.</p>
             </div>
-
-            <!-- Trophy Challenge -->
-            <div style="background:#0b1322; padding:14px; border-radius:12px; border-top:4px solid #eab308; border:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:1.3rem;">🏆</span>
-                <span style="font-size:0.68rem; color:#eab308; background:rgba(234,179,8,0.15); padding:2px 8px; border-radius:10px; font-weight:800;">VICTORY • GAME WIN</span>
-              </div>
+            <div style="background:#0b1322; padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,0.08); border-top:4px solid #eab308;">
+              <div style="display:flex; justify-content:space-between; align-items:center;"><span style="font-size:1.3rem;">🏆</span><span style="font-size:0.68rem; color:#eab308; font-weight:800;">VICTORY • GAME WIN</span></div>
               <strong style="color:#eab308; font-size:0.9rem;">Weekly Game Victory Crown</strong>
-              <p style="color:#94a3b8; font-size:0.75rem; line-height:1.3;">Automatically awarded whenever a contender's team wins their weekly NFL game.</p>
-              <div style="margin-top:4px; font-size:0.72rem; color:#facc15; font-weight:700;">🎁 Reward: 🏆 Trophy Icon + 250 Office Pts</div>
+              <p style="color:#94a3b8; font-size:0.75rem; margin-top:4px;">Awarded whenever a contender's NFL team wins their Week ${this.currentWeek} game.</p>
             </div>
           </div>
         </div>
       `;
       this.dom.secondaryDrawer.style.display = 'flex';
-      this.dom.secondaryDrawer.scrollIntoView({ behavior: 'smooth' });
+      if (scroll) this.dom.secondaryDrawer.scrollIntoView({ behavior: 'smooth' });
     }
 
-    openFantasyDrawer() {
+    // =========================================================================
+    // FANTASY DRAWER (100% REAL WEEKLY BOX SCORE STATS)
+    // =========================================================================
+
+    openFantasyDrawer(scroll = true) {
       if (!this.dom.drawerBody || !this.dom.secondaryDrawer) return;
-      this.dom.drawerTitle.textContent = "🏈 Automated Fantasy Matchups (By Team Stats)";
+      this.activeDrawer = 'FANTASY';
+      this.dom.drawerTitle.textContent = `🏈 Automated Fantasy Matchups (${this.currentSeason} • Week ${this.currentWeek})`;
 
-      // Top Leaders sorted by Fantasy Points
-      const sortedByFantasy = [...this.roster].sort((a, b) => (b.fantasy?.totalPoints || 0) - (a.fantasy?.totalPoints || 0));
+      const sortedByFantasy = [...this.roster].sort((a, b) => {
+        if (a.liveStats.isBye !== b.liveStats.isBye) return a.liveStats.isBye ? 1 : -1;
+        return (b.fantasy?.totalPoints || 0) - (a.fantasy?.totalPoints || 0);
+      });
 
-      // 4 Weekly Fantasy Head-to-Head Duels based on Week 2 real matchups
-      const duels = [
-        {
-          title: "Desert Air & High Stakes Showdown",
-          sub: "Week 2 Live Fantasy Battle",
-          c1: this.roster.find(m => m.id === 'char_cardinals'),
-          c2: this.roster.find(m => m.id === 'char_nicole')
-        },
-        {
-          title: "Heavyweight Powerhouse Duel",
-          sub: "Week 2 Live Fantasy Battle",
-          c1: this.roster.find(m => m.id === 'char_mariah'),
-          c2: this.roster.find(m => m.id === 'char_saul')
-        },
-        {
-          title: "Midwest Gridiron Clash",
-          sub: "Week 2 Live Fantasy Battle",
-          c1: this.roster.find(m => m.id === 'char_mario'),
-          c2: this.roster.find(m => m.id === 'char_cj')
-        },
-        {
-          title: "Frozen Tundra Precision vs Big Apple",
-          sub: "Week 2 Live Fantasy Battle",
-          c1: this.roster.find(m => m.id === 'char_andrea'),
-          c2: {
-            id: null,
-            name: "Jets (Aaron Rodgers)",
-            teamId: "NYJ",
-            teamName: "JETS",
-            image: "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
-            fantasy: {
-              totalPoints: 39.5,
-              qb: { player: "Aaron Rodgers (QB)", stats: "176 Pass Yds, 1 TD", points: 11.0 },
-              rec: { player: "Garrett Wilson (WR)", stats: "5 Rec, 57 Yds, 0 TD", points: 10.7 },
-              rush: { player: "Breece Hall (RB)", stats: "62 Rush Yds, 0 TD", points: 6.2 },
-              def: { player: "Jets Defense (DEF)", stats: "3 Sacks, 7 PA", points: 5.0 },
-              st: { player: "Greg Zuerlein (K/ST)", stats: "2 FG", points: 6.6 }
+      // Build Head-to-Head Duels dynamically from active (non-bye) members, plus Bye note for off-week members
+      const activeMembers = sortedByFantasy.filter(m => !m.liveStats.isBye);
+      const byeMembers = sortedByFantasy.filter(m => m.liveStats.isBye);
+      const duels = [];
+      for (let i = 0; i < activeMembers.length; i += 2) {
+        if (activeMembers[i + 1]) {
+          duels.push({
+            title: `${activeMembers[i].shortName || activeMembers[i].name} vs ${activeMembers[i + 1].shortName || activeMembers[i + 1].name}`,
+            sub: `Week ${this.currentWeek} Automated Fantasy Duel`,
+            c1: activeMembers[i],
+            c2: activeMembers[i + 1]
+          });
+        } else {
+          const solo = activeMembers[i];
+          const oppCode = solo.matchup.away.code === solo.teamId ? solo.matchup.home.code : solo.matchup.away.code;
+          const oppMeta = this.getTeamMeta(oppCode);
+          const cachedSum = solo.matchup.eventId ? this.summaryCache[solo.matchup.eventId]?.data : null;
+          const oppExtracted = cachedSum ? extractTeamStatsAndFantasy(cachedSum, oppCode) : null;
+          duels.push({
+            title: `${solo.shortName || solo.name} vs ${oppMeta.name} (Solo Spotlight)`,
+            sub: `Week ${this.currentWeek} Real Matchup`,
+            c1: solo,
+            c2: {
+              id: null,
+              name: oppMeta.name,
+              teamId: oppCode,
+              teamName: oppMeta.name.toUpperCase(),
+              image: oppMeta.logo,
+              fantasy: oppExtracted?.fantasy || createEmptyFantasy(`${oppMeta.name}`, `Opponent (${solo.matchup.status})`)
             }
-          }
+          });
         }
-      ];
+      }
 
       this.dom.drawerBody.innerHTML = `
         <div style="display:flex; flex-direction:column; gap:16px;">
-          <!-- Fantasy System Banner -->
           <div style="background: linear-gradient(135deg, rgba(250, 204, 21, 0.12) 0%, rgba(56, 189, 248, 0.08) 100%); border: 1.5px solid rgba(250, 204, 21, 0.3); border-radius: 12px; padding: 14px 16px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
-              <span style="font-family:'Outfit',sans-serif; font-size:0.95rem; font-weight:800; color:#facc15;">⚡ NO PICKS REQUIRED • 100% AUTOMATED FROM REAL TEAM STATS</span>
-              <span style="font-size:0.7rem; font-weight:800; background:rgba(16,185,129,0.2); color:#10b981; border:1px solid rgba(16,185,129,0.4); padding:2px 8px; border-radius:12px;">ACTIVE • WEEK 2</span>
+              <span style="font-family:'Outfit',sans-serif; font-size:0.95rem; font-weight:800; color:#facc15;">⚡ 100% AUTOMATED FROM REAL ${this.currentSeason} ESPN STATS</span>
+              <span style="font-size:0.7rem; font-weight:800; background:rgba(16,185,129,0.2); color:#10b981; border:1px solid rgba(16,185,129,0.4); padding:2px 8px; border-radius:12px;">ACTIVE • WEEK ${this.currentWeek}</span>
             </div>
             <p style="font-size:0.78rem; color:#cbd5e1; line-height:1.45; margin:0;">
-              Points are automatically calculated in real-time from official game performance across 5 key positions:
-              <strong style="color:#38bdf8;">Quarterback</strong>, 
-              <strong style="color:#a78bfa;">Receiver</strong>, 
-              <strong style="color:#34d399;">Running / Offense</strong>, 
-              <strong style="color:#fb923c;">Defense</strong>, and 
-              <strong style="color:#f472b6;">Special Teams / Punting</strong>.
+              Live points computed automatically from official ESPN Week ${this.currentWeek} box scores across
+              <strong style="color:#38bdf8;">QB</strong>,
+              <strong style="color:#a78bfa;">Top Receiver (PPR)</strong>,
+              <strong style="color:#34d399;">Top Rusher</strong>,
+              <strong style="color:#fb923c;">Team Defense</strong>, and
+              <strong style="color:#f472b6;">Special Teams</strong>.
             </p>
           </div>
 
-          <!-- Fantasy Leaderboard Table -->
           <div class="standings-table-wrap" style="background:#091322; border-radius:12px; border:1px solid rgba(255,255,255,0.08); overflow:hidden;">
             <div style="padding:10px 14px; background:rgba(0,0,0,0.3); font-family:'Outfit',sans-serif; font-size:0.8rem; font-weight:800; color:#38bdf8; display:flex; justify-content:space-between; align-items:center;">
-              <span>🏆 OFFICE FANTASY LEADERBOARD (WEEK 2 LIVE)</span>
-              <span style="font-size:0.68rem; color:#94a3b8; font-weight:600;">Ranked by total automated points</span>
+              <span>🏆 OFFICE FANTASY LEADERBOARD (WEEK ${this.currentWeek})</span>
+              <span style="font-size:0.68rem; color:#94a3b8; font-weight:600;">Click any row for player breakdown</span>
             </div>
             <table class="dugout-standings-table">
               <thead>
@@ -3004,80 +3120,79 @@
                 </tr>
               </thead>
               <tbody>
-                ${sortedByFantasy.map((m, idx) => `
-                  <tr class="fantasy-leaderboard-row" data-member-id="${m.id}" style="cursor:pointer;" title="Click to view full player details">
-                    <td style="text-align:center; font-weight:900; color:${idx === 0 ? '#facc15' : (idx === 1 ? '#cbd5e1' : (idx === 2 ? '#fb923c' : '#64748b'))};">#${idx + 1}</td>
-                    <td style="font-weight:700; color:#fff; display:flex; align-items:center; gap:8px;">
-                      <img src="${m.image}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;" alt="">
-                      <span>${m.name} <span style="font-size:0.7rem; color:${this.teams.find(t=>t.id===m.teamId)?.color || '#38bdf8'}; font-weight:800;">(${m.teamId})</span></span>
-                    </td>
-                    <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${(m.fantasy?.qb?.points || 0).toFixed(1)}</td>
-                    <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${(m.fantasy?.rec?.points || 0).toFixed(1)}</td>
-                    <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${(m.fantasy?.rush?.points || 0).toFixed(1)}</td>
-                    <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${(m.fantasy?.def?.points || 0).toFixed(1)}</td>
-                    <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${(m.fantasy?.st?.points || 0).toFixed(1)}</td>
-                    <td class="col-stat" style="color:#facc15; font-weight:900; font-size:0.95rem; font-family:'JetBrains Mono',monospace;">${(m.fantasy?.totalPoints || 0).toFixed(1)}</td>
-                  </tr>
-                `).join('')}
+                ${sortedByFantasy.map((m, idx) => {
+                  const isBye = m.liveStats.isBye;
+                  const f = m.fantasy;
+                  return `
+                    <tr class="fantasy-leaderboard-row" data-member-id="${m.id}" style="cursor:pointer;" title="Click to view full player details">
+                      <td style="text-align:center; font-weight:900; color:${isBye ? '#64748b' : (idx === 0 ? '#facc15' : (idx === 1 ? '#cbd5e1' : (idx === 2 ? '#fb923c' : '#64748b')))};">${isBye ? 'BYE' : '#' + (idx + 1)}</td>
+                      <td style="font-weight:700; color:#fff; display:flex; align-items:center; gap:8px;">
+                        <img src="${m.image}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;" alt="">
+                        <span>${escapeHtml(m.shortName || m.name)} <span style="font-size:0.7rem; color:${m.color}; font-weight:800;">(${m.teamId})</span></span>
+                      </td>
+                      <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${isBye ? '—' : f.qb.points.toFixed(1)}</td>
+                      <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${isBye ? '—' : f.rec.points.toFixed(1)}</td>
+                      <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${isBye ? '—' : f.rush.points.toFixed(1)}</td>
+                      <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${isBye ? '—' : f.def.points.toFixed(1)}</td>
+                      <td class="col-stat" style="font-family:'JetBrains Mono',monospace;">${isBye ? '—' : f.st.points.toFixed(1)}</td>
+                      <td class="col-stat" style="color:#facc15; font-weight:900; font-size:0.95rem; font-family:'JetBrains Mono',monospace;">${isBye ? 'BYE' : f.totalPoints.toFixed(1)}</td>
+                    </tr>
+                  `;
+                }).join('')}
               </tbody>
             </table>
           </div>
 
-          <!-- Section: Head-to-Head Fantasy Duels -->
+          ${byeMembers.length > 0 ? `
+            <div style="font-size:0.75rem; color:#94a3b8; background:rgba(255,255,255,0.03); border:1px dashed rgba(255,255,255,0.12); border-radius:8px; padding:8px 12px;">
+              🛌 <strong>Week ${this.currentWeek} Bye Week:</strong> ${byeMembers.map(b => `${b.shortName || b.name} (${b.teamId})`).join(', ')}
+            </div>
+          ` : ''}
+
           <div style="font-family:'Outfit',sans-serif; font-size:0.9rem; font-weight:800; color:#cbd5e1; letter-spacing:0.5px; margin-top:4px;">
-            ⚔️ WEEK 2 HEAD-TO-HEAD FANTASY BATTLES
+            ⚔️ WEEK ${this.currentWeek} HEAD-TO-HEAD FANTASY BATTLES
           </div>
 
           <div class="fantasy-matchups-grid">
             ${duels.map(d => {
               const pts1 = d.c1.fantasy?.totalPoints || 0;
               const pts2 = d.c2.fantasy?.totalPoints || 0;
-              const isLead1 = pts1 >= pts2;
-              const isLead2 = pts2 > pts1;
-
               return `
                 <div class="fantasy-duel-card">
                   <div class="fantasy-duel-header">
-                    <span>${d.title}</span>
-                    <span style="color:#facc15;">${d.sub}</span>
+                    <span>${escapeHtml(d.title)}</span>
+                    <span style="color:#facc15;">${escapeHtml(d.sub)}</span>
                   </div>
-
                   <div class="fantasy-contenders-row">
-                    <!-- Contender 1 -->
-                    <div class="fantasy-contender-box ${isLead1 ? 'leading' : ''} ${d.c1.id ? 'interactive-fantasy-box' : ''}" data-member-id="${d.c1.id || ''}" style="cursor:pointer;" title="Click to view details">
-                      <img src="${d.c1.image}" class="fantasy-contender-avatar" alt="${d.c1.name}">
+                    <div class="fantasy-contender-box ${pts1 >= pts2 ? 'leading' : ''} ${d.c1.id ? 'interactive-fantasy-box' : ''}" data-member-id="${d.c1.id || ''}" style="cursor:pointer;">
+                      <img src="${d.c1.image}" class="fantasy-contender-avatar" alt="${escapeHtml(d.c1.name)}">
                       <div class="fantasy-contender-meta">
-                        <span class="fantasy-contender-name">${d.c1.name}</span>
-                        <span class="fantasy-contender-team" style="color:${this.teams.find(t=>t.id===d.c1.teamId)?.color || '#38bdf8'};">${d.c1.teamName || d.c1.teamId}</span>
+                        <span class="fantasy-contender-name">${escapeHtml(d.c1.shortName || d.c1.name)}</span>
+                        <span class="fantasy-contender-team" style="color:${this.getTeamMeta(d.c1.teamId).color};">${d.c1.teamName}</span>
                       </div>
                       <div class="fantasy-contender-score">${pts1.toFixed(1)} <span style="font-size:0.65rem; color:#94a3b8;">PTS</span></div>
                     </div>
-
                     <span class="fantasy-vs-separator">VS</span>
-
-                    <!-- Contender 2 -->
-                    <div class="fantasy-contender-box ${isLead2 ? 'leading' : ''} ${d.c2.id ? 'interactive-fantasy-box' : ''}" data-member-id="${d.c2.id || ''}" style="cursor:pointer;" title="Click to view details">
-                      <img src="${d.c2.image}" class="fantasy-contender-avatar" alt="${d.c2.name}">
+                    <div class="fantasy-contender-box ${pts2 > pts1 ? 'leading' : ''} ${d.c2.id ? 'interactive-fantasy-box' : ''}" data-member-id="${d.c2.id || ''}" style="cursor:pointer;">
+                      <img src="${d.c2.image}" class="fantasy-contender-avatar" alt="${escapeHtml(d.c2.name)}">
                       <div class="fantasy-contender-meta">
-                        <span class="fantasy-contender-name">${d.c2.name}</span>
-                        <span class="fantasy-contender-team" style="color:${this.teams.find(t=>t.id===d.c2.teamId)?.color || '#38bdf8'};">${d.c2.teamName || d.c2.teamId}</span>
+                        <span class="fantasy-contender-name">${escapeHtml(d.c2.shortName || d.c2.name)}</span>
+                        <span class="fantasy-contender-team" style="color:${this.getTeamMeta(d.c2.teamId).color};">${d.c2.teamName}</span>
                       </div>
                       <div class="fantasy-contender-score">${pts2.toFixed(1)} <span style="font-size:0.65rem; color:#94a3b8;">PTS</span></div>
                     </div>
                   </div>
-
-                  <!-- Category comparison row pills -->
                   <div class="fantasy-category-pill-row">
-                    <span style="color:#facc15; font-weight:700;">STATS BREAKDOWN:</span>
-                    <span><strong style="color:#38bdf8;">QB</strong>: ${d.c1.fantasy?.qb?.points?.toFixed(1) || 0} vs ${d.c2.fantasy?.qb?.points?.toFixed(1) || 0}</span>
+                    <span style="color:#facc15; font-weight:700;">BREAKDOWN:</span>
+                    <span><strong style="color:#38bdf8;">QB</strong>: ${(d.c1.fantasy?.qb?.points || 0).toFixed(1)} vs ${(d.c2.fantasy?.qb?.points || 0).toFixed(1)}</span>
                     <span>•</span>
-                    <span><strong style="color:#a78bfa;">REC</strong>: ${d.c1.fantasy?.rec?.points?.toFixed(1) || 0} vs ${d.c2.fantasy?.rec?.points?.toFixed(1) || 0}</span>
+                    <span><strong style="color:#a78bfa;">REC</strong>: ${(d.c1.fantasy?.rec?.points || 0).toFixed(1)} vs ${(d.c2.fantasy?.rec?.points || 0).toFixed(1)}</span>
                     <span>•</span>
-                    <span><strong style="color:#34d399;">RUSH</strong>: ${d.c1.fantasy?.rush?.points?.toFixed(1) || 0} vs ${d.c2.fantasy?.rush?.points?.toFixed(1) || 0}</span>
+                    <span><strong style="color:#34d399;">RUSH</strong>: ${(d.c1.fantasy?.rush?.points || 0).toFixed(1)} vs ${(d.c2.fantasy?.rush?.points || 0).toFixed(1)}</span>
                     <span>•</span>
-                    <span><strong style="color:#fb923c;">DEF</strong>: ${d.c1.fantasy?.def?.points?.toFixed(1) || 0} vs ${d.c2.fantasy?.def?.points?.toFixed(1) || 0}</span>
+                    <span><strong style="color:#fb923c;">DEF</strong>: ${(d.c1.fantasy?.def?.points || 0).toFixed(1)} vs ${(d.c2.fantasy?.def?.points || 0).toFixed(1)}</span>
                     <span>•</span>
-                    <span><strong style="color:#f472b6;">ST</strong>: ${d.c1.fantasy?.st?.points?.toFixed(1) || 0} vs ${d.c2.fantasy?.st?.points?.toFixed(1) || 0}</span>
+                    <span><strong style="color:#f472b6;">ST</strong>: ${(d.c1.fantasy?.st?.points || 0).toFixed(1)} vs ${(d.c2.fantasy?.st?.points || 0).toFixed(1)}</span>
                   </div>
                 </div>
               `;
@@ -3086,215 +3201,74 @@
         </div>
       `;
 
-      // Bind click handlers on leaderboard rows and duel boxes
       this.dom.drawerBody.querySelectorAll('.fantasy-leaderboard-row, .interactive-fantasy-box').forEach(el => {
         el.addEventListener('click', () => {
           const mId = el.dataset.memberId;
-          if (mId) {
-            this.openMemberModal(mId);
-          }
+          if (mId) this.openMemberModal(mId);
         });
       });
 
       this.dom.secondaryDrawer.style.display = 'flex';
-      this.dom.secondaryDrawer.scrollIntoView({ behavior: 'smooth' });
+      if (scroll) this.dom.secondaryDrawer.scrollIntoView({ behavior: 'smooth' });
     }
 
-    openStandingsDrawer() {
+    // =========================================================================
+    // STANDINGS DRAWER (REAL LIVE NFL RECORDS)
+    // =========================================================================
+
+    openStandingsDrawer(scroll = true) {
       if (!this.dom.drawerBody || !this.dom.secondaryDrawer) return;
-      this.dom.drawerTitle.textContent = "📊 Office Football Season Standings";
+      this.activeDrawer = 'STANDINGS';
+      this.dom.drawerTitle.textContent = `📊 ${this.currentSeason} Office Football Season Standings (Week ${this.currentWeek})`;
+
+      const sorted = [...this.roster].sort((a, b) => {
+        if (b.picks.winPercent !== a.picks.winPercent) return b.picks.winPercent - a.picks.winPercent;
+        return b.picks.wins - a.picks.wins;
+      });
+
       this.dom.drawerBody.innerHTML = `
         <div class="standings-table-wrap">
           <table class="dugout-standings-table">
             <thead>
               <tr>
+                <th style="width:40px; text-align:center;">SEED</th>
                 <th class="col-team">STAFF MEMBER</th>
-                <th class="col-stat">TEAM</th>
+                <th class="col-team">TEAM</th>
                 <th class="col-stat">W</th>
                 <th class="col-stat">L</th>
                 <th class="col-stat">PCT</th>
+                <th class="col-stat">STREAK</th>
               </tr>
             </thead>
             <tbody>
-              ${this.roster.map(m => `
-                <tr>
-                  <td style="color:#fff; font-weight:700;">${m.name}</td>
-                  <td style="color:${this.teams.find(t=>t.id===m.teamId)?.color || '#38bdf8'}; font-weight:800;">${m.teamName}</td>
-                  <td class="col-stat">${m.picks.record.split('-')[0]}</td>
-                  <td class="col-stat">${m.picks.record.split('-')[1]}</td>
+              ${sorted.map((m, idx) => `
+                <tr class="standings-member-row" data-member-id="${m.id}" style="cursor:pointer;">
+                  <td style="text-align:center; font-weight:900; color:${idx === 0 ? '#facc15' : '#94a3b8'};">#${idx + 1}</td>
+                  <td style="color:#fff; font-weight:700;">${escapeHtml(m.shortName || m.name)}</td>
+                  <td style="color:${m.color}; font-weight:800;">${m.teamName}</td>
+                  <td class="col-stat">${m.picks.wins}</td>
+                  <td class="col-stat">${m.picks.ties > 0 ? `${m.picks.losses}-${m.picks.ties}` : m.picks.losses}</td>
                   <td class="col-stat">${m.picks.pct}</td>
+                  <td class="col-stat" style="color:${String(m.picks.streak).startsWith('W') ? '#10b981' : '#f87171'}; font-weight:800;">${escapeHtml(m.picks.streak)}</td>
                 </tr>
               `).join('')}
             </tbody>
           </table>
         </div>
       `;
+
+      this.dom.drawerBody.querySelectorAll('.standings-member-row').forEach(row => {
+        row.addEventListener('click', () => this.openMemberModal(row.dataset.memberId));
+      });
+
       this.dom.secondaryDrawer.style.display = 'flex';
-      this.dom.secondaryDrawer.scrollIntoView({ behavior: 'smooth' });
+      if (scroll) this.dom.secondaryDrawer.scrollIntoView({ behavior: 'smooth' });
     }
 
     closeDrawer() {
+      this.activeDrawer = null;
       if (this.dom.secondaryDrawer) {
         this.dom.secondaryDrawer.style.display = 'none';
-      }
-    }
-
-
-    // =========================================================================
-    // ENRICHED LIVE ESPN DATA ENGINE (2026 REGULAR SEASON WEEK 2)
-    // =========================================================================
-    async fetchLiveEspnFeed() {
-      try {
-        const res = await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard');
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data && data.events && data.events.length > 0) {
-          
-          // 1. Update Ticker Games
-          const liveList = data.events.map(ev => {
-            const comp = ev.competitions[0];
-            const away = comp.competitors.find(c => c.homeAway === 'away') || comp.competitors[1];
-            const home = comp.competitors.find(c => c.homeAway === 'home') || comp.competitors[0];
-            const status = ev.status.type.completed 
-              ? 'FINAL' 
-              : (ev.status.type.state === 'in' 
-                  ? `${ev.status.type.shortDetail || 'LIVE'} • ${formatArizonaTime(ev.date)}` 
-                  : formatArizonaTime(ev.date));
-
-            return {
-              away: away.team.abbreviation,
-              awayScore: away.score || '0',
-              home: home.team.abbreviation,
-              homeScore: home.score || '0',
-              status: status,
-              isLive: ev.status.type.state === 'in',
-              venue: comp.venue?.fullName || 'NFL Stadium',
-              leaders: comp.leaders || []
-            };
-          });
-
-          if (liveList.length > 0) {
-            TODAY_TICKER_GAMES.length = 0;
-            TODAY_TICKER_GAMES.push(...liveList);
-            if (this.currentTickerMode === 'TODAY') {
-              this.renderTicker();
-            }
-          }
-
-          // 2. Synchronize Each Staff Member's Matchup, Record & Stats
-          this.roster.forEach(member => {
-            const matchingEvent = data.events.find(ev => {
-              const comp = ev.competitions[0];
-              return comp.competitors.some(c => c.team.abbreviation === member.teamId);
-            });
-
-            if (matchingEvent) {
-              const comp = matchingEvent.competitions[0];
-              const away = comp.competitors.find(c => c.homeAway === 'away') || comp.competitors[1];
-              const home = comp.competitors.find(c => c.homeAway === 'home') || comp.competitors[0];
-              const memberComp = comp.competitors.find(c => c.team.abbreviation === member.teamId);
-
-              // Update Matchup details
-              member.matchup.away.code = away.team.abbreviation;
-              member.matchup.away.name = away.team.name || away.team.displayName;
-              member.matchup.away.score = parseInt(away.score || 0, 10);
-              if (away.records?.[0]?.summary) member.matchup.away.rec = away.records[0].summary;
-
-              member.matchup.home.code = home.team.abbreviation;
-              member.matchup.home.name = home.team.name || home.team.displayName;
-              member.matchup.home.score = parseInt(home.score || 0, 10);
-              if (home.records?.[0]?.summary) member.matchup.home.rec = home.records[0].summary;
-
-              member.matchup.status = matchingEvent.status.type.completed 
-                ? 'FINAL' 
-                : (matchingEvent.status.type.state === 'in' 
-                    ? `LIVE • ${matchingEvent.status.type.shortDetail || 'Q3'} • ${formatArizonaTime(matchingEvent.date)}` 
-                    : formatArizonaTime(matchingEvent.date));
-              
-              member.matchup.isLive = matchingEvent.status.type.state === 'in';
-              if (comp.venue?.fullName) member.matchup.venue = comp.venue.fullName;
-
-              // Update Quarterback / Starters if leaders are available
-              if (comp.leaders) {
-                const passLeader = comp.leaders.find(l => l.name === 'passingYards')?.leaders?.[0];
-                if (passLeader) {
-                  if (passLeader.team?.id === away.team.id) {
-                    member.matchup.awayStarter = passLeader.athlete.displayName;
-                  } else {
-                    member.matchup.homeStarter = passLeader.athlete.displayName;
-                  }
-                }
-              }
-
-              // Update Member Picks Record & Win Percentage
-              if (memberComp?.records?.[0]?.summary) {
-                const recStr = memberComp.records[0].summary;
-                member.picks.record = recStr;
-                const parts = recStr.split('-');
-                const wins = parseInt(parts[0], 10) || 0;
-                const losses = parseInt(parts[1], 10) || 0;
-                const total = wins + losses;
-                member.picks.pct = total > 0 ? (wins / total).toFixed(3).replace('0.', '.') : '.000';
-                member.picks.streak = wins >= losses ? `W${wins || 1}` : `L${losses || 1}`;
-              }
-
-              // Update Live Stats (Yards & TDs)
-              let liveYards = parseInt(memberComp?.score || 0, 10) * 18;
-              let liveTds = Math.floor(parseInt(memberComp?.score || 0, 10) / 7);
-
-              if (comp.leaders) {
-                comp.leaders.forEach(l => {
-                  const lead = l.leaders?.[0];
-                  if (lead && lead.team?.id === memberComp?.team?.id) {
-                    if (l.name === 'passingYards' || l.name === 'rushingYards') {
-                      liveYards += Math.floor(lead.value || 0);
-                    }
-                  }
-                });
-              }
-
-              if (liveYards > 0) {
-                member.liveStats.yards = Math.max(member.liveStats.yards, liveYards);
-                member.liveStats.tds = Math.max(member.liveStats.tds, liveTds);
-                member.liveStats.status = matchingEvent.status.type.state === 'in' 
-                  ? `Active in ${matchingEvent.status.type.shortDetail || 'Q3'}` 
-                  : (matchingEvent.status.type.completed ? 'Final Game Stats' : 'Pregame Warmups');
-              }
-            }
-          });
-
-          // 3. Dynamically Calculate Weekly Yards & Touchdowns Leader
-          let maxYardScore = -1;
-          let leaderMember = null;
-          this.roster.forEach(m => {
-            const compositeScore = (m.liveStats.yards || 0) + ((m.liveStats.tds || 0) * 50);
-            if (compositeScore > maxYardScore) {
-              maxYardScore = compositeScore;
-              leaderMember = m;
-            }
-          });
-
-          if (leaderMember) {
-            this.roster.forEach(m => {
-              if (m.id === leaderMember.id) {
-                m.trophy.count = Math.max(m.trophy.count, 2);
-                m.trophy.label = "WEEKLY YARDS & TOUCHDOWNS LEADER";
-              } else {
-                m.trophy.label = "2026 REGULAR SEASON CONTENDER";
-              }
-            });
-          }
-
-          // 4. Update Division Standings table if member modal is currently open
-          if (this.selectedMember) {
-            const currentMem = this.roster.find(m => m.id === this.selectedMember.id);
-            if (currentMem) {
-              this.openMemberModal(currentMem.id);
-            }
-          }
-        }
-      } catch (err) {
-        console.log('Live ESPN data fetch completed with fallback dataset.');
       }
     }
   }
@@ -3305,4 +3279,3 @@
     app.init();
   });
 })();
-
